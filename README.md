@@ -1,8 +1,12 @@
 # LineSegmentsDetection
 Including classical image processing and deep learning based methods
 
-Note: all related papers are in the `papers` directory. 
-- the file with a name prefix `DL_` implies that DL-based method has been used.
+## Overview of the homepage (current page)
+1 The directories with a name prefix `g_` show the global data. 
+- The other directories each represent one LSD method.
+
+2 All related papers are in the `g_papers` directory. 
+- The file with a name prefix `DL_` implies that DL-based method has been implemented.
 
 ## Classical image processing
 1-1 CannyLines 2015 （source code: C/C++）
@@ -14,21 +18,26 @@ Note: all related papers are in the `papers` directory.
 2 MCMLSD 2017 [CVPR] （source code: C/C++ & Matlab）
 
 ## Deep learning 
-> Source code: PyTorch
+- Source code: PyTorch
 
 1 [L-CNN: End-to-End Wireframe Parsing ICCV2019](https://paperswithcode.com/paper/190503246)   
+- [github repo](https://github.com/zhou13/lcnn)
 - The previous state-of-the-art method
 - Introduced metrics:
     - Structural mAP
     - Junction mAP  
 
 2 [HAWP: Holistically-Attracted Wireframe Parsing CVPR 2020](https://paperswithcode.com/paper/holistically-attracted-wireframe-parsing)
+- [github repo](https://github.com/cherubicXN/hawp)
 
 3 [HT-HAWP: Deep Hough-Transform Line Priors ECCV 2020](https://paperswithcode.com/paper/deep-hough-transform-line-priors)
+- [github repo](https://github.com/yanconglin/Deep-Hough-Transform-Line-Priors)
 
 4 [F-Clip: Fully Convolutional Line Parsing 2021.04](https://paperswithcode.com/paper/fully-convolutional-line-parsing)
+- [github repo](https://github.com/Delay-Xili/F-Clip)
 
 
 Plus: [LETR: Line Segment Detection Using Transformers without Edges](https://paperswithcode.com/paper/line-segment-detection-using-transformers)
-- Stage 1: 400M parameters
+- [github repo](https://github.com/mlpc-ucsd/LETR)
+- Stage 1: 40M parameters
 - Stage 2: by using 24G GPU

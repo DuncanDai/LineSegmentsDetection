@@ -5,6 +5,9 @@ DL-HAWP Holistically-AttractedWireframeParsing/.git
 DL-L-CNN EndToEndWireframeParsing/.git
 DL-LETR LineSegmentDetectionUsingTransformersWithoutEdges/.git
 
+# dataset and output in the process
+g_datastet
+
 
 # Prerequisites
 *.d
