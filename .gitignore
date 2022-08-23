@@ -1,3 +1,11 @@
+# submodules
+DL_F-Clip FullyConvolutionalLineParsing/.git
+DL_HT-HAWP DeepHoughTransformLinePriors/.git
+DL-HAWP Holistically-AttractedWireframeParsing/.git
+DL-L-CNN EndToEndWireframeParsing/.git
+DL-LETR LineSegmentDetectionUsingTransformersWithoutEdges/.git
+
+
 # Prerequisites
 *.d
 
