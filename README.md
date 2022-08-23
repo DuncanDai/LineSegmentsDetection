@@ -2,6 +2,7 @@
 Including classical image processing and deep learning based methods
 
 Note: all related papers are in the `papers` directory. 
+- the file with a name prefix `DL_` implies that DL-based method has been used.
 
 ## Classical image processing
 1-1 CannyLines 2015 （source code: C/C++）
