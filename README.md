@@ -3,9 +3,9 @@ Including classical image processing and deep learning based methods
 
 ## Overview of the homepage (current page)
 1 The directories with a name prefix `g_` show the global data. 
-- The other directories each represent one LSD method.
+- Each of the other directories represents one LSD method.
 
-2 All related papers are in the `g_papers` directory. 
+2 The related papers are in the `g_papers` directory. 
 - The file with a name prefix `DL_` implies that DL-based method has been implemented.
 
 ## Classical image processing
@@ -19,6 +19,10 @@ Including classical image processing and deep learning based methods
 
 ## Deep learning 
 - Source code: PyTorch
+
+Comparison of the LSD methods (metric: sAP10):
+![](./g_results/Comparison%20of%20LSD%20methods(DL).png)
+
 
 1 [L-CNN: End-to-End Wireframe Parsing ICCV2019](https://paperswithcode.com/paper/190503246)   
 - [github repo](https://github.com/zhou13/lcnn)
@@ -37,7 +41,7 @@ Including classical image processing and deep learning based methods
 - [github repo](https://github.com/Delay-Xili/F-Clip)
 
 
-Plus: [LETR: Line Segment Detection Using Transformers without Edges](https://paperswithcode.com/paper/line-segment-detection-using-transformers)
+Plus: [LETR: Line Segment Detection Using Transformers without Edges CVPR 2021](https://paperswithcode.com/paper/line-segment-detection-using-transformers)
 - [github repo](https://github.com/mlpc-ucsd/LETR)
 - Stage 1: 40M parameters
 - Stage 2: by using 24G GPU
