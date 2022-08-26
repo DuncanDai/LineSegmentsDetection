@@ -88,7 +88,7 @@ The input variable type should be configurated in following
 issue 1: dir v2 ist not in the path
 	- addpath('v2/');
 	- code line 42: lines2 = sortrows(lines2, -5);
-bug 1： opts = getPrmDflt(varargin,dfs,1); -> Unrecognized function or variable 'getPrmDflt'
+bug 1： opts = getPrmDflt(varargin,dfs,1); -> Unrecognized function or variable 'getPrmDflt' (in dir: /edges-master/toolbox-master/matlab)
 	- me： addpath(genpath('edges-master/'));
 	
 ================================================================================
