@@ -1,3 +1,13 @@
+【my info】
+# path
+['..\imgSamples', filesep, xxx]
+
+# file
+['../imgSamples', filesep, 'test1.png']
+
+
+
+
 【Source Code Files Overview】 2022.08.26 win10
 root/main: demo_start_v2.m
 dir v2: the main MCMLSD 

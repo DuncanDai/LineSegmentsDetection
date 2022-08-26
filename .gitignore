@@ -7,6 +7,8 @@ DL-LETR LineSegmentDetectionUsingTransformersWithoutEdges/.git
 
 # dataset and output in the process
 g_datastet
+g_output
+imgSamples
 
 
 # Prerequisites
