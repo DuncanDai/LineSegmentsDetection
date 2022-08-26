@@ -1,0 +1,62 @@
+[
+  {
+    "directory": "U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\\codegen\\mex\\hmmParameters",
+    "command": "cl /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I \".\" /I \"U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2020b\\extern\\include\" /I \".\" -DMODEL=hmmParameters   hmmParameters_data.c /Fobuild\\win64\\hmmParameters_data.obj",
+    "file": "hmmParameters_data.c",
+    "output": "build/win64/hmmParameters_data.obj"
+  },
+  {
+    "directory": "U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\\codegen\\mex\\hmmParameters",
+    "command": "cl /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I \".\" /I \"U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2020b\\extern\\include\" /I \".\" -DMODEL=hmmParameters   rt_nonfinite.c /Fobuild\\win64\\rt_nonfinite.obj",
+    "file": "rt_nonfinite.c",
+    "output": "build/win64/rt_nonfinite.obj"
+  },
+  {
+    "directory": "U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\\codegen\\mex\\hmmParameters",
+    "command": "cl /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I \".\" /I \"U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2020b\\extern\\include\" /I \".\" -DMODEL=hmmParameters   hmmParameters_initialize.c /Fobuild\\win64\\hmmParameters_initialize.obj",
+    "file": "hmmParameters_initialize.c",
+    "output": "build/win64/hmmParameters_initialize.obj"
+  },
+  {
+    "directory": "U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\\codegen\\mex\\hmmParameters",
+    "command": "cl /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I \".\" /I \"U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2020b\\extern\\include\" /I \".\" -DMODEL=hmmParameters   hmmParameters_terminate.c /Fobuild\\win64\\hmmParameters_terminate.obj",
+    "file": "hmmParameters_terminate.c",
+    "output": "build/win64/hmmParameters_terminate.obj"
+  },
+  {
+    "directory": "U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\\codegen\\mex\\hmmParameters",
+    "command": "cl /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I \".\" /I \"U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2020b\\extern\\include\" /I \".\" -DMODEL=hmmParameters   hmmParameters.c /Fobuild\\win64\\hmmParameters.obj",
+    "file": "hmmParameters.c",
+    "output": "build/win64/hmmParameters.obj"
+  },
+  {
+    "directory": "U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\\codegen\\mex\\hmmParameters",
+    "command": "cl /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I \".\" /I \"U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2020b\\extern\\include\" /I \".\" -DMODEL=hmmParameters   interface\\_coder_hmmParameters_api.c /Fobuild\\win64\\_coder_hmmParameters_api.obj",
+    "file": "interface/_coder_hmmParameters_api.c",
+    "output": "build/win64/_coder_hmmParameters_api.obj"
+  },
+  {
+    "directory": "U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\\codegen\\mex\\hmmParameters",
+    "command": "cl /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I \".\" /I \"U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2020b\\extern\\include\" /I \".\" -DMODEL=hmmParameters   interface\\_coder_hmmParameters_mex.c /Fobuild\\win64\\_coder_hmmParameters_mex.obj",
+    "file": "interface/_coder_hmmParameters_mex.c",
+    "output": "build/win64/_coder_hmmParameters_mex.obj"
+  },
+  {
+    "directory": "U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\\codegen\\mex\\hmmParameters",
+    "command": "cl /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I \".\" /I \"U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2020b\\extern\\include\" /I \".\" -DMODEL=hmmParameters   hmmParameters_emxutil.c /Fobuild\\win64\\hmmParameters_emxutil.obj",
+    "file": "hmmParameters_emxutil.c",
+    "output": "build/win64/hmmParameters_emxutil.obj"
+  },
+  {
+    "directory": "U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\\codegen\\mex\\hmmParameters",
+    "command": "cl /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I \".\" /I \"U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2020b\\extern\\include\" /I \".\" -DMODEL=hmmParameters   interface\\_coder_hmmParameters_info.c /Fobuild\\win64\\_coder_hmmParameters_info.obj",
+    "file": "interface/_coder_hmmParameters_info.c",
+    "output": "build/win64/_coder_hmmParameters_info.obj"
+  },
+  {
+    "directory": "U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\\codegen\\mex\\hmmParameters",
+    "command": "cl /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I \".\" /I \"U:\\my_projs\\LineSegmentsDetection\\MCMLSD\\code\\mexfiles\" /I \".\\interface\" /I \"C:\\Program Files\\MATLAB\\R2020b\\extern\\include\" /I \".\" -DMODEL=hmmParameters   \"C:\\Program Files\\MATLAB\\R2020b\\extern\\version\\c_mexapi_version.c\" /Fobuild\\win64\\c_mexapi_version.obj",
+    "file": "C:/Program Files/MATLAB/R2020b/extern/version/c_mexapi_version.c",
+    "output": "build/win64/c_mexapi_version.obj"
+  }
+]

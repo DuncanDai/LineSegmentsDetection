@@ -1,0 +1,51 @@
+# CompilerName=msvc160
+# Mode=optim
+ninja_required_version = 1.3
+
+# Basic folders
+root = .
+builddir = $root\build\win64
+matlabdir = C:\Program Files\MATLAB\R2020b
+startdir = U:\my_projs\LineSegmentsDetection\MCMLSD\code\mexfiles
+
+# Toolchain information
+cc = cl
+cxx = cl
+linker = link
+linkerxx = link
+
+cflags =  /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I "$root" /I "$startdir" /I "$root\interface" /I "$matlabdir\extern\include" /I "." -DMODEL=hmmParameters  
+
+cxxflags =   /c /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /I "$root" /I "$startdir" /I "$root\interface" /I "$matlabdir\extern\include" /I "." -DMODEL=hmmParameters  
+
+ldflags =  /nologo /manifest   /DLL /LIBPATH:"$matlabdir\extern\lib\win64\microsoft" libmx.lib libmex.lib libmat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  /out:"hmmParameters.mexw64" libemlrt.lib libcovrt.lib libut.lib libmwmathutil.lib  /export:mexFunction /export:mexfilerequiredapiversion /export:emlrtMexFcnProperties /export:hmmParameters /export:hmmParameters_initialize /export:hmmParameters_terminate /export:hmmParameters_atexit /export:emxFree_real_T /export:emxInit_real_T /export:emxEnsureCapacity_real_T
+
+# Build Rules
+rule cc
+    command = $cc $cflags $in /Fo$out
+
+rule cxx
+    command = $cxx $cxxflags $in /Fo$out
+
+rule link
+    command = $linker @$out.rsp $ldflags
+    rspfile = $out.rsp
+    rspfile_content = $in
+
+rule linkxx
+    command = $linkerxx $in $ldflags
+
+# Build
+build $builddir\hmmParameters_data.obj : cc $root\hmmParameters_data.c
+build $builddir\rt_nonfinite.obj : cc $root\rt_nonfinite.c
+build $builddir\hmmParameters_initialize.obj : cc $root\hmmParameters_initialize.c
+build $builddir\hmmParameters_terminate.obj : cc $root\hmmParameters_terminate.c
+build $builddir\hmmParameters.obj : cc $root\hmmParameters.c
+build $builddir\_coder_hmmParameters_api.obj : cc $root\interface\_coder_hmmParameters_api.c
+build $builddir\_coder_hmmParameters_mex.obj : cc $root\interface\_coder_hmmParameters_mex.c
+build $builddir\hmmParameters_emxutil.obj : cc $root\hmmParameters_emxutil.c
+build $builddir\_coder_hmmParameters_info.obj : cc $root\interface\_coder_hmmParameters_info.c
+build $builddir\c_mexapi_version.obj : cc $matlabdir\extern\version\c_mexapi_version.c
+
+# Link
+build $root\hmmParameters.mexw64 : link $builddir\hmmParameters_data.obj $builddir\rt_nonfinite.obj $builddir\hmmParameters_initialize.obj $builddir\hmmParameters_terminate.obj $builddir\hmmParameters.obj $builddir\_coder_hmmParameters_api.obj $builddir\_coder_hmmParameters_mex.obj $builddir\hmmParameters_emxutil.obj $builddir\_coder_hmmParameters_info.obj $builddir\c_mexapi_version.obj 

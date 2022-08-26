@@ -4,7 +4,8 @@ close all
 
 addpath(genpath('code/'));
 addpath('Imgs/');
-addpath('edges-master/');
+addpath(genpath('edges-master/'));
+addpath('v2/');
 
 img = imread(['Imgs', filesep, 'P1040823hr.jpg']);
 img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
@@ -27,7 +28,7 @@ lines = sortrows(lines, -5);
 ttlLines = size(lines,1);
 for i = 1:90
     %plot the top 90 lines
-    line([lines(i,1) lines(i,3)], [lines(i,2) lines(i,4)],'Color', rand(1,3), 'LineWidth', 3);
+    line([lines(i,1) lines(i,3)], [lines(i,2) lines(i,4)],'Color', rand(1,3), 'LineWidth', 2.5);
 end
 
 %please use code in Evaluation code.zip to evaluate the performance of the line segmentation algorithm
@@ -38,9 +39,9 @@ fig = figure;
 imshow(img);
 hold all
 %Order lines by probability
-lines = sortrows(lines2, -5);
+lines2 = sortrows(lines2, -5);
 ttlLines = size(lines2,1);
 for i = 1:90
     %plot the top 90 lines
-    line([lines2(i,1) lines2(i,3)], [lines2(i,2) lines2(i,4)],'Color', rand(1,3), 'LineWidth', 3);
+    line([lines2(i,1) lines2(i,3)], [lines2(i,2) lines2(i,4)],'Color', rand(1,3), 'LineWidth', 2.5);
 end
