@@ -1,16 +1,45 @@
+【Source Code Files Overview】 2022.08.26 win10
+root/main: demo_start_v2.m
+dir v2: the main MCMLSD 
+dir code: the main supporting code
+	- dir ElderZuckerEdgeDetector: API
+	- dir mexfiles: the main supporting code
+	- dir parameters
+	- dir utils 
+dir edges-master: API package (entire project)
+dir Imgs: data
+
+
+================================================================================
+### source code file types
+.m -> Matlab Coder -> .mex
+	- .prj file: the config file to output .mex file for .m file
+.c -> mex: 3 platform
+	- Linux: .mexa64
+	- Mac: .mexmaci64
+	- Windows: .mexw64
+
+
+================================================================================
+【step1: .c code -> mex file】by using compiler & matlab command: mex
 many function in the line segmentation algorithm were mex file, if you are using
 windows or linux system, please recompile following c code into mex file.
  mexRemoveVotes_v3_scale.c
  mexVoteEdges_v3_scale.c
- the c code can be compiled by command
+the c code can be compiled by command
  mex xxxxxxxxx.c
 
+【step2: .m code -> mex file】by using Matlab Coder
 Please use matlab coder to compile following .m file into mex file:
  hmmParameters.m
  returnLines.m
  sampleLine.m
- the matlab coder is an app in matlab to automatically compile .m code into mex file,
- The entry point for the code is demo_start_v2.m. The instruction is in following
+
+
+the matlab coder is an app in matlab to automatically compile .m code into mex file,
+The entry point for the code is demo_start_v2.m. 
+
+The instruction is in following
     select No for "Does this code use global variables?"
 
 The input variable type should be configurated in following
