@@ -36,8 +36,9 @@ void mexFunction( int nlhs, mxArray *plhs[],
 	image_double image;
 	ntuple_list out;
 	unsigned int i,j,m,n;
-	unsigned int X,Y;
-	double *M,*MP;
+	unsigned int X,Y;  /* x , y image size */
+	
+    double *M,*MP;
 	double *imgptr;
 	
 	if(nlhs<=0 || nrhs<=0)
@@ -49,15 +50,17 @@ void mexFunction( int nlhs, mxArray *plhs[],
 	Y = m = mxGetM(prhs[0]);
 	X = n = mxGetN(prhs[0]);
 	
+    /* create a simple image: left half black, right half gray */
  	image = new_image_double(X,Y);
 	imgptr=image->data;
 	for(i=0; i<m; ++i)
 		for(j=0; j<n; ++j)
 			*imgptr++ = M[IDX(j,i,m)];
 
-	out = lsd(image);
-
-	mexPrintf("[lsd] %u line segments found.\n",out->size);
+    out = lsd_scale(image,1.0); // scale = 0.8 -> sigma = simga_scale/scale
+	/*out = lsd(image);*/  // default scale = 0.8
+            
+	/*mexPrintf("[lsd] %u line segments found.\n",out->size);*/
 	plhs[0] = mxCreateDoubleMatrix(out->size,out->dim,mxREAL);
 	MP = mxGetPr(plhs[0]);
 	for(i=0;i<out->size;i++)
