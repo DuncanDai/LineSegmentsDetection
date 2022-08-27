@@ -14,7 +14,8 @@ addpath('v2/');
 img = imread(['..\imgSamples', filesep, 'test1.png']);
 
 % 1/16 size to the original image
-img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
+% dinggen 08.26 test: full size
+% img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
 
 %compute the kernel for the image size
 %you only need to compute the kernal once for one an image size
@@ -37,7 +38,7 @@ for k = 3:length(imgSamples)
     
     tmp = img;
     % 1/16 size to the original image
-    img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
+%     img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
     
     ticId = tic;
     %the lines variable contains the detected line segmentations it arranged as
