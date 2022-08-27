@@ -14,6 +14,9 @@ website page - the author: https://scholar.google.fr/citations?hl=en&user=GLovf4
 github repo: https://github.com/theWorldCreator/LSD
 
 
+Please read through the REAME.txt in dir of lsd_1.6
+
+
 
 
 
