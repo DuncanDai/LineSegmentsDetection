@@ -22,10 +22,10 @@
 all: lsd lsd_call_example
 
 lsd: lsd.c lsd.h lsd_cmd.c
-	cc -O3 -o lsd lsd_cmd.c lsd.c -lm
+	gcc -O3 -o lsd lsd_cmd.c lsd.c -lm
 
 lsd_call_example: lsd.c lsd.h lsd_call_example.c
-	cc -o lsd_call_example lsd_call_example.c lsd.c -lm
+	gcc -o lsd_call_example lsd_call_example.c lsd.c -lm
 
 doc: lsd.c lsd.h doxygen.config
 	doxygen doxygen.config

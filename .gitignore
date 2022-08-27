@@ -12,6 +12,7 @@ imgSamples
 
 
 # Prerequisites
+.vs
 *.d
 
 # Compiled Object files
