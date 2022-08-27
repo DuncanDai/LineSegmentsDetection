@@ -2,15 +2,7 @@
 
   LSD - Line Segment Detector on digital images
 
-  This code is part of the following publication and was subject
-  to peer review:
-
-    "LSD: a Line Segment Detector" by Rafael Grompone von Gioi,
-    Jeremie Jakubowicz, Jean-Michel Morel, and Gregory Randall,
-    Image Processing On Line, 2012. DOI:10.5201/ipol.2012.gjmr-lsd
-    http://dx.doi.org/10.5201/ipol.2012.gjmr-lsd
-
-  Copyright (c) 2007-2011 rafael grompone von gioi <grompone@gmail.com>
+  Copyright 2007-2010 rafael grompone von gioi (grompone@gmail.com)
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU Affero General Public License as
@@ -30,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 /** @file lsd.c
     LSD module code
-    @author rafael grompone von gioi <grompone@gmail.com>
+    @author rafael grompone von gioi (grompone@gmail.com)
  */
 /*----------------------------------------------------------------------------*/
 
@@ -52,45 +44,27 @@
       Gregory Randall, CMLA, ENS Cachan, 2010.
 
     The version implemented here includes some further improvements
-    described in the following publication, of which this code is part:
+    described on the LSD page at www.ipol.im. That same page includes
+    more information, including this code and an online demo version:
 
-      "LSD: a Line Segment Detector" by Rafael Grompone von Gioi,
-      Jeremie Jakubowicz, Jean-Michel Morel, and Gregory Randall,
-      Image Processing On Line, 2012. DOI:10.5201/ipol.2012.gjmr-lsd
-      http://dx.doi.org/10.5201/ipol.2012.gjmr-lsd
+      http://www.ipol.im/pub/algo/gjmr_line_segment_detector
 
     The module's main function is lsd().
 
     The source code is contained in two files: lsd.h and lsd.c.
 
     HISTORY:
-    - version 1.6 - nov 2011:
-                              - changes in the interface,
-                              - max_grad parameter removed,
-                              - the factor 11 was added to the number of test
-                                to consider the different precision values
-                                tested,
-                              - a minor bug corrected in the gradient sorting
-                                code,
-                              - the algorithm now also returns p and log_nfa
-                                for each detection,
-                              - a minor bug was corrected in the image scaling,
-                              - the angle comparison in "isaligned" changed
-                                from < to <=,
-                              - "eps" variable renamed "log_eps",
-                              - "lsd_scale_region" interface was added,
-                              - minor changes to comments.
-    - version 1.5 - dec 2010: Changes in 'refine', -W option added,
+    - version 1.5 - dic 2010: Changes in 'refine', -W option added,
                               and more comments added.
     - version 1.4 - jul 2010: lsd_scale interface added and doxygen doc.
     - version 1.3 - feb 2010: Multiple bug correction and improved code.
-    - version 1.2 - dec 2009: First full Ansi C Language version.
+    - version 1.2 - dic 2009: First full Ansi C Language version.
     - version 1.1 - sep 2009: Systematic subsampling to scale 0.8 and
-                              correction to partially handle "angle problem".
+                              correction to partially handle"angle problem".
     - version 1.0 - jan 2009: First complete Megawave2 and Ansi C Language
                               version.
 
-    @author rafael grompone von gioi <grompone@gmail.com>
+    @author rafael grompone von gioi (grompone@gmail.com)
  */
 /*----------------------------------------------------------------------------*/
 
@@ -215,38 +189,9 @@ static double dist(double x1, double y1, double x2, double y2)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/** 'list of n-tuple' data type
-
-    The i-th component of the j-th n-tuple of an n-tuple list 'ntl'
-    is accessed with:
-
-      ntl->values[ i + j * ntl->dim ]
-
-    The dimension of the n-tuple (n) is:
-
-      ntl->dim
-
-    The number of n-tuples in the list is:
-
-      ntl->size
-
-    The maximum number of n-tuples that can be stored in the
-    list with the allocated memory at a given time is given by:
-
-      ntl->max_size
- */
-typedef struct ntuple_list_s
-{
-  unsigned int size;
-  unsigned int max_size;
-  unsigned int dim;
-  double * values;
-} * ntuple_list;
-
-/*----------------------------------------------------------------------------*/
 /** Free memory used in n-tuple 'in'.
  */
-static void free_ntuple_list(ntuple_list in)
+void free_ntuple_list(ntuple_list in)
 {
   if( in == NULL || in->values == NULL )
     error("free_ntuple_list: invalid n-tuple input.");
@@ -258,7 +203,7 @@ static void free_ntuple_list(ntuple_list in)
 /** Create an n-tuple list and allocate memory for one element.
     @param dim the dimension (n) of the n-tuple.
  */
-static ntuple_list new_ntuple_list(unsigned int dim)
+ntuple_list new_ntuple_list(unsigned int dim)
 {
   ntuple_list n_tuple;
 
@@ -300,27 +245,25 @@ static void enlarge_ntuple_list(ntuple_list n_tuple)
 }
 
 /*----------------------------------------------------------------------------*/
-/** Add a 7-tuple to an n-tuple list.
+/** Add a 5-tuple to an n-tuple list.
  */
-static void add_7tuple( ntuple_list out, double v1, double v2, double v3,
-                        double v4, double v5, double v6, double v7 )
+static void add_5tuple( ntuple_list out, double v1, double v2,
+                        double v3, double v4, double v5 )
 {
   /* check parameters */
-  if( out == NULL ) error("add_7tuple: invalid n-tuple input.");
-  if( out->dim != 7 ) error("add_7tuple: the n-tuple must be a 7-tuple.");
+  if( out == NULL ) error("add_5tuple: invalid n-tuple input.");
+  if( out->dim != 5 ) error("add_5tuple: the n-tuple must be a 5-tuple.");
 
   /* if needed, alloc more tuples to 'out' */
   if( out->size == out->max_size ) enlarge_ntuple_list(out);
-  if( out->values == NULL ) error("add_7tuple: invalid n-tuple input.");
+  if( out->values == NULL ) error("add_5tuple: invalid n-tuple input.");
 
-  /* add new 7-tuple */
+  /* add new 5-tuple */
   out->values[ out->size * out->dim + 0 ] = v1;
   out->values[ out->size * out->dim + 1 ] = v2;
   out->values[ out->size * out->dim + 2 ] = v3;
   out->values[ out->size * out->dim + 3 ] = v4;
   out->values[ out->size * out->dim + 4 ] = v5;
-  out->values[ out->size * out->dim + 5 ] = v6;
-  out->values[ out->size * out->dim + 6 ] = v7;
 
   /* update number of tuples counter */
   out->size++;
@@ -332,24 +275,9 @@ static void add_7tuple( ntuple_list out, double v1, double v2, double v3,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/** char image data type
-
-    The pixel value at (x,y) is accessed by:
-
-      image->data[ x + y * image->xsize ]
-
-    with x and y integer.
- */
-typedef struct image_char_s
-{
-  unsigned char * data;
-  unsigned int xsize,ysize;
-} * image_char;
-
-/*----------------------------------------------------------------------------*/
 /** Free memory used in image_char 'i'.
  */
-static void free_image_char(image_char i)
+void free_image_char(image_char i)
 {
   if( i == NULL || i->data == NULL )
     error("free_image_char: invalid input image.");
@@ -360,7 +288,7 @@ static void free_image_char(image_char i)
 /*----------------------------------------------------------------------------*/
 /** Create a new image_char of size 'xsize' times 'ysize'.
  */
-static image_char new_image_char(unsigned int xsize, unsigned int ysize)
+image_char new_image_char(unsigned int xsize, unsigned int ysize)
 {
   image_char image;
 
@@ -385,8 +313,8 @@ static image_char new_image_char(unsigned int xsize, unsigned int ysize)
 /** Create a new image_char of size 'xsize' times 'ysize',
     initialized to the value 'fill_value'.
  */
-static image_char new_image_char_ini( unsigned int xsize, unsigned int ysize,
-                                      unsigned char fill_value )
+image_char new_image_char_ini( unsigned int xsize, unsigned int ysize,
+                               unsigned char fill_value )
 {
   image_char image = new_image_char(xsize,ysize); /* create image */
   unsigned int N = xsize*ysize;
@@ -403,24 +331,20 @@ static image_char new_image_char_ini( unsigned int xsize, unsigned int ysize,
 }
 
 /*----------------------------------------------------------------------------*/
-/** int image data type
-
-    The pixel value at (x,y) is accessed by:
-
-      image->data[ x + y * image->xsize ]
-
-    with x and y integer.
+/** Free memory used in image_int 'i'.
  */
-typedef struct image_int_s
+void free_image_int(image_int i)
 {
-  int * data;
-  unsigned int xsize,ysize;
-} * image_int;
+  if( i == NULL || i->data == NULL )
+    error("free_image_int: invalid input image.");
+  free( (void *) i->data );
+  free( (void *) i );
+}
 
 /*----------------------------------------------------------------------------*/
 /** Create a new image_int of size 'xsize' times 'ysize'.
  */
-static image_int new_image_int(unsigned int xsize, unsigned int ysize)
+image_int new_image_int(unsigned int xsize, unsigned int ysize)
 {
   image_int image;
 
@@ -444,8 +368,8 @@ static image_int new_image_int(unsigned int xsize, unsigned int ysize)
 /** Create a new image_int of size 'xsize' times 'ysize',
     initialized to the value 'fill_value'.
  */
-static image_int new_image_int_ini( unsigned int xsize, unsigned int ysize,
-                                    int fill_value )
+image_int new_image_int_ini( unsigned int xsize, unsigned int ysize,
+                             int fill_value )
 {
   image_int image = new_image_int(xsize,ysize); /* create image */
   unsigned int N = xsize*ysize;
@@ -458,24 +382,9 @@ static image_int new_image_int_ini( unsigned int xsize, unsigned int ysize,
 }
 
 /*----------------------------------------------------------------------------*/
-/** double image data type
-
-    The pixel value at (x,y) is accessed by:
-
-      image->data[ x + y * image->xsize ]
-
-    with x and y integer.
- */
-typedef struct image_double_s
-{
-  double * data;
-  unsigned int xsize,ysize;
-} * image_double;
-
-/*----------------------------------------------------------------------------*/
 /** Free memory used in image_double 'i'.
  */
-static void free_image_double(image_double i)
+void free_image_double(image_double i)
 {
   if( i == NULL || i->data == NULL )
     error("free_image_double: invalid input image.");
@@ -486,7 +395,7 @@ static void free_image_double(image_double i)
 /*----------------------------------------------------------------------------*/
 /** Create a new image_double of size 'xsize' times 'ysize'.
  */
-static image_double new_image_double(unsigned int xsize, unsigned int ysize)
+image_double new_image_double(unsigned int xsize, unsigned int ysize)
 {
   image_double image;
 
@@ -507,27 +416,18 @@ static image_double new_image_double(unsigned int xsize, unsigned int ysize)
 }
 
 /*----------------------------------------------------------------------------*/
-/** Create a new image_double of size 'xsize' times 'ysize'
-    with the data pointed by 'data'.
+/** Create a new image_double of size 'xsize' times 'ysize',
+    initialized to the value 'fill_value'.
  */
-static image_double new_image_double_ptr( unsigned int xsize,
-                                          unsigned int ysize, double * data )
+image_double new_image_double_ini( unsigned int xsize, unsigned int ysize,
+                                   double fill_value )
 {
-  image_double image;
+  image_double image = new_image_double(xsize,ysize); /* create image */
+  unsigned int N = xsize*ysize;
+  unsigned int i;
 
-  /* check parameters */
-  if( xsize == 0 || ysize == 0 )
-    error("new_image_double_ptr: invalid image size.");
-  if( data == NULL ) error("new_image_double_ptr: NULL data pointer.");
-
-  /* get memory */
-  image = (image_double) malloc( sizeof(struct image_double_s) );
-  if( image == NULL ) error("not enough memory.");
-
-  /* set image */
-  image->xsize = xsize;
-  image->ysize = ysize;
-  image->data = data;
+  /* initialize */
+  for(i=0; i<N; i++) image->data[i] = fill_value;
 
   return image;
 }
@@ -604,7 +504,7 @@ static void gaussian_kernel(ntuple_list kernel, double sigma, double mean)
     @f[
         G(x) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{x^2}{2\sigma^2}}.
     @f]
-    The algorithm first applies a combined Gaussian kernel and sampling
+    The algorithm first apply a combined Gaussian kernel and sampling
     in the x axis, and then the combined Gaussian kernel and sampling
     in the y axis.
  */
@@ -624,12 +524,12 @@ static image_double gaussian_sampler( image_double in, double scale,
   if( sigma_scale <= 0.0 )
     error("gaussian_sampler: 'sigma_scale' must be positive.");
 
-  /* compute new image size and get memory for images */
+  /* get memory for images */
   if( in->xsize * scale > (double) UINT_MAX ||
       in->ysize * scale > (double) UINT_MAX )
     error("gaussian_sampler: the output image size exceeds the handled size.");
-  N = (unsigned int) ceil( in->xsize * scale );
-  M = (unsigned int) ceil( in->ysize * scale );
+  N = (unsigned int) floor( in->xsize * scale );
+  M = (unsigned int) floor( in->ysize * scale );
   aux = new_image_double(N,in->ysize);
   out = new_image_double(N,M);
 
@@ -751,7 +651,8 @@ static image_double gaussian_sampler( image_double in, double scale,
  */
 static image_double ll_angle( image_double in, double threshold,
                               struct coorlist ** list_p, void ** mem_p,
-                              image_double * modgrad, unsigned int n_bins )
+                              image_double * modgrad, unsigned int n_bins,
+                              double max_grad )
 {
   image_double g;
   unsigned int n,p,x,y,adr,i;
@@ -764,7 +665,6 @@ static image_double ll_angle( image_double in, double threshold,
   struct coorlist ** range_l_e; /* array of pointers to end of bin list */
   struct coorlist * start;
   struct coorlist * end;
-  double max_grad = 0.0;
 
   /* check parameters */
   if( in == NULL || in->data == NULL || in->xsize == 0 || in->ysize == 0 )
@@ -774,6 +674,7 @@ static image_double ll_angle( image_double in, double threshold,
   if( mem_p == NULL ) error("ll_angle: NULL pointer 'mem_p'.");
   if( modgrad == NULL ) error("ll_angle: NULL pointer 'modgrad'.");
   if( n_bins == 0 ) error("ll_angle: 'n_bins' must be positive.");
+  if( max_grad <= 0.0 ) error("ll_angle: 'max_grad' must be positive.");
 
   /* image size shortcuts */
   n = in->ysize;
@@ -833,51 +734,51 @@ static image_double ll_angle( image_double in, double threshold,
           {
             /* gradient angle computation */
             g->data[adr] = atan2(gx,-gy);
-
-            /* look for the maximum of the gradient */
-            if( norm > max_grad ) max_grad = norm;
+            
+            /* Convert from (-pi,pi] to [0,pi) */
+            /* This way a line will be detected as a line and not as 2 edges
+            /* Added by Nazar Khan */
+/*	    if (g->data[adr]<0)
+	    {
+		g->data[adr] += M_PI;
+	    }
+*/	    /* wrap values close to M_PI back to 0 since required angular range is [0,pi) */
+/*	    if (g->data[adr]>(M_PI-M_PI/8))
+	    {
+		g->data[adr] += M_PI;
+	    }
+*/
+            /* store the point in the right bin according to its norm */
+            i = (unsigned int) (norm * (double) n_bins / max_grad);
+            if( i >= n_bins ) i = n_bins-1;
+            if( range_l_e[i] == NULL )
+              range_l_s[i] = range_l_e[i] = list+list_count++;
+            else
+              {
+                range_l_e[i]->next = list+list_count;
+                range_l_e[i] = list+list_count++;
+              }
+            range_l_e[i]->x = (int) x;
+            range_l_e[i]->y = (int) y;
+            range_l_e[i]->next = NULL;
           }
-      }
-
-  /* compute histogram of gradient values */
-  for(x=0;x<p-1;x++)
-    for(y=0;y<n-1;y++)
-      {
-        norm = (*modgrad)->data[y*p+x];
-
-        /* store the point in the right bin according to its norm */
-        i = (unsigned int) (norm * (double) n_bins / max_grad);
-        if( i >= n_bins ) i = n_bins-1;
-        if( range_l_e[i] == NULL )
-          range_l_s[i] = range_l_e[i] = list+list_count++;
-        else
-          {
-            range_l_e[i]->next = list+list_count;
-            range_l_e[i] = list+list_count++;
-          }
-        range_l_e[i]->x = (int) x;
-        range_l_e[i]->y = (int) y;
-        range_l_e[i]->next = NULL;
       }
 
   /* Make the list of pixels (almost) ordered by norm value.
      It starts by the larger bin, so the list starts by the
-     pixels with the highest gradient value. Pixels would be ordered
+     pixels with higher gradient value. Pixels would be ordered
      by norm value, up to a precision given by max_grad/n_bins.
    */
   for(i=n_bins-1; i>0 && range_l_s[i]==NULL; i--);
   start = range_l_s[i];
   end = range_l_e[i];
   if( start != NULL )
-    while(i>0)
-      {
-        --i;
-        if( range_l_s[i] != NULL )
-          {
-            end->next = range_l_s[i];
-            end = range_l_e[i];
-          }
-      }
+    for(i--;i>0; i--)
+      if( range_l_s[i] != NULL )
+        {
+          end->next = range_l_s[i];
+          end = range_l_e[i];
+        }
   *list_p = start;
 
   /* free memory */
@@ -922,7 +823,7 @@ static int isaligned( int x, int y, image_double angles, double theta,
       if( theta < 0.0 ) theta = -theta;
     }
 
-  return theta <= prec;
+  return theta < prec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1172,7 +1073,7 @@ struct rect
   double width;        /* rectangle width */
   double x,y;          /* center of the rectangle */
   double theta;        /* angle */
-  double dx,dy;        /* (dx,dy) is vector oriented as the line segment */
+  double dx,dy;        /* vector with the line segment angle */
   double prec;         /* tolerance angle */
   double p;            /* probability of a point with angle within 'prec' */
 };
@@ -1246,7 +1147,7 @@ static void rect_copy(struct rect * in, struct rect * out)
     \endverbatim
     The first 'column' to be explored is the one with the smaller x
     value. Each 'column' is explored starting from the pixel of the
-    'column' (inside the rectangle) with the smallest y value.
+    'column' (inside the rectangle) with the smaller y value.
 
     The four corners of the rectangle are stored in order that rotates
     around the corners at the arrays 'vx[]' and 'vy[]'. The first
@@ -1327,7 +1228,7 @@ static int ri_end(rect_iter * i)
   /* check input */
   if( i == NULL ) error("ri_end: NULL iterator.");
 
-  /* if the current x value is larger than the largest
+  /* if the current x value is larger than the larger
      x value in the rectangle (vx[2]), we know the full
      exploration of the rectangle is finished. */
   return (double)(i->x) > i->vx[2];
@@ -1450,7 +1351,7 @@ static rect_iter * ri_ini(struct rect * r)
       i->vy[n] = vy[(offset+n)%4];
     }
 
-  /* Set an initial condition.
+  /* Set a initial condition.
 
      The values are set to values that will cause 'ri_inc' (that will
      be called immediately) to initialize correctly the first 'column'
@@ -1461,7 +1362,7 @@ static rect_iter * ri_ini(struct rect * r)
      'ys' and 'ye' are set to very small values, so 'ri_inc' will
      notice that it needs to start a new 'column'.
 
-     The smallest integer coordinate inside of the rectangle is
+     The smaller integer coordinate inside of the rectangle is
      'ceil(vx[0])'. The current 'x' value is set to that value minus
      one, so 'ri_inc' (that will increase x by one) will advance to
      the first 'column'.
@@ -1546,8 +1447,8 @@ static double rect_nfa(struct rect * rec, image_double angles, double logNT)
       lambda2 = ( Ixx + Iyy - sqrt( (Ixx-Iyy)^2 + 4.0*Ixy*Ixy) ) / 2
 
     To get the line segment direction we want to get the angle the
-    eigenvector associated to the smallest eigenvalue. We have
-    to solve for a,b in:
+    eigenvector assotiated to the smaller eigenvalue. We have to solve
+    a,b in:
 
       a.Ixx + b.Ixy = a.lambda2
 
@@ -1598,7 +1499,7 @@ static double get_theta( struct point * reg, int reg_size, double x, double y,
   /* compute angle */
   theta = fabs(Ixx)>fabs(Iyy) ? atan2(lambda-Ixx,Ixy) : atan2(Ixy,lambda-Iyy);
 
-  /* The previous procedure doesn't cares about orientation,
+  /* The previous procedure don't cares about orientation,
      so it could be wrong by 180 degrees. Here is corrected if necessary. */
   if( angle_diff(theta,reg_angle) > prec ) theta += M_PI;
 
@@ -1751,10 +1652,10 @@ static void region_grow( int x, int y, image_double angles, struct point * reg,
 
 /*----------------------------------------------------------------------------*/
 /** Try some rectangles variations to improve NFA value. Only if the
-    rectangle is not meaningful (i.e., log_nfa <= log_eps).
+    rectangle is not meaningful (i.e., log_nfa <= eps).
  */
 static double rect_improve( struct rect * rec, image_double angles,
-                            double logNT, double log_eps )
+                            double logNT, double eps )
 {
   struct rect r;
   double log_nfa,log_nfa_new;
@@ -1764,7 +1665,7 @@ static double rect_improve( struct rect * rec, image_double angles,
 
   log_nfa = rect_nfa(rec,angles,logNT);
 
-  if( log_nfa > log_eps ) return log_nfa;
+  if( log_nfa > eps ) return log_nfa;
 
   /* try finer precisions */
   rect_copy(rec,&r);
@@ -1780,7 +1681,7 @@ static double rect_improve( struct rect * rec, image_double angles,
         }
     }
 
-  if( log_nfa > log_eps ) return log_nfa;
+  if( log_nfa > eps ) return log_nfa;
 
   /* try to reduce width */
   rect_copy(rec,&r);
@@ -1798,7 +1699,7 @@ static double rect_improve( struct rect * rec, image_double angles,
         }
     }
 
-  if( log_nfa > log_eps ) return log_nfa;
+  if( log_nfa > eps ) return log_nfa;
 
   /* try to reduce one side of the rectangle */
   rect_copy(rec,&r);
@@ -1820,7 +1721,7 @@ static double rect_improve( struct rect * rec, image_double angles,
         }
     }
 
-  if( log_nfa > log_eps ) return log_nfa;
+  if( log_nfa > eps ) return log_nfa;
 
   /* try to reduce the other side of the rectangle */
   rect_copy(rec,&r);
@@ -1842,7 +1743,7 @@ static double rect_improve( struct rect * rec, image_double angles,
         }
     }
 
-  if( log_nfa > log_eps ) return log_nfa;
+  if( log_nfa > eps ) return log_nfa;
 
   /* try even finer precisions */
   rect_copy(rec,&r);
@@ -2022,19 +1923,15 @@ static int refine( struct point * reg, int * reg_size, image_double modgrad,
 /*----------------------------------------------------------------------------*/
 /** LSD full interface.
  */
-double * LineSegmentDetection( int * n_out,
-                               double * img, int X, int Y,
-                               double scale, double sigma_scale, double quant,
-                               double ang_th, double log_eps, double density_th,
-                               int n_bins,
-                               int ** reg_img, int * reg_x, int * reg_y )
+ntuple_list LineSegmentDetection( image_double image, double scale,
+                                  double sigma_scale, double quant,
+                                  double ang_th, double eps, double density_th,
+                                  int n_bins, double max_grad,
+                                  image_int * region )
 {
-  image_double image;
-  ntuple_list out = new_ntuple_list(7);
-  double * return_value;
+  ntuple_list out = new_ntuple_list(5);
   image_double scaled_image,angles,modgrad;
   image_char used;
-  image_int region = NULL;
   struct coorlist * list_p;
   void * mem_p;
   struct rect rec;
@@ -2046,7 +1943,8 @@ double * LineSegmentDetection( int * n_out,
 
 
   /* check parameters */
-  if( img == NULL || X <= 0 || Y <= 0 ) error("invalid image input.");
+  if( image==NULL || image->data==NULL || image->xsize==0 || image->ysize==0 )
+    error("invalid image input.");
   if( scale <= 0.0 ) error("'scale' value must be positive.");
   if( sigma_scale <= 0.0 ) error("'sigma_scale' value must be positive.");
   if( quant < 0.0 ) error("'quant' value must be positive.");
@@ -2055,6 +1953,7 @@ double * LineSegmentDetection( int * n_out,
   if( density_th < 0.0 || density_th > 1.0 )
     error("'density_th' value must be in the range [0,1].");
   if( n_bins <= 0 ) error("'n_bins' value must be positive.");
+  if( max_grad <= 0.0 ) error("'max_grad' value must be positive.");
 
 
   /* angle tolerance */
@@ -2063,43 +1962,27 @@ double * LineSegmentDetection( int * n_out,
   rho = quant / sin(prec); /* gradient magnitude threshold */
 
 
-  /* load and scale image (if necessary) and compute angle at each pixel */
-  image = new_image_double_ptr( (unsigned int) X, (unsigned int) Y, img );
+  /* scale image (if necessary) and compute angle at each pixel */
   if( scale != 1.0 )
     {
       scaled_image = gaussian_sampler( image, scale, sigma_scale );
       angles = ll_angle( scaled_image, rho, &list_p, &mem_p,
-                         &modgrad, (unsigned int) n_bins );
+                         &modgrad, (unsigned int) n_bins, max_grad );
       free_image_double(scaled_image);
     }
   else
     angles = ll_angle( image, rho, &list_p, &mem_p, &modgrad,
-                       (unsigned int) n_bins );
+                       (unsigned int) n_bins, max_grad );
   xsize = angles->xsize;
   ysize = angles->ysize;
-
-  /* Number of Tests - NT
-
-     The theoretical number of tests is Np.(XY)^(5/2)
-     where X and Y are number of columns and rows of the image.
-     Np corresponds to the number of angle precisions considered.
-     As the procedure 'rect_improve' tests 5 times to halve the
-     angle precision, and 5 more times after improving other factors,
-     11 different precision values are potentially tested. Thus,
-     the number of tests is
-       11 * (X*Y)^(5/2)
-     whose logarithm value is
-       log10(11) + 5/2 * (log10(X) + log10(Y)).
-  */
-  logNT = 5.0 * ( log10( (double) xsize ) + log10( (double) ysize ) ) / 2.0
-          + log10(11.0);
+  logNT = 5.0 * ( log10( (double) xsize ) + log10( (double) ysize ) ) / 2.0;
   min_reg_size = (int) (-logNT/log10(p)); /* minimal number of points in region
                                              that can give a meaningful event */
 
 
   /* initialize some structures */
-  if( reg_img != NULL && reg_x != NULL && reg_y != NULL ) /* save region data */
-    region = new_image_int_ini(angles->xsize,angles->ysize,0);
+  if( region != NULL ) /* image to output pixel region number, if asked */
+    *region = new_image_int_ini(angles->xsize,angles->ysize,0);
   used = new_image_char_ini(xsize,ysize,NOTUSED);
   reg = (struct point *) calloc( (size_t) (xsize*ysize), sizeof(struct point) );
   if( reg == NULL ) error("not enough memory!");
@@ -2135,8 +2018,8 @@ double * LineSegmentDetection( int * n_out,
                      prec, p, &rec, used, angles, density_th ) ) continue;
 
         /* compute NFA value */
-        log_nfa = rect_improve(&rec,angles,logNT,log_eps);
-        if( log_nfa <= log_eps ) continue;
+        log_nfa = rect_improve(&rec,angles,logNT,eps);
+        if( log_nfa <= eps ) continue;
 
         /* A New Line Segment was found! */
         ++ls_count;  /* increase line segment counter */
@@ -2158,60 +2041,29 @@ double * LineSegmentDetection( int * n_out,
           }
 
         /* add line segment found to output */
-        add_7tuple( out, rec.x1, rec.y1, rec.x2, rec.y2,
-                         rec.width, rec.p, log_nfa );
+        add_5tuple(out, rec.x1, rec.y1, rec.x2, rec.y2, rec.width);
 
         /* add region number to 'region' image if needed */
         if( region != NULL )
           for(i=0; i<reg_size; i++)
-            region->data[ reg[i].x + reg[i].y * region->xsize ] = ls_count;
+            (*region)->data[reg[i].x+reg[i].y*(*region)->xsize] = ls_count;
       }
 
 
   /* free memory */
-  free( (void *) image );   /* only the double_image structure should be freed,
-                               the data pointer was provided to this functions
-                               and should not be destroyed.                 */
   free_image_double(angles);
   free_image_double(modgrad);
   free_image_char(used);
   free( (void *) reg );
   free( (void *) mem_p );
 
-  /* return the result */
-  if( reg_img != NULL && reg_x != NULL && reg_y != NULL )
-    {
-      if( region == NULL ) error("'region' should be a valid image.");
-      *reg_img = region->data;
-      if( region->xsize > (unsigned int) INT_MAX ||
-          region->xsize > (unsigned int) INT_MAX )
-        error("region image to big to fit in INT sizes.");
-      *reg_x = (int) (region->xsize);
-      *reg_y = (int) (region->ysize);
-
-      /* free the 'region' structure.
-         we cannot use the function 'free_image_int' because we need to keep
-         the memory with the image data to be returned by this function. */
-      free( (void *) region );
-    }
-  if( out->size > (unsigned int) INT_MAX )
-    error("too many detections to fit in an INT.");
-  *n_out = (int) (out->size);
-
-  return_value = out->values;
-  free( (void *) out );  /* only the 'ntuple_list' structure must be freed,
-                            but the 'values' pointer must be keep to return
-                            as a result. */
-
-  return return_value;
+  return out;
 }
 
 /*----------------------------------------------------------------------------*/
-/** LSD Simple Interface with Scale and Region output.
+/** LSD Simple Interface with Scale.
  */
-double * lsd_scale_region( int * n_out,
-                           double * img, int X, int Y, double scale,
-                           int ** reg_img, int * reg_x, int * reg_y )
+ntuple_list lsd_scale(image_double image, double scale)
 {
   /* LSD parameters */
   double sigma_scale = 0.6; /* Sigma for Gaussian filter is computed as
@@ -2219,41 +2071,27 @@ double * lsd_scale_region( int * n_out,
   double quant = 2.0;       /* Bound to the quantization error on the
                                 gradient norm.                                */
   double ang_th = 22.5;     /* Gradient angle tolerance in degrees.           */
-  double log_eps = 0.0;     /* Detection threshold: -log10(NFA) > log_eps     */
+  double eps = 0.0;         /* Detection threshold, -log10(NFA).              */
   double density_th = 0.7;  /* Minimal density of region points in rectangle. */
   int n_bins = 1024;        /* Number of bins in pseudo-ordering of gradient
                                modulus.                                       */
+  double max_grad = 255.0;  /* Gradient modulus in the highest bin. The
+                               default value corresponds to the highest
+                               gradient modulus on images with gray
+                               levels in [0,255].                             */
 
-  return LineSegmentDetection( n_out, img, X, Y, scale, sigma_scale, quant,
-                               ang_th, log_eps, density_th, n_bins,
-                               reg_img, reg_x, reg_y );
-}
-
-/*----------------------------------------------------------------------------*/
-/** LSD Simple Interface with Scale.
- */
-double * lsd_scale(int * n_out, double * img, int X, int Y, double scale)
-{
-  return lsd_scale_region(n_out,img,X,Y,scale,NULL,NULL,NULL);
+  return LineSegmentDetection( image, scale, sigma_scale, quant, ang_th, eps,
+                               density_th, n_bins, max_grad, NULL );
 }
 
 /*----------------------------------------------------------------------------*/
 /** LSD Simple Interface.
  */
-double * lsd(int * n_out, double * img, int X, int Y)
+ntuple_list lsd(image_double image)
 {
   /* LSD parameters */
   double scale = 0.8;       /* Scale the image by Gaussian filter to 'scale'. */
 
-  return lsd_scale(n_out,img,X,Y,scale);
+  return lsd_scale(image,scale);
 }
 /*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-
-/* dinggen 2022.08.27 
- * mexFunction
- *
- *
- */

@@ -13,13 +13,18 @@
 clear;
 close all;
 clc;
-addpath(genpath(pwd));
+
+% addpath(genpath(pwd));
+addpath('display\');
+addpath('LSM-Dec16\');
+addpath('lsd_1.6\');
+
 
 %****THRESHOLD AND PARAMETER SETTING***%
 xi_s=.05;   % spatial proximity threshold
 tau_theta=pi/12; % angular proximity threshold
 
-I=imread('U:\my_projs\LineSegmentsDetection\LSM\Imgs\cboard.png');
+I=imread('U:\my_projs\LineSegmentsDetection\LSM\Imgs\cboard.png')
 %I=imread('chainlink.png');
 I=rgb2gray(I);
 I=double(I);

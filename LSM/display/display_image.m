@@ -21,7 +21,8 @@ hold on;axis off
 drawlines(lines,cmap); drawnow;
 
 axis image
-img = hardcopy(hfig, '-Dzbuffer', '-r0');
+% img = hardcopy(hfig, '-Dzbuffer', '-r0');  % there is no hardcopy() in the new version 
+img = frame2im(getframe(hfig));
 hold off;close;
 
 end
