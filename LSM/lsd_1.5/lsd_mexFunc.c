@@ -50,20 +50,26 @@ void mexFunction( int nlhs, mxArray *plhs[],
 	Y = m = mxGetM(prhs[0]);
 	X = n = mxGetN(prhs[0]);
 	
-    /* create a simple image: left half black, right half gray */
- 	image = new_image_double(X,Y);
+    
+    /* M is 1-D array and is column major order according to the matlab input */
+    /* image->data is 1-D array */
+    // !!!Function: following code: change 2D-matlab input to 1D-array
+    image = new_image_double(X,Y);
 	imgptr=image->data;
 	for(i=0; i<m; ++i)
 		for(j=0; j<n; ++j)
 			*imgptr++ = M[IDX(j,i,m)];
 
+    // lsd v1.5: input is image_double type (struct)
     out = lsd_scale(image,1.0); // scale = 0.8 -> sigma = simga_scale/scale
 	/*out = lsd(image);*/  // default scale = 0.8
-            
+     
+    /* dinggen 2022.08.28 : this reshape the output of lsd_1.5 */
 	/*mexPrintf("[lsd] %u line segments found.\n",out->size);*/
 	plhs[0] = mxCreateDoubleMatrix(out->size,out->dim,mxREAL);
 	MP = mxGetPr(plhs[0]);
-	for(i=0;i<out->size;i++)
+    // dinggen: from 1D to 2D-matlab output
+	for(i=0;i<out->size;i++) 
 		for(j=0;j<out->dim;j++)
 			MP[IDX(j,i,out->size)] = out->values[IDX(i,j,out->dim)];
 

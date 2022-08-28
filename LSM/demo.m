@@ -24,13 +24,17 @@ addpath('lsd_1.6\');
 xi_s=.05;   % spatial proximity threshold
 tau_theta=pi/12; % angular proximity threshold
 
-I=imread('U:\my_projs\LineSegmentsDetection\LSM\Imgs\cboard.png')
+I=imread('U:\my_projs\LineSegmentsDetection\LSM\Imgs\cboard.png');
 %I=imread('chainlink.png');
 I=rgb2gray(I);
 I=double(I);
 
 %%
-D=lsd(I/max(I(:))*255);
+n_out = 0;
+mrows = size(I,1);
+ncols = size(I,2);
+
+D=lsd(n_out, I/max(I(:))*255, ncols, mrows, 1.0);
 [L]=mergeLines(D,tau_theta,xi_s);
 display(strcat(int2str(size(L,1)),' merged line segments'));
 imgD=display_image( D,I);

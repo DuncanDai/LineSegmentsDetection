@@ -2232,30 +2232,32 @@ double * lsd_scale_region( int * n_out,
 /*----------------------------------------------------------------------------*/
 /** LSD Simple Interface with Scale.
  */
-// double * lsd_scale(int * n_out, double * img, int X, int Y, double scale)
-// {
-//   return lsd_scale_region(n_out,img,X,Y,scale,NULL,NULL,NULL);
-// }
-
-double * lsd_scale(int * n_out, double * img, double scale)
+double * lsd_scale(int * n_out, double * img, int X, int Y, double scale)
 {
-  num_eles = sizeof(img) / sizeof(img[0][0]);
-  num_rows = sizeof(img) / sizeof(img[0]);
-  num_cols = num_eles / num_rows;
-  
-  return lsd_scale_region(n_out,img,num_cols,num_rows,scale,NULL,NULL,NULL);
+
+  return lsd_scale_region(n_out,img,X,Y,scale,NULL,NULL,NULL);
 }
+
+// double * lsd_scale(int * n_out, double * img, double scale)  // dinggen 1D-matrix could caculate the X, Y
+// {
+//   unsigned int num_eles, num_rows, num_cols;
+//   num_eles = sizeof(img) / sizeof(img[0][0]);
+//   num_rows = sizeof(img) / sizeof(img[0]);
+//   num_cols = num_eles / num_rows;
+//   
+//   return lsd_scale_region(n_out,img,num_cols,num_rows,scale,NULL,NULL,NULL);
+// }
 
 /*----------------------------------------------------------------------------*/
 /** LSD Simple Interface.
  */
-double * lsd(int * n_out, double * img, int X, int Y)
-{
-  /* LSD parameters */
-  double scale = 0.8;       /* Scale the image by Gaussian filter to 'scale'. */
-
-  return lsd_scale(n_out,img,X,Y,scale);
-}
+// double * lsd(int * n_out, double * img, int X, int Y)
+// {
+//   /* LSD parameters */
+//   double scale = 0.8;       /* Scale the image by Gaussian filter to 'scale'. */
+// 
+//   return lsd_scale(n_out,img,X,Y,scale);
+// }
 /*----------------------------------------------------------------------------*/
 
 
