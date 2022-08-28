@@ -13,7 +13,7 @@
 %   GNU General Public License for more details.
 
 %% compile
-mex -O -output lsd lsd_matlab.c lsd.c
+mex -O -output lsd lsd_mexFunc.c lsd.c
 %% test
 clear all; close all; clc;
 chairs = imread('chairs.pgm');

@@ -93,6 +93,8 @@
     @author rafael grompone von gioi <grompone@gmail.com>
  */
 /*----------------------------------------------------------------------------*/
+#include "mex.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -100,6 +102,7 @@
 #include <float.h>
 #include "lsd.h"
 
+#define IDX(i,j,im) ((im)*(i)+(j))
 /** ln(10) */
 #ifndef M_LN10
 #define M_LN10 2.30258509299404568402
@@ -117,7 +120,6 @@
 #ifndef TRUE
 #define TRUE 1
 #endif /* !TRUE */
-
 
 /** Label for pixels with undefined gradient. */
 #define NOTDEF -1024.0
@@ -2232,18 +2234,9 @@ double * lsd_scale_region( int * n_out,
 /*----------------------------------------------------------------------------*/
 /** LSD Simple Interface with Scale.
  */
-// double * lsd_scale(int * n_out, double * img, int X, int Y, double scale)
-// {
-//   return lsd_scale_region(n_out,img,X,Y,scale,NULL,NULL,NULL);
-// }
-
-double * lsd_scale(int * n_out, double * img, double scale)
+double * lsd_scale(int * n_out, double * img, int X, int Y, double scale)
 {
-  num_eles = sizeof(img) / sizeof(img[0][0]);
-  num_rows = sizeof(img) / sizeof(img[0]);
-  num_cols = num_eles / num_rows;
-  
-  return lsd_scale_region(n_out,img,num_cols,num_rows,scale,NULL,NULL,NULL);
+  return lsd_scale_region(n_out,img,X,Y,scale,NULL,NULL,NULL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2259,5 +2252,21 @@ double * lsd(int * n_out, double * img, int X, int Y)
 /*----------------------------------------------------------------------------*/
 
 
+/*----------------------------------------------------------------------------*/
 
+/* dinggen 2022.08.27 Copyright (c) 2022  DAI Dinggen (dinggen.dai@student.kit.edu)
+ */
+
+/* mexFunction, Entry function to be used by matlab for compiling the c source code lsd.c
+	Usage:
+		lsd_scale(&n_out, double(img), X, Y, double(scale))
+	INPUT:
+        &n int, the number of the detected lines
+		image <WxH>, double grey image
+        X int, image width (column of matrix)
+        Y int, image height (row of matrix)
+        scale double, downsampling scale of image
+	OUTPUT:
+		lines <7xn>, x1,y1,x2,y2,width,p,-log10(NFA)
+  */
 

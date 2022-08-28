@@ -21,8 +21,7 @@
 #include "lsd.h"
 
 /** deal with the index of image (Column major order in matlab) */
-// #define INDEX(i,j,im) ((im)*(i)+(j))
-#define NUM_OUTPUT_ROWS 7
+#define INDEX(i,j,im) ((im)*(i)+(j))
 
 
 void mexFunction(int nlhs, mxArray* plhs[], 
@@ -30,7 +29,7 @@ void mexFunction(int nlhs, mxArray* plhs[],
 {
     unsigned int * n_out;
     double * image;
-    double * output;
+    double * out;
     double scale;
     unsigned int mrows,ncols;
     
@@ -57,18 +56,32 @@ void mexFunction(int nlhs, mxArray* plhs[],
        mexErrMsgIdAndTxt( "2nd Input must be an image.");
     }
     
+    
     /* get the values of input arguments */
     image = mxGetDoubles(prhs[1]);
     scale = mxGetScalar(prhs[2]);
     
-    /* set the values to the ouput */
-    output = lsd_scale(&n_out, image, scale);
-    plhs[0] = mxCreateDoubleMatrix(mwSize(NUM_OUTPUT_ROWS), mwSize(n_out), mxREAL);
-    *mxGetPr(plhs[0]) = output;
     
-    /* free memory */
-    free( (void *) image );
-    free( (void *) output );
+    /* set the values to the ouput */
+    plhs[]
+    
+    plhs[0] = lsd_scale(&n_out, image, scale);
+    
+    
+    
+    
 
+    
+
+    for (i = 0; i < nlhs; i++) {
+        mwSize nel = mxGetNumberOfElements(prhs[i]);
+#if MX_HAS_INTERLEAVED_COMPLEX
+        plhs[i] = mxCreateDoubleScalar((mxDouble)nel);
+        *mxGetDoubles(plhs[i]) = (mxDouble)mxGetNumberOfElements(prhs[i]);
+#else
+        plhs[i] = mxCreateDoubleScalar((double)nel);
+        *mxGetPr(plhs[i]) = (double)mxGetNumberOfElements(prhs[i]);
+#endif
+    }
 }
 

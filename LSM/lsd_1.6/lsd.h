@@ -46,9 +46,9 @@
                        doubles of size X x Y, and the pixel at coordinates
                        (x,y) is obtained by img[x+y*X].
 
-    @param X           X size of the image: the number of columns.
+    @param X           X size of the image: the number of columns. (width)
 
-    @param Y           Y size of the image: the number of rows.
+    @param Y           Y size of the image: the number of rows. (height)
 
     @param scale       When different from 1.0, LSD will scale the input image
                        by 'scale' factor by Gaussian filtering, before detecting
@@ -244,7 +244,8 @@ double * lsd_scale_region( int * n_out,
                        line segment number 'n+1' are obtained with
                        'out[7*n+0]' to 'out[7*n+6]'.
  */
-double * lsd_scale(int * n_out, double * img, int X, int Y, double scale);
+// double * lsd_scale(int * n_out, double * img, int X, int Y, double scale);
+double * lsd_scale(int * n_out, double * img, double scale);
 
 /*----------------------------------------------------------------------------*/
 /** LSD Simple Interface
@@ -256,9 +257,9 @@ double * lsd_scale(int * n_out, double * img, int X, int Y, double scale);
                        doubles of size X x Y, and the pixel at coordinates
                        (x,y) is obtained by img[x+y*X].
 
-    @param X           X size of the image: the number of columns.
+    @param X           X size of the image: the number of columns. -> ncols
 
-    @param Y           Y size of the image: the number of rows.
+    @param Y           Y size of the image: the number of rows. -> mrows
 
     @return            A double array of size 7 x n_out, containing the list
                        of line segments detected. The array contains first
