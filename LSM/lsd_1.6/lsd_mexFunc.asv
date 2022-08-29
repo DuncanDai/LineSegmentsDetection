@@ -109,8 +109,8 @@ void mexFunction(int nlhs, mxArray* plhs[],
             image[i*ncols+j] = M_in[IDX(j,i,mrows)];
 //             printf("%f ",image[i*ncols+j]);
 //         printf("\n");
-    mexPrintf("\n hey I'm here 2");
-    mexPrintf("\n the pixel of image is %ld", sizeof(image)/sizeof(double));
+    mexPrintf("hey I'm here 2");
+    mexPrintf("hey I'm here 2", sizeof(image)/sizeof(double));
     
     // call lsd_scale()
     output = lsd_scale(&num_lines, image, ncols, mrows, scale);

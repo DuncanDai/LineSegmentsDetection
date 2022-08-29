@@ -30,11 +30,11 @@ I=rgb2gray(I);
 I=double(I);
 
 %%
-n_out = 0;
-mrows = size(I,1);
-ncols = size(I,2);
+% mrows = size(I,1);
+% ncols = size(I,2);
 
-D=lsd(n_out, I/max(I(:))*255, ncols, mrows, 1.0);
+[D, num_lines]=lsd_mexFunc(I/max(I(:))*255, 1.0);
+D = D(:, 1:5);
 [L]=mergeLines(D,tau_theta,xi_s);
 display(strcat(int2str(size(L,1)),' merged line segments'));
 imgD=display_image( D,I);

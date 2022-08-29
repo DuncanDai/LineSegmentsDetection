@@ -246,8 +246,8 @@ double * lsd_scale_region( int * n_out,
                        line segment number 'n+1' are obtained with
                        'out[7*n+0]' to 'out[7*n+6]'.
  */
+// double * lsd_scale(int * n_out, double * img, int X, int Y, double scale);
 double * lsd_scale(int * n_out, double * img, int X, int Y, double scale);
-// double * lsd_scale(double * img, int X, int Y, double scale);
 
 /*----------------------------------------------------------------------------*/
 /** LSD Simple Interface

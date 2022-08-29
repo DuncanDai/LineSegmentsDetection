@@ -19,12 +19,13 @@ int main(void)
     }
   for(x=0;x<X;x++)
     for(y=0;y<Y;y++)
-      image[x+y*X] = x<X/2 ? 0.0 : 64.0; /* image(x,y) */
+      image[x+y*X] = x<X/2 ? 0.0 : 64.0; /*  */
 
 
   /* LSD call */
-  out = lsd(&n,image,X,Y);
+  // out = lsd(&n,image,X,Y);
 
+  out = lsd_scale(&n, image, X, Y,1.0);
 
   /* print output */
   printf("%d line segments found:\n",n);
