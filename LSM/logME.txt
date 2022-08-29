@@ -37,7 +37,7 @@ step 4 using the mex file by command: (see demo.m)
 
 
 ===============================================================================
-lsd_mexFunc.c in lsd_1.6  2022.08.29 git commit ""
+lsd_mexFunc.c in lsd_1.6  2022.08.29 git commit "46c8f0d" -> LSD summary - README file
 ===============================================================================
 step 1 Theory (macro frame): to get familiar with the matlab apiref.pdf (C/C++ Python Java Fortran)
 	see Roam Research: @Matlab mex编译
@@ -66,8 +66,9 @@ step 2 Demo (official): to form the impression of usage
 step 3 Dev (references & practical): 
 	1) make sure the source code is fine: lsd.c -> lsd_call_example.c (需要编译： make -> MinGW or VS 2019 community)
 	2) refer the old successful demo: 
-		- lsd_v1.5
-		- MCMLSD (#define prh[], plh[])
+		- lsd_v1.5  ->  启发： matlab和C 图像数据的底层实现转换
+		- MCMLSD (#define prh[], plh[])  ->  启发： 将mexFunction的输入、输出 #define为预定义变量 
+		- 官方： timestwoalt, timestwo  ->  启发： mexFunction的输入、输出可以自定义； C源码参数传递(值传递，指针/数组传递)
 	3) implement your own:  (see lsd_mexFunc.c in v1.6)
 		Key operation: 
 			- from 2D-Matrix('M_in': column major order) to 1D-Array('image': row major order)
@@ -80,4 +81,129 @@ step 3 Dev (references & practical):
 		
 
 step 4 summary & conclusion -> README.txt, logME.txt
+
+
+
+===============================================================================
+Summary
+	1 环境！环境！  -> 编译(依赖库)
+	2 封装！封装！
+	3 捋清楚输入输出的脉络，相关的处理过程一定要了解清楚，不要昏过去 @lsd_v1.5 mexFunction中的图像数据转换(matlab <-> C)
+		针对image的数据： GetPr(prh) -> M_in -> image -> out -> M_out
+	4 内存管理 (与C/C++相关)
+		指针要有分配空间(有明确的指向) & 消除空间(防止内存系统崩溃)
+		
+思考：编译时能否debug跟踪？
+	- 以 check_malloc 模式运行 MATLAB
+	- mexPrintf() 打印定位
+
+===============================================================================
+0 编译
+环境：
+	C环境 -> MinGW, VS 2019
+	matlab环境
+参数：
+	-O 优化
+	-o (matlab是-output)
+
+
+1 memory management
+请务必在您的代码中**对动态创建的任何内存**使用 [mxMalloc](http://www.mathworks.com/access/helpdesk/help/techdoc/apiref/mxmalloc.html)，
+并确保不要对返回到 MATLAB 的任何数据使用 [mxFree](http://www.mathworks.com/access/helpdesk/help/techdoc/apiref/mxfree.html)
+
+
+1' Matlab data type in C
+	- mwSize = size_t
+
+2 matlab < - > C (@lsd_mexFunc.c 中的具体实现)
+matlab: 列优先 (矩阵 MxArray)
+C： 行优先 (实际内存：都是1D-Array -> 可以用指针/数组表示)  （OpenCV与C一致）
+	mrows, ncols
+	#define IDX(i, j, iSize)  ((iSize)*(i) + (j))
+
+注意：虽然matlab索引从1开始，与C不同,但是指针的偏移量都是相同的，而且都是1D数据的指针
+
+
+3 重点： mexFunction的输入、输出是可以自自定义的，未必要和C源码的输入、输出保持一致
+
+
+
+【LSD算法 v1.5 2010.04】
+[lsd.c] 2400行
+关键函数：LineSementDetection()
+  封装：
+	- lsd_scale_region()
+	- lsd_scale()
+	- lsd()
+
+
+.h声明：介绍了重要的变量定义 & 声明
+
+lsd_call_example.c -> 改写lsd_mexFunc.c 的依据
+lsd_cmd.c: 终端运行
+
+
+实现-两个重要的结构体
+	- ntuple_list -> new_ntuple_list(dims)的返回类型
+	- double_image
+
+
+[LSD算法的参数及其含义]
+参数@LineSementDetection()  
+	实现：https://github.com/DaiDuncan/LineSegmentsDetection/blob/main/LSM/lsd_1.6/lsd.c  第2025行
+	介绍：https://github.com/DaiDuncan/LineSegmentsDetection/blob/main/LSM/lsd_1.6/lsd.h  第42行
+
+
+输入（封装后 lsd_scale()）
+	- 注意double *() 是1D-Array （内存中是线性存储：2D数组/指针也是线性存储）
+
+
+输出@LineSementDetection()  
+	1D-Array -> 在lsd_mexFunc.c后解析为 <num_lines, 7>
+		- x1， y1, x2, y2, width
+		- p: 直线的precision
+		- -log10(NFA)： 假阴率
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

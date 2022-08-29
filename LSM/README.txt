@@ -39,3 +39,16 @@ The key command is
 @output
 	- D 	      <nx7>		n is the detected line number, there are 7 values in one detected line
 	- num_lines 			the detected line number
+
+
+
+
+
+===============================================================================
+【unfinished work for improving】 -> memory management
+	[mxMalloc](http://www.mathworks.com/access/helpdesk/help/techdoc/apiref/mxmalloc.html)，
+	[mxFree](http://www.mathworks.com/access/helpdesk/help/techdoc/apiref/mxfree.html)
+
+especially pay attention to the related argument of the following command: 
+	output = lsd_scale(&num_lines, image, ncols, mrows, scale);
+
