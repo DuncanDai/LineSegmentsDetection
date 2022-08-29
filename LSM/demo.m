@@ -24,7 +24,7 @@ addpath('lsd_1.6\');
 xi_s=.05;   % spatial proximity threshold
 tau_theta=pi/12; % angular proximity threshold
 
-I=imread('U:\my_projs\LineSegmentsDetection\LSM\Imgs\cboard.png');
+I=imread('U:\my_projs\LineSegmentsDetection\LSM\Imgs\test4.png');
 %I=imread('chainlink.png');
 I=rgb2gray(I);
 I=double(I);
@@ -33,11 +33,17 @@ I=double(I);
 % mrows = size(I,1);
 % ncols = size(I,2);
 
+% version lsd_1.5
+% D=lsd_mexFunc(I/max(I(:))*255, 1.0);
+
+% version lsd_1.6
 [D, num_lines]=lsd_mexFunc(I/max(I(:))*255, 1.0);
+
+% only the first 5 values needed
 D = D(:, 1:5);
 [L]=mergeLines(D,tau_theta,xi_s);
 display(strcat(int2str(size(L,1)),' merged line segments'));
 imgD=display_image( D,I);
 imgL=display_image( L,I);
 
-imwrite([imgD imgL],'U:\my_projs\LineSegmentsDetection\g_output\result.png');
+imwrite([imgD imgL],'U:\my_projs\LineSegmentsDetection\g_output\result4.png');

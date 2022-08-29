@@ -27,12 +27,8 @@
 #define OUT_MAT_COLS 7
 
 /* Input Arguments */
-// extern mxArray *mxCreateSharedDataCopy(const mxArray *pr);
-
-// #define NUM_OUT   prhs[0]
 #define IMAGE     prhs[0]
 #define SCALE     prhs[1]
-
 
 /* Output Arguments */
 #define	OUT_MAT  	plhs[0]
@@ -51,8 +47,6 @@ void mexFunction(int nlhs, mxArray* plhs[],
     int num_lines=0;  // number of lines detected
     int i,j,mrows,ncols;
     
-    
-
     
     /* check the number of input arguments */
     if(nrhs != 2) {
@@ -90,15 +84,15 @@ void mexFunction(int nlhs, mxArray* plhs[],
     
     /* =========================== */
     /* call .c function */
-    mexPrintf("hey I'm here 1");
-    mexPrintf("\n scale is %f ", scale);
+    mexPrintf("hey I'm here 1 \n");
+    mexPrintf("scale is %f \n", scale);
     
     // from 2D-Matrix('M_in': column major order) to 1D-Array('image': row major order)
     // use the offset of pointer instead of using index (matlab begin from 1, and C begins from 0)
     image = (double *) malloc( mrows * ncols * sizeof(double) );  // pointer should be specific
     if( image == NULL )
     {
-      fprintf(stderr,"error: not enough memory\n");
+      fprintf(stderr,"error: not enough memory \n");
       exit(EXIT_FAILURE);
     }
     
@@ -109,12 +103,12 @@ void mexFunction(int nlhs, mxArray* plhs[],
             image[i*ncols+j] = M_in[IDX(j,i,mrows)];
 //             printf("%f ",image[i*ncols+j]);
 //         printf("\n");
-    mexPrintf("\n hey I'm here 2");
-    mexPrintf("\n the pixel of image is %ld", sizeof(image)/sizeof(double));
+    mexPrintf("hey I'm here 2 \n");
+    mexPrintf("the pixel of image is %ld \n", sizeof(image)/sizeof(double));
     
     // call lsd_scale()
     output = lsd_scale(&num_lines, image, ncols, mrows, scale);
-    mexPrintf("\n number of detected lines is %d ", num_lines);
+    mexPrintf("number of detected lines is %d \n", num_lines);
     
     
     /* set the values to the ouput */
@@ -126,14 +120,14 @@ void mexFunction(int nlhs, mxArray* plhs[],
     #else
         M_out = mxGetPr(OUT_MAT);
     #endif
-    mexPrintf("hey I'm here 3");
+    mexPrintf("hey I'm here 3 \n");
 
     
     // from 1D-Array('output': row major order) in C to 2D-Matrix('M_out': column major order)
     for(i=0;i<num_lines;i++) 
 		for(j=0;j<OUT_MAT_COLS;j++)
 			M_out[IDX(j,i,num_lines)] = output[IDX(i,j,OUT_MAT_COLS)];
-    mexPrintf("hey I'm here 4");
+    mexPrintf("hey I'm here 4 \n");
           
 
     

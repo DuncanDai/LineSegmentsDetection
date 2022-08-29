@@ -1,13 +1,3 @@
-【my info】
-# path
-['..\imgSamples', filesep, xxx]
-
-# file
-['../imgSamples', filesep, 'test1.png']
-
-
-
-
 【Source Code Files Overview】 2022.08.26 win10
 root/main: demo_start_v2.m
 dir v2: the main MCMLSD 
@@ -22,28 +12,30 @@ dir Imgs: data
 
 ================================================================================
 ### source code file types
-.m -> Matlab Coder -> .mex
-	- .prj file: the config file to output .mex file for .m file
-.c -> mex: 3 platform
+from .c -> use mex compiler -> output file format in 3 operating systems:
 	- Linux: .mexa64
 	- Mac: .mexmaci64
 	- Windows: .mexw64
 
+from .m -> use Matlab Coder -> .mex
+	- .prj file: the config file to output .mex file for .m file
+
 
 ================================================================================
-【step1: .c code -> mex file】by using compiler & matlab command: mex
+【step1: .c code -> mex file】by using matlab compiler: mex
 many function in the line segmentation algorithm were mex file, if you are using
 windows or linux system, please recompile following c code into mex file.
- mexRemoveVotes_v3_scale.c
- mexVoteEdges_v3_scale.c
+    mexRemoveVotes_v3_scale.c
+    mexVoteEdges_v3_scale.c
 the c code can be compiled by command
- mex xxxxxxxxx.c
+    mex xxxxxxxxx.c
+
 
 【step2: .m code -> mex file】by using Matlab Coder
 Please use matlab coder to compile following .m file into mex file:
- hmmParameters.m
- returnLines.m
- sampleLine.m
+    hmmParameters.m
+    returnLines.m
+    sampleLine.m
 
 
 the matlab coder is an app in matlab to automatically compile .m code into mex file,
@@ -95,26 +87,26 @@ The input variable type should be configurated in following
 
 
 【step3: run demo】
-issue 1: dir v2 ist not in the path
+Issue 1: dir v2 ist not in the path
 	- addpath('v2/');
 	- code line 42: lines2 = sortrows(lines2, -5);
-bug 1： opts = getPrmDflt(varargin,dfs,1); -> Unrecognized function or variable 'getPrmDflt' (in dir: /edges-master/toolbox-master/matlab)
+Issue 2（Bug）： opts = getPrmDflt(varargin,dfs,1); -> Unrecognized function or variable 'getPrmDflt' (in dir: /edges-master/toolbox-master/matlab)
 	- me： addpath(genpath('edges-master/'));
 	
 ================================================================================
 the line segment detector has two steps
 1. compute the kernel for the image size
  you only need to compute the kernal once for one an image size
- [kernels, kernels_flip, kernel_params] =kernelInitialization(img);
+    [kernels, kernels_flip, kernel_params] =kernelInitialization(img);
  the kernels, kernels_flip, kernel_params are the kernel parameter for the line segment algorithm below
 
 2. line segment detection
- [lines, fullLines] =lineSegmentation_HighRes(img,kernels, kernels_flip, kernel_params);
-
+    [lines, fullLines] =lineSegmentation_HighRes(img,kernels, kernels_flip, kernel_params);
+  
 the lines variable contains the detected line segmentations it arranged as
- [x1 y1 x2 y2 probability]
+    [x1 y1 x2 y2 probability]
 The fullLines are the detected lines. It is arranged as 
- [rho theta probability]
+    [rho theta probability]
 
  please run the demo_start_v2.m for demonstration
 
