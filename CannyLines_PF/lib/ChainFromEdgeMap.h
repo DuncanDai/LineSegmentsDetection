@@ -2,8 +2,10 @@
 #define _EDGE_CHAIN_
 #pragma once
 
-#include "opencv/cv.h"
-#include "highgui.h"
+//#include "opencv/cv.h"
+//#include "highgui.h"
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
 
 using namespace std;
 using namespace cv;

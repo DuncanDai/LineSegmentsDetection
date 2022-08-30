@@ -1,0 +1,8 @@
+U:/my_projs/LineSegmentsDetection/CannyLines_PF/build/CMakeFiles/edit_cache.dir
+U:/my_projs/LineSegmentsDetection/CannyLines_PF/build/CMakeFiles/rebuild_cache.dir
+U:/my_projs/LineSegmentsDetection/CannyLines_PF/build/lib/CMakeFiles/Mylib.dir
+U:/my_projs/LineSegmentsDetection/CannyLines_PF/build/lib/CMakeFiles/edit_cache.dir
+U:/my_projs/LineSegmentsDetection/CannyLines_PF/build/lib/CMakeFiles/rebuild_cache.dir
+U:/my_projs/LineSegmentsDetection/CannyLines_PF/build/src/CMakeFiles/cannylines.dir
+U:/my_projs/LineSegmentsDetection/CannyLines_PF/build/src/CMakeFiles/edit_cache.dir
+U:/my_projs/LineSegmentsDetection/CannyLines_PF/build/src/CMakeFiles/rebuild_cache.dir

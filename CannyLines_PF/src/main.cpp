@@ -2,8 +2,8 @@
 #include <fstream>
 //#include "cv.h"
 //#include "highgui.h"
-#include "opencv2/opencv.hpp"
-#include "opencv2/highgui.hpp"
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
 
 #include "CannyPF.h"
 #include "ChainFromEdgeMap.h"
