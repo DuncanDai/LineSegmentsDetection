@@ -7,7 +7,7 @@ AUX_SOURCE_DIRECTORY(./ DIR_SRCS)  # 创建`DIR_SRCS变量`：存储 当前目�
 ADD_EXECUTABLE(cannylines ${DIR_SRCS})
 
 # 链接库Mylib (该库是静态库) from lib directory
-TARGET_LINK_LIBRARIES(cannylines Mylib ${OpenCV_LIBS}) 
+TARGET_LINK_LIBRARIES(cannylines Mylib) 
 ###############################################################################
 # # CMake settings
 # CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)

@@ -2,8 +2,8 @@
 #include <fstream>
 //#include "cv.h"
 //#include "highgui.h"
-#include <opencv2/opencv.hpp>
-#include <opencv2/highgui.hpp>
+#include "opencv2/opencv.hpp"
+#include "opencv2/highgui.hpp"
 
 #include "CannyPF.h"
 #include "ChainFromEdgeMap.h"
@@ -11,7 +11,7 @@
 using namespace cv;
 using namespace std;
 
-void main()
+int main()
 {
 	string imgFile = "U:\\my_projs\\LineSegmentsDetection\\CannyLines_PF\\data\\_origin_rgb.png";
 	cv::Mat img = imread(imgFile, 0);

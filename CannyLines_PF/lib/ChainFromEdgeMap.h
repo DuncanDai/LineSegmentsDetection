@@ -4,8 +4,8 @@
 
 //#include "opencv/cv.h"
 //#include "highgui.h"
-#include <opencv2/opencv.hpp>
-#include <opencv2/highgui.hpp>
+#include "opencv2/opencv.hpp"
+#include "opencv2/highgui.hpp"
 
 using namespace std;
 using namespace cv;

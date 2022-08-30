@@ -2,7 +2,7 @@
 #define _CANNY_PY_H_
 #pragma once
 
-#include <opencv2/opencv.hpp>
+#include "opencv2/opencv.hpp"
 #include <vector>
 
 class CannyPF

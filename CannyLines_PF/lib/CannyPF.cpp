@@ -36,7 +36,7 @@ void CannyPF::cannyPF( cv::Mat &image, int gaussianSize, float VMGradient, cv::M
 	if ( image.channels() == 1 )
 		grayImage = image;
 	else
-		cv::cvtColor(image, grayImage, CV_BGR2GRAY);
+		cv::cvtColor(image, grayImage, cv::COLOR_BGRA2GRAY);     // old version: CV_BGR2GRAY
 
 	//gaussian filter
 	cv::Mat filteredImage;

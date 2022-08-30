@@ -23,7 +23,7 @@ void ChainFromEdgeMap::run( cv::Mat &image, cv::Mat &edgeMap, std::vector<std::v
 	cv::Mat imgNew;
 	if ( image.channels() == 3 )
 	{
-		cv::cvtColor( image, imgNew, CV_RGB2GRAY );
+		cv::cvtColor( image, imgNew, cv::COLOR_BGRA2GRAY);   // old version: CV_RGB2GRAY
 	}
 	else
 	{
