@@ -31,13 +31,13 @@ Note: based on LSD algorithm, LSM then merge the detected lines.
 
 Please look at the demo.m
 The key command is 
-	[D, num_lines]=lsd_mexFunc(I/max(I(:))*255, 1.0);
+	[out_lines, num_lines]=lsd_mexFunc(I/max(I(:))*255, 1.0);
 
 @input
 	- I   	      color image	to extract the line
 	- scale=1.0   double		image scale size
 @output
-	- D 	      <nx7>		n is the detected line number, there are 7 values in one detected line
+	- out_lines 	      <nx7>		n is the detected line number, there are 7 values in one detected line
 	- num_lines 			the detected line number
 
 
