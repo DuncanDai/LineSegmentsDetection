@@ -15,7 +15,7 @@ img = imread(['..\imgSamples', filesep, 'test1.png']);
 
 % 1/16 size to the original image
 % dinggen 08.26 test: full size
-% img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
+img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
 
 %compute the kernel for the image size
 %you only need to compute the kernal once for one an image size
@@ -38,7 +38,7 @@ for k = 3:length(imgSamples)
     
     tmp = img;
     % 1/16 size to the original image
-%     img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
+    img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
     
     ticId = tic;
     %the lines variable contains the detected line segmentations it arranged as
@@ -57,7 +57,7 @@ for k = 3:length(imgSamples)
     plotLineNum = min(50, linesNum);
     for i = 1:plotLineNum
         %plot the top 90 lines
-        line([lines(i,1) lines(i,3)], [lines(i,2) lines(i,4)],'Color', rand(1,3), 'LineWidth', 2.5);
+        line([lines(i,1) lines(i,3)], [lines(i,2) lines(i,4)],'Color','g', 'LineWidth', 1.5);  % ,  rand(1,3) 生成(1,3)矩阵  2.5宽度
     end
 %     imwrite(fig, ['..\g_output', filesep, imgSamples(k).name(1:end-4), filesep, '_1.png']);
     saveas(fig, ['U:\my_projs\LineSegmentsDetection\g_output', filesep, imgSamples(k).name(1:end-4), '_1.png']);
@@ -75,7 +75,7 @@ for k = 3:length(imgSamples)
     plotLineNum = min(50, linesNum);
     for i = 1:plotLineNum
         %plot the top 90 lines
-        line([lines2(i,1) lines2(i,3)], [lines2(i,2) lines2(i,4)],'Color', rand(1,3), 'LineWidth', 2.5);
+        line([lines2(i,1) lines2(i,3)], [lines2(i,2) lines2(i,4)],'Color', 'g', 'LineWidth', 1.5);
     end
 %     imwrite(fig, ['..\g_output', filesep, imgSamples(k).name(1:end-4), filesep, '_2.png']);
     saveas(fig, ['U:\my_projs\LineSegmentsDetection\g_output', filesep, imgSamples(k).name(1:end-4), '_2.png']);

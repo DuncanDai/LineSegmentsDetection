@@ -16,14 +16,14 @@
 % mex -O -output lsd lsd_mexFunc.c lsd.c
 mex -output lsd_mexFunc lsd_mexFunc.c lsd.c
 %% test
-clear all; close all; clc;
-chairs = imread('chairs.pgm');
-imshow(chairs); hold on;
-tic
-lines = lsd(double(chairs));
-t = toc;
-disp(['[lsd] ',num2str(t),' seconds elapsed.']);
-nl = size(lines,1);
-for i=1:nl
-    plot(lines(i,1:2:4),lines(i,2:2:4),'r-');
-end
+% clear all; close all; clc;
+% chairs = imread('chairs.pgm');
+% imshow(chairs); hold on;
+% tic
+% lines = lsd(double(chairs));
+% t = toc;
+% disp(['[lsd] ',num2str(t),' seconds elapsed.']);
+% nl = size(lines,1);
+% for i=1:nl
+%     plot(lines(i,1:2:4),lines(i,2:2:4),'r-');
+% end

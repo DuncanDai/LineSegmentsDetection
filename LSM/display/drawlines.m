@@ -22,7 +22,9 @@ for j=1:size(lines,1)
     if mod(j,size(cmap,1))+1==0
         keyboard
     end
-    line((lines(j,[1,3]))',(lines(j,[2,4])'),'Color',cmap(mod(a,size(cmap,1))+1,:),'LineWidth',1);
-    text(m(j,1),m(j,2),num2str(j),'Color',cmap(mod(a,size(cmap,1))+1,:),'FontSize',8);
+%     line((lines(j,[1,3]))',(lines(j,[2,4])'),'Color',cmap(mod(a,size(cmap,1))+1,:),'LineWidth',1);
+%     text(m(j,1),m(j,2),num2str(j),'Color',cmap(mod(a,size(cmap,1))+1,:),'FontSize',8);
+    line((lines(j,[1,3]))',(lines(j,[2,4])'),'Color','green','LineWidth',1);
+    text(m(j,1),m(j,2),num2str(j),'Color','blue','FontSize',8);
     a=a+2;
 end

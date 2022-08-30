@@ -52,3 +52,12 @@ The key command is
 especially pay attention to the related argument of the following command: 
 	output = lsd_scale(&num_lines, image, ncols, mrows, scale);
 
+
+[Notice!!!]
+I tried compiling in matlab firstly -> the APP crashed 
+(I guess the reason is the variable memory managment for the function, especially the variable `image`
+	output = lsd_scale(&num_lines, image, ncols, mrows, scale); )
+
+Then when I tried compiling in VS 2019 to check the correcness of source code. (source code is ok)
+Later I tried compiling in matlab again, the mexfile works fine. (the source code of mexfile has not been changed.)
+

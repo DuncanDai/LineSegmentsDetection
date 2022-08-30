@@ -13,6 +13,9 @@ imgSamples
 # visual studio output
 **/.vs
 
+# output of matlab
+*.mat
+
 # Prerequisites
 *.d
 
