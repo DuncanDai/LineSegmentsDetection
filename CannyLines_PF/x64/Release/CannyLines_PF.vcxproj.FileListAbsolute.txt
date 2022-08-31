@@ -1,0 +1,1 @@
+U:\my_projs\LineSegmentsDetection\CannyLines_PF\x64\Release\CannyLines_PF.exe

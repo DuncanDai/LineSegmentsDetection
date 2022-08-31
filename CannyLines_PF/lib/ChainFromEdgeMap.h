@@ -7,6 +7,14 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/highgui.hpp"
 
+// test header
+#include "opencv2/core/types.hpp"
+#include "opencv2/core/mat.hpp"
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/imgproc.hpp"
+#include "opencv2/opencv.hpp"
+#include "opencv2/highgui.hpp"
+
 using namespace std;
 using namespace cv;
 

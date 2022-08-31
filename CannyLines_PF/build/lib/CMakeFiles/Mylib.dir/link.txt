@@ -1,2 +1,0 @@
-U:\my_apps\mingw64\bin\ar.exe qc libMylib.a CMakeFiles/Mylib.dir/CannyPF.cpp.obj CMakeFiles/Mylib.dir/ChainFromEdgeMap.cpp.obj
-U:\my_apps\mingw64\bin\ranlib.exe libMylib.a

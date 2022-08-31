@@ -5,8 +5,25 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/highgui.hpp"
 
-#include "CannyPF.h"
-#include "ChainFromEdgeMap.h"
+// debug testing: add header according to the error info.
+//#include <opencv2/imgcodecs.hpp>
+//#include <opencv2/core/mat.hpp>
+//#include <opencv2/imgcodecs.hpp>
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/core/mat.hpp"
+#include "opencv2/imgcodecs.hpp"
+
+// test header
+#include "opencv2/core/types.hpp"
+#include "opencv2/core/mat.hpp"
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/imgproc.hpp"
+#include "opencv2/opencv.hpp"
+#include "opencv2/highgui.hpp"
+
+
+#include "../lib/CannyPF.h"
+#include "../lib/ChainFromEdgeMap.h"
 
 using namespace cv;
 using namespace std;
