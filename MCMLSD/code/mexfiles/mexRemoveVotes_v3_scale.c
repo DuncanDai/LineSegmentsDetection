@@ -228,7 +228,7 @@ void mexFunction ( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
 
     /* Check for proper number of arguments */
     if (nrhs != 10) { 
-	mexErrMsgTxt("Nine input arguments required.");
+	mexErrMsgTxt("10 input arguments required.");
     } 
 
     /* Get edge locations */
