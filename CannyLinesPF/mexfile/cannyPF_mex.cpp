@@ -9,8 +9,8 @@
 
 
 // relative path to the lib directory
-#include "include/CannyPF.h"
-#include "lnclude/ChainFromEdgeMap.h"
+#include "../include/CannyPF.h"
+#include "../include/ChainFromEdgeMap.h"
 
 #define IDX(i,j,iSize) ((iSize)*(i)+(j))
 
@@ -25,24 +25,24 @@ public:
         checkArguments(outputs, inputs);
         /* 1 determine input image properties  */
         ArrayDimensions dims = inputs[0].getDimensions(); 
-        const unsigned int nDims      = dims.size();  //dims is a vector
-        const unsigned int rows       = dims[0]; 
-        const unsigned int cols       = dims[1];
-        const unsigned int channels = (nDims == 3 ? dims[2] : 1);
+        const size_t nDims      = dims.size();  //dims is a vector
+        const size_t rows       = dims[0]; 
+        const size_t cols       = dims[1];
+        const size_t channels = (nDims == 3 ? dims[2] : 1);
         int i, j;
         
         /* 2 Data type convertion: from Matlab to C++  */
         // Allocate, copy, and convert the input image
         // @note: input[0]  is double image -> OpenCV Canny() requires 8-bit input image
         cv::Mat image = cv::Mat::zeros(cv::Size(cols, rows), CV_64FC(channels));
-        mexPrintf("hey I'm here 1 \n");
+        printf("hey I'm here 1 \n");
         // om::copyMatrixToOpencv(inputs[0], image); -> requires pointer (in matlab API for C)
         for(i=0; i<rows; ++i)
             for(j=0; j<cols; ++j)
                 image[i*cols+j] = inputs[0][IDX(j,i,rows)];
    
         image.convertFloatMatrixToUint8(image, CV_8U, 255);
-        mexPrintf("hey I'm here 2 \n");
+        printf("hey I'm here 2 \n");
         
         /* 3 run c++ module  */
         const unsigned int GaussSize = inputs[1][0];
@@ -56,7 +56,7 @@ public:
         ChainFromEdgeMap chainer;
         std::vector< std::vector<cv::Point> > edgeChains;
         chainer.run(image, edgeMap, edgeChains);
-        mexPrintf("hey I'm here 3 \n");
+        printf("hey I'm here 3 \n");
         
         /* 4 determine output image properties */
         // @note: outputs[0] is uint8 edge map
@@ -65,13 +65,13 @@ public:
         output_cols = edgeMap.cols;
         outputs[0] = factory.createArray<uint8_t> ({output_rows, output_cols});  // the pixel value is 0-255
         outputs[1] = std::vector<matlab::data::Array> (edgeChains.size());
-        mexPrintf("hey I'm here 4 \n");
+        printf("hey I'm here 4 \n");
                 
         /* 5 Data type convertion: from c++ to Matlab */
         for(i=0; i<output_rows; ++i)
             for(j=0; j<output_cols; ++j)
                 outputs[0][IDX(j,i,output_rows)] = edgeMap[IDX(i,j,output_cols)];
-        mexPrintf("hey I'm here 5 \n");
+        printf("hey I'm here 5 \n");
         for(i=0; i<edgeChains.size(); ++i){
             sub_array_rows = edgeChains[i].size();
             outputs[1][i] = factory.createArray<uint16_t> ({sub_array_rows, 2}) ;  // the pixel coordinate value is around 3,000

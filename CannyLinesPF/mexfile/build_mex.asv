@@ -6,4 +6,4 @@ COMPFLAGS='$COMPFLAGS -std=c++17'
 mex -output cannyPF_mex cannyPF_mex.cpp LDFLAGS="\$LDFLAGS -fopenmp -lopencv_core -lopencv_imgproc"
 
 
-mex -output cannyPF_mex cannyPF_mex.cpp ../source/cannyPF.cpp ../source/ChainFromEdgeMap.cpp LDFLAGS="\$LDFLAGS -fopenmp -lopencv_core -lopencv_imgproc" -I../include -IU:/my_apps/opencv/build/include -LU:/my_apps/opencv/build/x64/vc15/lib
+mex -output cannyPF_mex cannyPF_mex.cpp ../source/cannyPF_mex.cpp ../source/ChainFromEdgeMap.cpp -I../include -IU:/my_apps/opencv/build/include -LU:\my_apps\opencv\build\x64\vc15\lib
