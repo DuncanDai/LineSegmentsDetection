@@ -17,7 +17,7 @@ void CannyPF::cannyPF( cv::Mat &image, int gaussianSize, float VMGradient, cv::M
 {
 	int i,j,m,n;
 	int grayLevels=255;
-	float gNoise=1.3333;  //1.3333 
+	float gNoise=1.3333;  //1.3333 intial noise
 	float thGradientLow=gNoise;
 
 	int cols = image.cols;

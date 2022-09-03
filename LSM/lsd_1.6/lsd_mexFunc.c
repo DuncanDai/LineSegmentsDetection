@@ -96,9 +96,9 @@ void mexFunction(int nlhs, mxArray* plhs[],
     
     for(i=0; i<mrows; ++i)
 		for(j=0; j<ncols; ++j)
-// 			*image++ = M_in[IDX(j,i,mrows)];  // can vbe deleted
+// 			*image++ = M_in[IDX(j,i,mrows)];  // can be deleted -> memory error because of ptr++
             image[i*ncols+j] = M_in[IDX(j,i,mrows)];
-//             printf("%f ",image[i*ncols+j]);  // can vbe deleted
+//             printf("%f ",image[i*ncols+j]);  // can be deleted
 //         printf("\n");
     mexPrintf("hey I'm here 2 \n");
 //     mexPrintf("the pixel of image is %ld \n", sizeof(image)/sizeof(double)); // can vbe deleted (image is a double pointer refers to 1D-array, so the output is only 1)

@@ -21,7 +21,8 @@ void ChainFromEdgeMap::run( cv::Mat &image, cv::Mat &edgeMap, std::vector<std::v
 	int rows = image.rows;
 
 	cv::Mat imgNew;
-	if ( image.channels() == 3 )
+    // need grayscale image -> used in `imgNew` for sobel filter
+	if ( image.channels() == 3 ) 
 	{
 		cv::cvtColor( image, imgNew, cv::COLOR_BGRA2GRAY);   // old version: CV_RGB2GRAY
 	}
@@ -41,7 +42,7 @@ void ChainFromEdgeMap::run( cv::Mat &image, cv::Mat &edgeMap, std::vector<std::v
 	cv::Sobel( imgNew, dx, CV_16S, 1, 0, 3, 1, 0, cv::BORDER_REPLICATE);
 	cv::Sobel( imgNew, dy, CV_16S, 0, 1, 3, 1, 0, cv::BORDER_REPLICATE);
 
-	double anglePer = CV_PI / 8.0;
+	double anglePer = CV_PI / 8.0;  // me 22.5 degree is a bin
 	for ( int i = 0; i< rows; ++i )
 	{
 		double *ptrG = gradientMap.ptr<double>(i);
@@ -51,14 +52,16 @@ void ChainFromEdgeMap::run( cv::Mat &image, cv::Mat &edgeMap, std::vector<std::v
 
 		for ( int j = 0; j<cols; ++j )
 		{
+            // gradient in x,y direction is the dx, dy
 			double gx = ptrX[j];
 			double gy = ptrY[j];
-
+            
+            // total gradient is L1-norm
 			ptrG[j] = abs(gx) + abs(gy);
 
 			int idx = int( ( atan2(gx, -gy) + CV_PI ) / anglePer );
 			ptrO[j] = idx;
-			if ( idx == 16 )
+			if ( idx == 16 )  // 16 * 22.5 = 360 degree
 			{
 				ptrO[j] = 0;
 			}

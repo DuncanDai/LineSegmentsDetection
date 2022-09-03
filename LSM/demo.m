@@ -16,7 +16,7 @@ clc;
 
 % addpath(genpath(pwd));
 addpath('display\');
-addpath('LSM-Dec16\');
+addpath('LSM\');
 addpath('lsd_1.6\');
 
 
