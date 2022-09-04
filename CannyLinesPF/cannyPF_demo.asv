@@ -1,4 +1,4 @@
-addpath('./mexfile');
+% addpath('./mexfile');
 % addpath('./include');
 % addpath('./source');
 % addpath('U:/my_apps/opencv/build/x64/vc15/lib');
@@ -8,7 +8,7 @@ addpath('./mexfile');
 img = imread('./data/_origin.png');
 % subplot(1,2,1); imshow(img); title('original');
 img = im2double(img);
-GaussSize = uint8(3);
+GaussSize = uint83;
 VMGradient = 70.0;
 [edgeMap, edgeChains] = cannyPF_mex(img, GaussSize, VMGradient);
 
