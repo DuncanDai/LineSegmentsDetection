@@ -34,19 +34,20 @@ public:
         /* 2 Data type convertion: from Matlab to C++  */
         // Allocate, copy, and convert the input image
         // @note: input[0]  is double image -> OpenCV Canny() requires 8-bit input image
-        cv::Mat image = cv::Mat::zeros(cv::Size(cols, rows), CV_64FC(channels));
+        cv::Mat image = cv::Mat::zeros(cv::Size( (int)cols, (int)rows ), CV_64FC( (int)channels ));
+        unsigned char *imgPtr = image.data;
         printf("hey I'm here 1 \n");
         // om::copyMatrixToOpencv(inputs[0], image); -> requires pointer (in matlab API for C)
         for(i=0; i<rows; ++i)
             for(j=0; j<cols; ++j)
-                image[i*cols+j] = inputs[0][IDX(j,i,rows)];
+                imgPtr[i*cols+j] = (unsigned char)inputs[0][IDX(j,i,rows)];
    
-        image.convertFloatMatrixToUint8(image, CV_8U, 255);
+        //image.convertFloatMatrixToUint8(image, CV_8U, 255);
         printf("hey I'm here 2 \n");
         
         /* 3 run c++ module  */
         const unsigned int GaussSize = inputs[1][0];
-        const double VMGradient = inputs[2][0];
+        const float VMGradient = (float)inputs[2][0];
         CannyPF cannyer;
         cv::Mat edgeMap;
         // get edge map by using canny filter
@@ -61,17 +62,22 @@ public:
         /* 4 determine output image properties */
         // @note: outputs[0] is uint8 edge map
         // force it row major order as in OpenCV, C/C++
-        output_rows = edgeMap.rows;
-        output_cols = edgeMap.cols;
-        outputs[0] = factory.createArray<uint8_t> ({output_rows, output_cols});  // the pixel value is 0-255
-        outputs[1] = std::vector<matlab::data::Array> (edgeChains.size());
+        int output_rows = edgeMap.rows;
+        int output_cols = edgeMap.cols;
+        unsigned char *edgePtr = edgeMap.data;
+        ArrayFactory factory;
+        outputs[0] = factory.createArray<uint8_t> ({(size_t)output_rows, (size_t)output_cols});  // the pixel value is 0-255
+        outputs[1] = factory.createCellArray ({edgeChains.size(), size_t(1)});
+//                 std::vector<matlab::data::Array> ();
         printf("hey I'm here 4 \n");
                 
         /* 5 Data type convertion: from c++ to Matlab */
         for(i=0; i<output_rows; ++i)
             for(j=0; j<output_cols; ++j)
-                outputs[0][IDX(j,i,output_rows)] = edgeMap[IDX(i,j,output_cols)];
+                outputs[0][IDX(j,i,output_rows)] = edgePtr[IDX(i,j,output_cols)];
         printf("hey I'm here 5 \n");
+        
+        size_t sub_array_rows;
         for(i=0; i<edgeChains.size(); ++i){
             sub_array_rows = edgeChains[i].size();
             outputs[1][i] = factory.createArray<uint16_t> ({sub_array_rows, 2}) ;  // the pixel coordinate value is around 3,000
@@ -111,9 +117,10 @@ private:
                 0, std::vector<Array>({ factory.createScalar("Input multiplier must be a scalar") }));
         }
         
+        const unsigned char gauss_size = inputs[1][0];
         if (inputs[1].getType() != ArrayType::UINT8 ||
             inputs[1].getType() == ArrayType::COMPLEX_UINT8 ||
-            inputs[1][0] % 2 == 0) {
+            gauss_size % 2 == 0) {
             matlabPtr->feval(u"error", 
                 0, std::vector<Array>({ factory.createScalar("Input multiplier must be a noncomplex scalar odd int") }));
         }

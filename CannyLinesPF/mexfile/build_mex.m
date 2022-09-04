@@ -1,9 +1,21 @@
-mex cannyPF_mex.cpp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp -lopencv_core -lopencv_imgproc" -I/usr/local/include -L/usr/local/lib
+mex cannyPF_mex.cpp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp -lopencv_core -lopencv_imgproc" -I/usr/local/include -L/usr/local/lib 
+mexOpenCV
 
 
-COMPFLAGS='$COMPFLAGS -std=c++17'
+ 
 
-mex -output cannyPF_mex cannyPF_mex.cpp LDFLAGS="\$LDFLAGS -fopenmp -lopencv_core -lopencv_imgproc"
+%% 参考
+mex -g cannyPF_mex.cpp ../source/cannyPF.cpp ../source/ChainFromEdgeMap.cpp -I"D:\Program Files\opencv\build\include" -L"D:\Program Files\opencv\build\x64\vc15\lib" -lopencv_world343
 
+% debug模式
+mex -output cannyPF_mex cannyPF_mex.cpp ../source/cannyPF.cpp ../source/ChainFromEdgeMap.cpp ...
+    -I"../include" -I"U:/my_apps/opencv/build/include" ...
+    -L"U:/my_apps/opencv/build/x64/vc15/lib"  -lopencv_world460 -g -v
 
-mex -output cannyPF_mex cannyPF_mex.cpp ../source/cannyPF.cpp ../source/ChainFromEdgeMap.cpp LDFLAGS="\$LDFLAGS -fopenmp -lopencv_core -lopencv_imgproc" -I../include -IU:/my_apps/opencv/build/include -LU:/my_apps/opencv/build/x64/vc15/lib
+mex -output cannyPF_mex cannyPF_mex.cpp ../source/cannyPF.cpp ../source/ChainFromEdgeMap.cpp ...
+    COMPFLAGS="$COMPFLAGS /D_SECURE_SCL=0" ...
+    -I"../include" -I"U:/my_apps/opencv/build/include" ...
+    -L"U:/my_apps/opencv/build/x64/vc15/lib"  -lopencv_world460 -g -v
+
+%% 在不执行命令的情况下，使用 -n 选项可预览编译命令详细信息。输出包含特定于您的平台和编译器的信息
+-n
