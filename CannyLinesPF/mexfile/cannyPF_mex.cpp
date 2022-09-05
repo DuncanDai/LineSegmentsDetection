@@ -128,24 +128,38 @@ public:
         stream << "hey I'm here 8: " << output_rows << " to " << output_cols <<  std::endl; displayOnMATLAB(stream);
         
         /* outputs[1] */
-        CellArray out = factory.createCellArray ({edgeChains.size(), size_t(1)});
-        stream << "hey I'm here 8+: " << out.getDimensions()[0] << " to " << out.getDimensions()[1]  <<  std::endl; displayOnMATLAB(stream);
+        CellArray allEdges = factory.createCellArray ({edgeChains.size(), size_t(1)});
+        stream << "hey I'm here 8+: " << allEdges.getDimensions()[0] << " to " << allEdges.getDimensions()[1]  <<  std::endl; displayOnMATLAB(stream);
         
         
-        size_t edgeChainPointsCount;
+        size_t singleEdgeSize;
         for(i=0; i<edgeChains.size(); ++i){
-            edgeChainPointsCount = edgeChains[i].size();
-            out[i] = factory.createArray<int> ({edgeChainPointsCount, size_t(2)}) ;  // the pixel coordinate value is around 3,000  ChainFromEdgeMap.cpp  cv::Point<int>
-            stream << "hey I'm here 8++: " << out[i].getDimensions()[0]  << " to " << out[i].getDimensions()[1]  <<  std::endl; displayOnMATLAB(stream);
-
+            singleEdgeSize = edgeChains[i].size();
+            allEdges[i] = factory.createArray<int> ({singleEdgeSize, size_t(2)}) ;  // the pixel coordinate value is around 3,000  ChainFromEdgeMap.cpp  cv::Point<int>
+            TypedArrayRef<int> singleEdge = allEdges[i][0];
+//             stream << "hey I'm here 8++: " << allEdges[i].getDimensions()[0]  << " to " << allEdges[i].getDimensions()[1]  <<  std::endl; displayOnMATLAB(stream);
+//             stream << "hey I'm here 8++: " << singleEdge[0][0]  << " to " << singleEdge[1][0]  <<  std::endl; displayOnMATLAB(stream);
+            for(j=0; j<singleEdgeSize; ++j){
+                // matlab Topic: Access C++ Data Array Container Elements -> Copy Data from Container -> ref book: matlab::data::Reference<TypedArray<T>>
+                singleEdge[j][0] = edgeChains[i][j].x;
+                singleEdge[j][1] = edgeChains[i][j].y;
+            }
+//             int tmp1 = (int) ((allEdges[i])[j][0]);
+//             int tmp2 = (int) ((allEdges[i])[j][0]);
+//             stream << "hey I'm here 9: " << singleEdge[j-1][0]  << " singleEdge " << singleEdge[j-1][1]   <<  std::endl; displayOnMATLAB(stream);
+//             stream << "hey I'm here 8+++: " << tmp1  << " singleEdge " << tmp2  <<  std::endl; displayOnMATLAB(stream);
+        }
+            
+//             stream << "hey I'm here 9: " << edgeChains[i][j].x  << " to " << edgeChains[i][j].y  <<  std::endl; displayOnMATLAB(stream);
+//             stream << "hey I'm here 9+: " << singleEdge[j][0]  << " to " << singleEdge[j][1]  <<  std::endl; displayOnMATLAB(stream);
+    
 //             for(j=0; j<edgeChainPointsCount; ++j){
-// //                 out[i][j] = factory.createArray<int> ({(size_t)1, (size_t)2}, {factory.createScalar(edgeChains[i][j].x), factory.createScalar(edgeChains[i][j].y)});
+// //                 out[i][j] = factory.createArray<int> ({(size_t)1, (size_t)2}, {factory.createScalar(edgeChains[i][j].x), factory.createScalar(edgeChains[i][j].y)});  // me 倾向
 //                 out[i][j] = {factory.createScalar(edgeChains[i][j].x), factory.createScalar(edgeChains[i][j].y)};  // issue: before is only edgeChains[i][j].x -> data type not match
 // //                 out[i][j][1] = factory.createScalar(edgeChains[i][j].y);  // issur: only [i][0] -> Array index is invalid.
 //             }        
-        }
-        stream << "hey I'm here 9: OK!" << std::endl; displayOnMATLAB(stream);
-        outputs[1] = std::move(out); 
+        stream << "hey I'm here 10: OK!" << std::endl; displayOnMATLAB(stream);
+        outputs[1] = std::move(allEdges); 
     }
 
 
