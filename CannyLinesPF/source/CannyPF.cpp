@@ -31,7 +31,7 @@ void CannyPF::cannyPF( cv::Mat &image, int gaussianSize, float VMGradient, cv::M
 
 	//get gray image
 	cv::Mat grayImage;
-	int aa=image.channels();
+// 	int aa=image.channels();
 
 	if ( image.channels() == 1 )
 		grayImage = image;

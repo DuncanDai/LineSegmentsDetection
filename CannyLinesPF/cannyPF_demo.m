@@ -7,6 +7,9 @@ addpath('./mexfile');
 %% load an image
 img = imread('./data/_origin.png');
 % subplot(1,2,1); imshow(img); title('original');
+% img = im2double(img);s
+
+
 img = im2double(img);
 GaussSize = uint8(3);
 VMGradient = 70.0;
