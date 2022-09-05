@@ -61,10 +61,10 @@ public:
         stream << "hey I'm here 4: number of elements  " << num_eles << std::endl; displayOnMATLAB(stream);
 
 //         unsigned char *imgPtr = image.data;
-        const TypedArray<double> imageArray = std::move(inputs[0]);   // Issue: inputs[0] needs to the same uint8 type, otherwise, Can't convert the Array(double) to this TypedArray
+        const TypedArray<double> imageArray = std::move(inputs[0]);   // Issue: inputs[0] needs to the same double type, otherwise, Can't convert the Array(uint8s) to this TypedArray
         stream << "hey I'm here 4+:" << std::endl; displayOnMATLAB(stream);
-        stream << "hey I'm here 4++:" << image.at<uchar>(0, 0) + 1  << "image arr" << imageArray.getNumberOfElements() << " to "  << " to " <<  std::endl; displayOnMATLAB(stream);
-        stream << "hey I'm here 4+++:"<< imageArray[0][0] <<  " to " << imageArray[rows-1][cols-1] <<  " to "  << std::endl; displayOnMATLAB(stream);
+        stream << "hey I'm here 4++: " << image.at<uchar>(0, 0) + 1  << " image arr " << imageArray.getNumberOfElements() << " to "  << " to " <<  std::endl; displayOnMATLAB(stream);
+        stream << "hey I'm here 4+++: "<< imageArray[0][0] <<  " to " << imageArray[rows-1][cols-1] <<  " to "  << std::endl; displayOnMATLAB(stream);
         
 //         i = 0;
 //         for (auto&& elem: imageArray){
@@ -112,14 +112,12 @@ public:
         /* 4 determine output image properties */
         // @note: outputs[0] is uint8 edge map
         // force it row major order as in OpenCV, C/C++
-        int output_rows = edgeMap.rows;
-        int output_cols = edgeMap.cols;
+        const int output_rows = edgeMap.rows;
+        const int output_cols = edgeMap.cols;
         uint8_t *edgePtr = edgeMap.data;
         outputs[0] = factory.createArray<uint8_t> ({(size_t)output_rows, (size_t)output_cols});  // the pixel value is 0-255
-        outputs[1] = factory.createCellArray<Array> ({edgeChains.size(), size_t(1)});
 //                 std::vector<matlab::data::Array> ();
-        stream << "hey I'm here 7: edgeChains.size is" << edgeChains.size() << std::endl; displayOnMATLAB(stream);
-                
+        stream << "hey I'm here 7: edgeChains.size is " << edgeChains.size() << std::endl; displayOnMATLAB(stream);     
         /* 5 Data type convertion: from c++ to Matlab */
         for(i=0; i<output_rows; ++i)
             for(j=0; j<output_cols; ++j){
@@ -127,19 +125,24 @@ public:
                 outputs[0][i][j] = *edgePtr++; // attention: ++ operator -> memory overflow
             }
         outputs[0][output_rows-1][output_cols-1] = *edgePtr;
-                
-        stream << "hey I'm here 8:" << std::endl; displayOnMATLAB(stream);
+        stream << "hey I'm here 8: " << output_rows << " to " << output_cols <<  std::endl; displayOnMATLAB(stream);
         
-        size_t sub_array_rows;
-        stream << "hey I'm here 9:" << std::endl; displayOnMATLAB(stream);
+        /* outputs[1] */
+        CellArray out = factory.createCellArray ({edgeChains.size(), size_t(1)});
+        
+        
+        size_t edgeChainPointsCount;
         for(i=0; i<edgeChains.size(); ++i){
-            sub_array_rows = edgeChains[i].size();
-            outputs[1][i] = factory.createArray<uint16_t> ({sub_array_rows, 2}) ;  // the pixel coordinate value is around 3,000
-            for(j=0; j<sub_array_rows; ++j){
-                outputs[1][i][0] = edgeChains[i][j].x;
-                outputs[1][i][1] = edgeChains[i][j].y;
+            edgeChainPointsCount = edgeChains[i].size();
+            out[i] = factory.createArray<int> ({edgeChainPointsCount, 2}) ;  // the pixel coordinate value is around 3,000  ChainFromEdgeMap.cpp  cv::Point<int>
+            stream << "hey I'm here 8+: " << output_rows << " to " << output_cols <<  std::endl; displayOnMATLAB(stream);
+            for(j=0; j<edgeChainPointsCount; ++j){
+                out[i][j][0] = factory.createScalar(edgeChains[i][j].x);  // issue: before is only edgeChains[i][j].x -> data type not match
+                out[i][j][1] = factory.createScalar(edgeChains[i][j].y);  // issur: only [i][0] -> Array index is invalid.
             }        
         }
+        stream << "hey I'm here 9: OK!" << std::endl; displayOnMATLAB(stream);
+        outputs[1] = std::move(out); 
     }
 
 
