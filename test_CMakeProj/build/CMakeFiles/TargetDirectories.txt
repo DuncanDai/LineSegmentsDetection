@@ -1,0 +1,3 @@
+U:/my_projs/CMakeProj_test/build/CMakeFiles/CMakeProj_test.dir
+U:/my_projs/CMakeProj_test/build/CMakeFiles/edit_cache.dir
+U:/my_projs/CMakeProj_test/build/CMakeFiles/rebuild_cache.dir

@@ -17,3 +17,4 @@ VMGradient = 70.0;
 figure('name','demo image');
 subplot(1,2,1); imshow(img); title('original');
 subplot(1,2,2); imshow(edgeMap); title('OpenCV blurred');
+%%

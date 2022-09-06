@@ -1,0 +1,12 @@
+
+xSize = size(img, 2);
+edgeSize = size(edgeChains, 1);  
+count = zeros(xSize);
+
+for edgeIdx = 1:edgeSize
+    singleEdge = edgeChains{edgeIdx};
+    pointSize = size(singleEdge, 1);
+    for pointIdx = 1:pointSize
+        xCoor = singleEdge(pointIdx);
+        
+    
