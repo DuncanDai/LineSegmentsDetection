@@ -4,8 +4,8 @@ img_cannyPF = edgeMap;
 img_edges = zeros(size(img_origin), 'like', img_origin);
 
 
-figure(1);
-imshow([img_origin, img_cannyPF]);
+% figure(1);
+% imshow([img_origin, img_cannyPF]);
 
 %% 2 show the image after edge chain judgment criteria
 x_range = size(img_origin, 2);
@@ -24,7 +24,7 @@ for edgeIdx = 1:edge_number
     end
 end
 
-figure(2);
+figure;
 imshow([img_origin, img_cannyPF, img_edges]);
 
 %% calculate the distribution of edgeChains

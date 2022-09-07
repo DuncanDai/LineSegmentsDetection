@@ -82,7 +82,7 @@ for k = 3:length(imgSamples)
     imgD=display_image( D,img);
     imgL=display_image( L,img);
 
-    imwrite([imgD imgL],'U:\my_projs\LineSegmentsDetection\g_output\result_chainlink.png');
+%     imwrite([imgD imgL],'U:\my_projs\LineSegmentsDetection\g_output\result_chainlink.png');
     % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     img = [imgD imgL];
