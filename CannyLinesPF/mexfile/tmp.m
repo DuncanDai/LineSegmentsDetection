@@ -37,3 +37,18 @@ int main()
 	}
 	cv::imwrite("D:\\My_Data\\me_Projs\\Proj_MA\\CannyLines_PF4_CMake+cmake-gui\\data\\cannyPF test1-simple.png",imgShow);
 }
+
+
+%% only for tesst
+tmp = imread("U:/my_projs/_test/data/cboard.png");
+tmp_gray = rgb2gray(tmp);  
+
+figure(1), image(tmp_1);
+figure(2), image(tmp_2);
+figure(3), image(tmp_3);
+
+
+R=35;
+G = 8;
+B=6;
+R*0.299 + G*0.587 + B*0.114
