@@ -18,10 +18,8 @@ clf;
 axis off
 
 imm=zeros(size(im));
-imagesc(imm); 
-% colormap white;
+imagesc(imm); colormap white;
 hold on;axis off
-
 drawlines(lines,cmap); drawnow;
 
 axis image
