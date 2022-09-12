@@ -1,15 +1,13 @@
-INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/lib ${PROJECT_BINARY_DIR})
+PROJECT(CannyLinesV3)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
 
-# output bin files
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+FIND_PACKAGE( OpenCV REQUIRED )
+message(STATUS "OpenCV_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
+message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
+message(STATUS "PROJECT_BINARY_DIR = ${PROJECT_BINARY_DIR}")
 
-AUX_SOURCE_DIRECTORY(./ DIR_SRCS)    # `DIR_SRCS`: compile all the .cpp files
-
-ADD_EXECUTABLE(${PROJECT_NAME}  ${DIR_SRCS})
-
-# link to Mylib (static library) from ${PROJECT_BINARY_DIR}
-TARGET_LINK_LIBRARIES( ${PROJECT_NAME}   Mylib ${OpenCV_LIBS}) 
-
+ADD_SUBDIRECTORY(./lib)
+ADD_SUBDIRECTORY(./src)
 
 
 
@@ -17,13 +15,7 @@ TARGET_LINK_LIBRARIES( ${PROJECT_NAME}   Mylib ${OpenCV_LIBS})
 
 
 
-
-
-
-
-
-
-###############################################################################origin： with issue
+###############################################################################
 # # CMake settings
 # CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
 
