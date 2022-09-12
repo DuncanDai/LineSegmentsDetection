@@ -79,8 +79,9 @@ for k = 3:length(imgSamples)
     [L]=mergeLines(D,tau_theta,xi_s);
     toc(ticId)
     display(strcat(int2str(size(L,1)),' merged line segments'));
-    imgD=display_image( D,img);
-    imgL=display_image( L,img);
+    
+    imgD = display_image( D,img);
+    imgL = display_image( L,img);
 
 %     imwrite([imgD imgL],'U:\my_projs\LineSegmentsDetection\g_output\result_chainlink.png');
     % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,6 +93,6 @@ for k = 3:length(imgSamples)
     imshow(img);
     hold all
 
-%     imwrite(fig, ['..\g_output', filesep, imgSamples(k).name(1:end-4), filesep, '_1.png']);
-    saveas(fig, ['U:\my_projs\LineSegmentsDetection\g_output', filesep, imgSamples(k).name(1:end-4), '.png']);
+    imwrite(img, ['..\g_output', filesep, imgSamples(k).name(1:end-4), filesep, '.png']);
+%     saveas(fig, ['U:\my_projs\LineSegmentsDetection\g_output', filesep, imgSamples(k).name(1:end-4), '.png']);
 end

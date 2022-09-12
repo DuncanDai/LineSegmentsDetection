@@ -1,4 +1,4 @@
-addpath('./mexfile'); 
+addpath('./mexAPI'); 
 
 %%
 img_origin=imread('U:\my_projs\LineSegmentsDetection\CannyLinesPF\Images\_origin_rgb.png');
@@ -9,7 +9,7 @@ GaussSize = uint8(3);
 VMGradient = 70.0;
 
 ticId = tic;
-[edgeMap, edgeChains] = cannyPF_mex(img, GaussSize, VMGradient);
+[edgeMap, edgeChains] = mex_CannyPF(img, GaussSize, VMGradient);
 toc(ticId)
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
