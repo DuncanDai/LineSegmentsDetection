@@ -121,7 +121,7 @@ for k = 3:length(imgSamples)
     img = [imgD imgL];
     display('Total time');
     
-    fig = figure;
+    fig = figure(3);
     imshow(img);
     imwrite(img, ['U:\my_projs\g_output', filesep, imgSamples(k).name(1:end-4), '.png']);
 %     saveas(fig, ['U:\my_projs\LineSegmentsDetection\g_output', filesep, imgSamples(k).name(1:end-4), '.png']);

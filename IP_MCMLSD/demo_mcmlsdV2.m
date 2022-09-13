@@ -5,13 +5,13 @@ close all
 % attention: filesep in linux is '/', in windows is '\' -> matlab will
 % recognize it
 addpath(genpath('code/'));
-addpath('Imgs/');
+addpath('Resources/');
 addpath(genpath('edges-master/'));
-addpath('v2/');
+addpath('mcmlsdV2/');
 
 %%% dinggen test
 % img = imread(['Imgs', filesep, 'P1040823hr.jpg']);
-img = imread(['..\imgSamples', filesep, 'test1.png']);
+img = imread(['U:\my_projs\imgSamples', filesep, 'test1.png']);
 
 % 1/16 size to the original image
 % dinggen 08.26 test: full size
@@ -25,7 +25,7 @@ img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
 
 
 %% 2022-04-28_14-02-34  2022-04-28_15-39-22    2022-04-28_16-21-50
-imgPath = ['U:\my_projs\LineSegmentsDetection\imgSamples', filesep, '2022-04-28_16-21-50'];
+imgPath = ['U:\my_projs\imgSamples', filesep, '2022-04-28_14-02-34'];
 
 imgSamples = dir(imgPath);
 for k = 3:length(imgSamples)
@@ -47,36 +47,40 @@ for k = 3:length(imgSamples)
     [lines, fullLines] =lineSegmentation_HighRes(img, kernels, kernels_flip, kernel_params);
     display('Total time');
     toc(ticId)
-    fig = figure;
+    fig = figure(1);
     imshow(img);
     hold all
     %Order lines by probability
     lines = sortrows(lines, -5);
     
     linesNum = size(lines,1);
-    plotLineNum = min(50, linesNum);
-    for i = 1:plotLineNum
+    display(['number of line of v1 is: ', num2str(linesNum)]);
+    plotLineNum = min(90, linesNum);
+    for i = 1:plotLineNum  %plotLineNum
         %plot the top 90 lines
         line([lines(i,1) lines(i,3)], [lines(i,2) lines(i,4)],'Color','g', 'LineWidth', 1.5);  % ,  rand(1,3) 生成(1,3)矩阵  2.5宽度
     end
 %     imwrite(fig, ['..\g_output', filesep, imgSamples(k).name(1:end-4), filesep, '_1.png']);
-    saveas(fig, ['U:\my_projs\LineSegmentsDetection\g_output', filesep, imgSamples(k).name(1:end-4), '_1.png']);
+    saveas(fig, ['U:\my_projs\g_output', filesep, imgSamples(k).name(1:end-4), '_v1_LSD.png']);
+    close;
 
 
     %please use code in Evaluation code.zip to evaluate the performance of the line segmentation algorithm
     [lines2] = mcmlsd2Algo(lines,img);
-    fig = figure;
+    fig = figure(2);
     imshow(img);
     hold all
     %Order lines by probability
-    lines2 = sortrows(lines2, -5);
+    lines2 = sortrows(lines2, -5);  %negetiv number means descending
     
     linesNum = size(lines2,1);
-    plotLineNum = min(50, linesNum);
-    for i = 1:plotLineNum
+    display(['number of line of v2 is:', num2str(linesNum)]);
+    plotLineNum = min(90, linesNum);
+    for i = 1:plotLineNum  %plotLineNum
         %plot the top 90 lines
         line([lines2(i,1) lines2(i,3)], [lines2(i,2) lines2(i,4)],'Color', 'g', 'LineWidth', 1.5);
     end
 %     imwrite(fig, ['..\g_output', filesep, imgSamples(k).name(1:end-4), filesep, '_2.png']);
-    saveas(fig, ['U:\my_projs\LineSegmentsDetection\g_output', filesep, imgSamples(k).name(1:end-4), '_2.png']);
+    saveas(fig, ['U:\my_projs\g_output', filesep, imgSamples(k).name(1:end-4), '_v2_MCM_RankOfProb.png']);
+    close;
 end

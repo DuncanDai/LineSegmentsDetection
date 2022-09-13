@@ -23,7 +23,7 @@ out = [];
 %parameters
 
 global edgeMap;
-load('v2/trainLOGRecallEW3.mat');
+load('mcmlsdV2/trainLOGRecallEW3.mat');
 
 [Nallsegreal,~] = size(hitlines);
 linefeatureImg=zeros(Nallsegreal,2);
