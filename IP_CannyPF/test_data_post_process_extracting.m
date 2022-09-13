@@ -8,11 +8,13 @@ img_edges = zeros(size(img_origin), 'like', img_origin);
 % imshow([img_origin, img_cannyPF]);
 
 %% 2 show the image after edge chain judgment criteria
-x_range = size(img_origin, 2);
-edge_count = zeros(x_range,1);
+imageWidth = size(img_origin, 2);
+
+edge_count = zeros(imageWidth,1);
 edge_number = size(edgeChains, 1);  
 
-for edgeIdx = 1:edge_number
+% me: 如何把edgeChains -> 变成lines: x1, y1, x2, y2
+for edgeIdx = 1:edge_number  %读取edgeChains中的结构体 -> chain对应edge的数量
     one_edge_chain = edgeChains{edgeIdx};
     point_number = size(one_edge_chain, 1);
     for point_idx = 1:point_number

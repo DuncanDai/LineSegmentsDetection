@@ -5,13 +5,15 @@ close all
 % attention: filesep in linux is '/', in windows is '\' -> matlab will
 % recognize it
 addpath(genpath('code/'));
-addpath('Imgs/');
+addpath('Resources/');
 addpath(genpath('edges-master/'));
-addpath('v2/');
+addpath('mcmlsdV2/');
 
 %%% dinggen test
 % img = imread(['Imgs', filesep, 'P1040823hr.jpg']);
-img_origin = imread('U:\my_projs\LineSegmentsDetection\LSM\Imgs\cboard.png');
+% 'U:\my_projs\LineSegmentsDetection\LSM\Imgs\cboard.png'
+img_path = 'U:\my_projs\imgSamples\2022-04-28_16-21-50\22529664000.png';
+img_origin = imread(img_path);
 
 % 1/16 size to the original image
 % dinggen 08.26 test: full size

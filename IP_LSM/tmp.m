@@ -21,14 +21,14 @@ windowStepSize = 10;
 % windowsEnd = 1600;
 angleExpect = pi/2;
 angleTolerance = 5/180*pi;
-% [count, length, window_pos] = extract_window_features(lines, scale, windowStart, windowsEnd, angleExpect, angleTolerance)
 
-windows_features = select_by_moving_windows(edges, scale, imageWidth, windowWidth, windowStepSize, angleExpect, angleTolerance);
+[windows_features, edges_full_filtered_by_angle] = select_by_moving_windows(edges, scale, imageWidth, windowWidth, windowStepSize, angleExpect, angleTolerance);
 
 
-% plot(windows_features(:, 3), windows_features(:, 2));
 
 close;
+% img_path = 'U:\my_projs\imgSamples\2022-04-28_16-21-50\22529664000.png';
+% img = imread(img_path);
 img_gray = rgb2gray(img);
 imshow(img_gray);
 hold on
