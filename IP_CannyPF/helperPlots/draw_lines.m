@@ -1,4 +1,4 @@
-function [outputArg1,outputArg2] = draw_lines(lines)
+function draw_lines(lines)
 %Summary of this function goes here
 %   Detailed explanation goes here
 

@@ -1,10 +1,8 @@
-function [outputArg1,outputArg2] = draw_borders(left_border_index, right_border_idnex, img_height)
+function draw_borders(left_border_index, right_border_idnex, img_height)
 %DRAW_BORDERS Summary of this function goes here
 %   Detailed explanation goes here
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
+
+plot([left_border_index, left_border_index], [1, img_height], 'Color', 'r', 'LineWidth', 2);
+plot([right_border_idnex, right_border_idnex], [1, img_height], 'Color', 'r', 'LineWidth', 2);
 end
 
-
-plot([max_idx_one, max_idx_one], [1,2064], 'Color', 'r', 'LineWidth', 2);
-plot([max_idx_two, max_idx_two], [1,2064], 'Color', 'r', 'LineWidth', 2);
