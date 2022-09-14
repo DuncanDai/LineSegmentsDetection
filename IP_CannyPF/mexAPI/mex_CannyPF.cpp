@@ -60,17 +60,16 @@ public:
         const size_t cols       = dims[1];
         const size_t channels = (nDims == 3 ? dims[2] : 1);
         int i, j;
-        stream << "This is a " << channels << " channel(s)' image"  << std::endl; displayOnMATLAB(stream);
+        stream << "This image has " << channels << " channel(s)' "  << std::endl; displayOnMATLAB(stream);
         stream << "hey I'm here 1. " << "Image size (rows, cols): (" << rows << " ," << cols << ")"  << std::endl; displayOnMATLAB(stream);
         
         /* 2 Data type convertion: from Matlab to C++  */
         // Allocate, copy, and convert the input image
-        // @note: input[0] is double image -> OpenCV Canny() requires 8-bit input image
+        // NOTE: input[0] is double image -> OpenCV Canny() requires 8-bit input image
         cv::Mat image(cv::Size( (int)cols, (int)rows ), CV_8UC1, Scalar(1));
         const size_t num_eles = inputs[0].getNumberOfElements();
         const TypedArray<double> imageArray = std::move(inputs[0]);   // Issue: inputs[0] from Matlab needs to the same double type, otherwise, Can't convert the Array(uint8s) to this TypedArray
-        stream << "hey I'm here 1+. Image size is -> " << image.size().height << ", " << image.size().width << std::endl; displayOnMATLAB(stream);
-        stream << "hey I'm here 2. Number of elements  " << num_eles << std::endl; displayOnMATLAB(stream);
+//         stream << "hey I'm here 2. Number of elements  " << num_eles << std::endl; displayOnMATLAB(stream);
 
         for(i=0; i<rows; ++i)
             for(j=0; j<cols; ++j)
@@ -120,31 +119,20 @@ public:
        
         stream << "hey I'm here 3. EdgeChains.size is " << edgeChains.size() << std::endl; displayOnMATLAB(stream);     
         /* 5 Data type convertion: from c++ to Matlab */
-//         for(i=0; i<output_rows; ++i)
-//             for(j=0; j<output_cols; ++j){
-//                 if (i==output_rows-1 && j==output_cols-1) break;
-//                 outputs[1][i][j] = *edgePtr++; // attention: ++ operator -> memory overflow
-//             }
-//         outputs[1][output_rows-1][output_cols-1] = *edgePtr;
         for(i=0; i<output_rows; ++i) 
             for(j=0; j<output_cols; ++j){
                 outputs[1][i][j] = *edgePtr++; // right hand: row major order
             }
 
         
-        stream << "hey I'm here 4. The rows and cols of output is " << output_rows << " and " << output_cols <<  std::endl; displayOnMATLAB(stream); 
-        /* outputs[2] */
-//         CellArray allEdges = factory.createCellArray ({edgeChains.size(), size_t(1)});
-//         stream << "hey I'm here 4+. The size of outputs[2] is " << allEdges.getDimensions()[0] << " and " << allEdges.getDimensions()[1]  <<  std::endl; displayOnMATLAB(stream);
-        
-        // edgesNumber is more than 87000 -> result is int32
-        size_t edgesNumber = 0;
+        /* outputs[2] */     
+        size_t edgesNumber = 0;  // edgesNumber is more than 87000 -> result is int32
         // 1) calculate the total elements (x, y points pair) number in edgeChains
         for (auto &edgeChain: edgeChains){
             edgesNumber += edgeChain.size();
         }
         TypedArray<int> allEdges = factory.createArray<int> ({edgesNumber, 3}) ;  // the pixel coordinate value is around 3,000  ChainFromEdgeMap.cpp  cv::Point<int>  
-        stream << "hey I'm here 4+. The (x, y) points pair number is " << edgesNumber << std::endl; displayOnMATLAB(stream); 
+        stream << "hey I'm here 4. The (x, y) points pair number is " << edgesNumber << std::endl; displayOnMATLAB(stream); 
         
         size_t chainSize;
         size_t index = 0;
@@ -158,8 +146,11 @@ public:
                 index++;
             }
         }
-        stream << "hey I'm here 4++. Final index of allEdges is " << index << std::endl; displayOnMATLAB(stream); 
+        stream << "hey I'm here 4+. Final index of allEdges is " << index << std::endl; displayOnMATLAB(stream); 
           
+//         CellArray allEdges = factory.createCellArray ({edgeChains.size(), size_t(1)});
+//         stream << "hey I'm here 5. The size of outputs[2] is " << allEdges.getDimensions()[0] << " and " << allEdges.getDimensions()[1]  <<  std::endl; displayOnMATLAB(stream);
+
 //         size_t singleEdgeSize;
 //         for(i=0; i<edgeChains.size(); ++i){
 //             singleEdgeSize = edgeChains[i].size();
@@ -171,8 +162,7 @@ public:
 //                 singleEdge[j][0] = edgeChains[i][j].x;
 //                 singleEdge[j][1] = edgeChains[i][j].y;
 //             }
-//         }
-                 
+//         }            
         stream << "hey I'm OK!" << std::endl; displayOnMATLAB(stream);
         outputs[2] = std::move(allEdges); 
     }
