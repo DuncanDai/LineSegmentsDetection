@@ -20,11 +20,16 @@ mex -output cannyPF_mex cannyPF_mex.cpp ../source/cannyPF.cpp ../source/ChainFro
 %% 在不执行命令的情况下，使用 -n 选项可预览编译命令详细信息。输出包含特定于您的平台和编译器的信息
 -n
 
-%% Thinkpad
+%% Thinkpad 最新版本
 mex -output mex_CannyPF_mex ./mex_CannyPF.cpp ./src/cannyPF.cpp ./src/ChainFromEdgeMap.cpp ...
     -I"./lib" -I"C:/My_APPs/2_Engineer/opencv/build/include" ...
     -L"C:/My_APPs/2_Engineer/opencv/build/x64/vc15/lib"  -lopencv_world460 -g 
 
+
+%% Pool 最新版本
+mex -output mex_CannyPF_mex ./mex_CannyPF.cpp ./src/cannyPF.cpp ./src/ChainFromEdgeMap.cpp ...
+    -I"./lib" -I"U:/my_apps/opencv/build/include" ...
+    -L"U:/my_apps/opencv/build/x64/vc15/lib"  -lopencv_world460 -g 
 
 
 

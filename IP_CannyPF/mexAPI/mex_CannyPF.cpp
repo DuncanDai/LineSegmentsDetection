@@ -42,18 +42,16 @@ using matlab::mex::ArgumentList;
 class MexFunction : public matlab::mex::Function {
     // Pointer to MATLAB engine to call fprintf
     std::shared_ptr<matlab::engine::MATLABEngine> matlabPtr = getEngine();
-
     // Factory to create MATLAB data arrays
     ArrayFactory factory;
-
     // Create an output stream
     std::ostringstream stream;
 
 public:
     void operator()(ArgumentList outputs, ArgumentList inputs) {
-        checkArguments(outputs, inputs);
-        
+        checkArguments(outputs, inputs);     
 //         stream << "hey I'm here 0:" << std::endl; displayOnMATLAB(stream);
+        
         /* 1 determine input image properties  */
         matlab::data::ArrayDimensions dims = inputs[0].getDimensions(); 
         
@@ -69,14 +67,10 @@ public:
         // Allocate, copy, and convert the input image
         // @note: input[0] is double image -> OpenCV Canny() requires 8-bit input image
         cv::Mat image(cv::Size( (int)cols, (int)rows ), CV_8UC1, Scalar(1));
-        stream << "Image size is -> " << image.size().height << ", " << image.size().width << std::endl; displayOnMATLAB(stream);
-        
         const size_t num_eles = inputs[0].getNumberOfElements();
-        stream << "hey I'm here 2. Number of elements  " << num_eles << std::endl; displayOnMATLAB(stream);
-
         const TypedArray<double> imageArray = std::move(inputs[0]);   // Issue: inputs[0] from Matlab needs to the same double type, otherwise, Can't convert the Array(uint8s) to this TypedArray
-//         stream << "hey I'm here 2+. Print the (0, 0) element in OpenCV format" << image.at<uchar>(0, 0) + 1  <<  std::endl; displayOnMATLAB(stream);
-//         stream << "hey I'm here 2++. Print the (0, 0) element in Matlab Array format: "<< imageArray[0][0] <<  ", Print the last element in Matlab Array format: " << imageArray[rows-1][cols-1]   << std::endl; displayOnMATLAB(stream);
+        stream << "hey I'm here 1+. Image size is -> " << image.size().height << ", " << image.size().width << std::endl; displayOnMATLAB(stream);
+        stream << "hey I'm here 2. Number of elements  " << num_eles << std::endl; displayOnMATLAB(stream);
 
         for(i=0; i<rows; ++i)
             for(j=0; j<cols; ++j)
@@ -86,9 +80,9 @@ public:
         /* 3 run c++ module  */
         /* calculate running time */
         LARGE_INTEGER t1,t2,tc;
-//         TypedArray<double> time = factory.createScalar<double>(0);
         QueryPerformanceFrequency(&tc);
         QueryPerformanceCounter(&t1);
+        double time;
 
         // in C++: get edge map by using canny filter
         const unsigned int GaussSize = inputs[1][0];
@@ -106,9 +100,12 @@ public:
         QueryPerformanceCounter(&t2);
 
         time = (double)(t2.QuadPart-t1.QuadPart)/(double)tc.QuadPart; 
-//         outputs[0] = factory.createScalar<double>(0);
-        outputs[0] = std::move(time);
-        cout<<"time = "<<time<<endl;  //输出时间（单位：ｓ）
+        cout << "Running time = " << time * 1000 << "ms" << endl;  //output: ms
+        
+        TypedArray<double> run_time = factory.createScalar<double>(0);
+        run_time[0] = time;
+        outputs[0] = std::move(run_time);
+        
         
         
         /////////////////////////////////////////
@@ -139,6 +136,8 @@ public:
         /* outputs[2] */
 //         CellArray allEdges = factory.createCellArray ({edgeChains.size(), size_t(1)});
 //         stream << "hey I'm here 4+. The size of outputs[2] is " << allEdges.getDimensions()[0] << " and " << allEdges.getDimensions()[1]  <<  std::endl; displayOnMATLAB(stream);
+        
+        // edgesNumber is more than 87000 -> result is int32
         size_t edgesNumber = 0;
         // 1) calculate the total elements (x, y points pair) number in edgeChains
         for (auto &edgeChain: edgeChains){
@@ -198,7 +197,7 @@ private:
                 0, std::vector<Array>({ factory.createScalar("Thress inputs required") }));
         }
         
-        // inputs[0] is double grayscale image
+        // inputs[0] is double grayscale image -> Matrix/Array
         if (inputs[0].getType() != ArrayType::DOUBLE ||
             inputs[0].getType() == ArrayType::COMPLEX_DOUBLE) {
             matlabPtr->feval(u"error", 
@@ -210,6 +209,7 @@ private:
                 0, std::vector<Array>({ factory.createScalar("Input[0] image must be m-by-n dimension") }));
         }
         
+        // inputs[1] is gaussian kernel -> UINT8 scalar
         if (inputs[1].getNumberOfElements() != 1) {
             matlabPtr->feval(u"error", 
                 0, std::vector<Array>({ factory.createScalar("Input[1] gaussian kernel size must be a scalar") }));
@@ -223,6 +223,7 @@ private:
                 0, std::vector<Array>({ factory.createScalar("Input[1] gaussian kernel size must be a noncomplex scalar odd UINT8") }));
         }
         
+        // inputs[1] is VMGradient -> double scalar
         if (inputs[2].getNumberOfElements() != 1) {
             matlabPtr->feval(u"error", 
                 0, std::vector<Array>({ factory.createScalar("Input[2] VMGradient must be a scalar") }));
@@ -238,7 +239,7 @@ private:
         // check outputs
         if (outputs.size() != 3) {
             matlabPtr->feval(u"error", 
-                0, std::vector<Array>({ factory.createScalar("Two outputs required") }));
+                0, std::vector<Array>({ factory.createScalar("Three outputs required") }));
         }
         
     }

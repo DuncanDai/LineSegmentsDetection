@@ -11,7 +11,7 @@ img = im2double(img);
 GaussSize = uint8(3);
 VMGradient = 70.0;
 
-[edgeMap, edgeChains] = mex_CannyPF(img, GaussSize, VMGradient);
+[runTime, edgeMap, edgeChains] = mex_CannyPF_mex(img, GaussSize, VMGradient);
 
 figure('name','demo of CannyPF');
 subplot(1,2,1); imshow(img); title('original');
