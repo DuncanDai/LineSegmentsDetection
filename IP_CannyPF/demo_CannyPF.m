@@ -4,18 +4,6 @@ addpath('./mexAPI');
 % addpath('U:/my_apps/opencv/build/x64/vc15/lib');
 % addpath('U:/my_apps/opencv/build/include')
 
-%% test: demo for only one image
-% imgPath = './data/_origin.png';
-% img = imread(imgPath);
-% img = im2double(img);
-% GaussSize = uint8(3);
-% VMGradient = 70.0;
-% 
-% [edgeMap, edgeChains] = cannyPF_mex(img, GaussSize, VMGradient);
-
-% figure('name','demo of CannyPF');
-% subplot(1,2,1); imshow(img); title('original');
-% subplot(1,2,2); imshow(edgeMap); title('CannyPF edge detecter');
 %% test:  samples -> 3 folders   2022-04-28_14-02-34  2022-04-28_15-39-22    2022-04-28_16-21-50
 imgPath = ['U:\my_projs\imgSamples', filesep, '2022-04-28_16-21-50'];
 

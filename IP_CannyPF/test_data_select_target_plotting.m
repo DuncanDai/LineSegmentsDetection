@@ -86,17 +86,6 @@ for k = 3:length(imgSamples)
     f = getframe(gcf);
     imwrite(f.cdata, ['U:\my_projs\g_output', filesep, imgSamples(k).name(1:end-4), '_label.png']);
     
-    % getimage: no label
-%     I = getimage(gcf);
-%     imwrite(I, ['U:\my_projs\g_output', filesep, imgSamples(k).name(1:end-4), '_label.png']);
-
-    % saveas：输入参数是fig 
-%     saveas(fig, ['U:\my_projs\g_output', filesep, imgSamples(k).name(1:end-4), '_label.png']);
-%     saveas(gca,['U:\my_projs\g_output', filesep, imgSamples(k).name(1:end-4), '_label.png'],'png');
-
-    % print：类似saveas
-%     I = gcf;
-%     print(I, '-dpng', ['U:\my_projs\g_output', filesep, imgSamples(k).name(1:end-4), '_label.png']);
     
     % save data
     save_path = ['U:\my_projs\g_output', filesep, imgSamples(k).name(1:end-4), '_data_edge_count.mat'];
