@@ -86,7 +86,7 @@ public:
         /* 3 run c++ module  */
         /* calculate running time */
         LARGE_INTEGER t1,t2,tc;
-        TypedArray<double> time = factory.createScalar<double>(0);
+//         TypedArray<double> time = factory.createScalar<double>(0);
         QueryPerformanceFrequency(&tc);
         QueryPerformanceCounter(&t1);
 
