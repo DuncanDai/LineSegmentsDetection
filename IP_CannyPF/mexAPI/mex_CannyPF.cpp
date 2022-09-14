@@ -27,9 +27,9 @@
 #include "mexAdapter.hpp"  // matlab API for C++
 #include "opencv2/opencv.hpp"
 
-// relative path to the lib directory
-#include "../include/CannyPF.h"
-#include "../include/ChainFromEdgeMap.h"
+// relative path to the lib directory -> pay attention to the directory change.
+#include "./lib/CannyPF.h"
+#include "./lib/ChainFromEdgeMap.h"
 
 #define IDX(i,j,iSize) ((iSize)*(i)+(j))
 
@@ -48,6 +48,7 @@ class MexFunction : public matlab::mex::Function {
 
     // Create an output stream
     std::ostringstream stream;
+
 public:
     void operator()(ArgumentList outputs, ArgumentList inputs) {
         checkArguments(outputs, inputs);
@@ -85,6 +86,7 @@ public:
         /* 3 run c++ module  */
         /* calculate running time */
         LARGE_INTEGER t1,t2,tc;
+        TypedArray<double> time = factory.createScalar<double>(0);
         QueryPerformanceFrequency(&tc);
         QueryPerformanceCounter(&t1);
 
@@ -101,11 +103,11 @@ public:
         std::vector< std::vector<cv::Point> > edgeChains;
         
         chainer.run(image, edgeMap, edgeChains);
-        
-        
         QueryPerformanceCounter(&t2);
-        time=(double)(t2.QuadPart-t1.QuadPart)/(double)tc.QuadPart; 
-        outputs[0] = factory.create(Scalar)
+
+        time = (double)(t2.QuadPart-t1.QuadPart)/(double)tc.QuadPart; 
+//         outputs[0] = factory.createScalar<double>(0);
+        outputs[0] = std::move(time);
         cout<<"time = "<<time<<endl;  //输出时间（单位：ｓ）
         
         
@@ -127,9 +129,9 @@ public:
 //                 outputs[1][i][j] = *edgePtr++; // attention: ++ operator -> memory overflow
 //             }
 //         outputs[1][output_rows-1][output_cols-1] = *edgePtr;
-        for(i=0; i<output_rows; ++i)
+        for(i=0; i<output_rows; ++i) 
             for(j=0; j<output_cols; ++j){
-                outputs[1][i][j] = *edgePtr++; // attention: ++ operator -> memory overflow
+                outputs[1][i][j] = *edgePtr++; // right hand: row major order
             }
 
         
@@ -142,10 +144,10 @@ public:
         for (auto &edgeChain: edgeChains){
             edgesNumber += edgeChain.size();
         }
-        allEdges = factory.createArray<int> ({edgesNumber, 3}) ;  // the pixel coordinate value is around 3,000  ChainFromEdgeMap.cpp  cv::Point<int>  
+        TypedArray<int> allEdges = factory.createArray<int> ({edgesNumber, 3}) ;  // the pixel coordinate value is around 3,000  ChainFromEdgeMap.cpp  cv::Point<int>  
         stream << "hey I'm here 4+. The (x, y) points pair number is " << edgesNumber << std::endl; displayOnMATLAB(stream); 
         
-        size_t edgeChainSize;
+        size_t chainSize;
         size_t index = 0;
         for(i=0; i<edgeChains.size(); ++i){
             chainSize = edgeChains[i].size();
@@ -234,7 +236,7 @@ private:
         
         
         // check outputs
-        if (outputs.size() != 2) {
+        if (outputs.size() != 3) {
             matlabPtr->feval(u"error", 
                 0, std::vector<Array>({ factory.createScalar("Two outputs required") }));
         }
