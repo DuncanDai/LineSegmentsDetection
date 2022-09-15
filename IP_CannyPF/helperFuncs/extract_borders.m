@@ -83,10 +83,10 @@ else
 end
 
 left_border_index = left_maxIndex(1);
-left_border_pos = left_valid_windows_features(left_border_index, 1);
+left_border_pos = left_valid_windows_features(left_border_index, 1) - windowWidth/2;  % in the left edge of moving window 
 
 right_border_index = right_maxIndex(end);
-right_border_pos = right_valid_windows_features(right_border_index, 1);
+right_border_pos = right_valid_windows_features(right_border_index, 1) + windowWidth/2; % in the right edge of moving window
 
 % 2 corner case: using prior_mandrel_diameter
 % lenth_threshold, number_threshold help to determine whether it's a corner
