@@ -1,4 +1,4 @@
-function save_imshow(image, image_path)
+function save_imshow(image, save_path)
 % example image_path = ['U:\my_projs\g_output', filesep, imgSamples(k).name(1:end-4), '_label.png']
 % example image_path = ['U:\my_projs\g_output', filesep, '_label.png'];
 
@@ -10,7 +10,7 @@ imshow(image,'border','tight','initialmagnification',100);
 % imwrite: input is data, not fig
 % by using `getframe` -> the same as saveas
 f = getframe(gcf);
-imwrite(f.cdata, image_path);
+imwrite(f.cdata, save_path);
 
 close;
 % getimage: no label

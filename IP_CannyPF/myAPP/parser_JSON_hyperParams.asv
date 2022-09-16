@@ -1,0 +1,30 @@
+fname = 'hyperParams.json'; 
+fid = fopen(fname); raw = fread(fid,inf); str = char(raw'); fclose(fid); 
+data = jsondecode(str);
+
+% parameters of CannyPF
+GaussSize = uint8(3);
+VMGradient = 70.0;
+
+% Paser the hyperparameter from JSON file.
+% hyperparameter: scale
+scale_start = data.scale.start;
+scale_step = data.scale.step;
+scale_end = data.scale.end;
+resizeImageHeight = size(img_rgb, 1) / scale;
+resizeImageWidth = size(img_rgb, 2) / scale;
+
+% hyperparameter: windowWidth
+windowWidth_start = data.windowWidth.start;
+windowWidth_start = data.windowWidth.start;
+windowWidth_start = data.windowWidth.start;
+
+% windowStepSize = 5;
+angle_expect = pi/2;
+% angle_tolerance = 5/180*pi;
+% decision_criterion = 'number';  % length/number
+prior_mandrel_percent = 1/3;
+%, prior_mandrel_diameter, lenth_threshold, number_threshold)
+
+
+

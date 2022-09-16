@@ -25,7 +25,7 @@ for k = 3:length(imgSamples)
     VMGradient = 70.0;
     
     ticId = tic;
-    [edgeMap, edgeChains] = mex_CannyPF(img, GaussSize, VMGradient);
+    [runTime, edgeMap, edgeChains] = mex_CannyPF(img, GaussSize, VMGradient);
     toc(ticId)
     
     % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
