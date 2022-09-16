@@ -1,6 +1,5 @@
 fname = 'hyperParams.json'; 
-fid = fopen(fname); raw = fread(fid,inf); str = char(raw'); fclose(fid); 
-data = jsondecode(str);
+data = load_JSON(fname);
 
 % parameters of CannyPF
 GaussSize = uint8(3);

@@ -8,7 +8,7 @@ for i = 1:num_lines
     y1 = lines(i, 2);
     x2 = lines(i, 3);
     y2 = lines(i, 4);
-    line([x1 x2], [y1 y2],'Color','g', 'LineWidth', 1.5); 
+    line([x1 x2], [y1 y2],'Color','g', 'LineWidth', 1.2); 
 end
 end
 

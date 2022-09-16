@@ -12,7 +12,7 @@ function  [left_border_pos, left_maxVal, right_border_pos, right_maxVal, windows
 %       for CannyPF: edgeChains -> use the start and end points in the chain as endpoints
 %       for MCMLSD: two endpoints
 %       The elements in one row of `edges` is (x1, y1, x2, y2)
-%   - scale (default is 4): the scale/resize size in x axis
+%   - scale (default is 1): the scale/resize size in x axis (not used in CannyPF)
 %   - resizeImageWidth (in pixels): the width of the original image (before resizing)
 %   - windowWidth (in pixels): the width of the border (recommended: 10 ~ 40 pixels / scale )
 %   - windowStepSize (in pixels): (recommended: 1/4 of the window width)
@@ -83,10 +83,10 @@ else
 end
 
 left_border_index = left_maxIndex(1);
-left_border_pos = left_valid_windows_features(left_border_index, 1) - windowWidth/2;  % in the left edge of moving window 
+left_border_pos = left_valid_windows_features(left_border_index, 1) - windowWidth/2;  % in the left boundry of moving window 
 
 right_border_index = right_maxIndex(end);
-right_border_pos = right_valid_windows_features(right_border_index, 1) + windowWidth/2; % in the right edge of moving window
+right_border_pos = right_valid_windows_features(right_border_index, 1) + windowWidth/2; % in the right boundry of moving window
 
 % 2 corner case: using prior_mandrel_diameter
 % lenth_threshold, number_threshold help to determine whether it's a corner

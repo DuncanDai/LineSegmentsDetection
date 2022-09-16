@@ -2,7 +2,6 @@ mex cannyPF_mex.cpp CXXFLAGS="\$CXXFLAGS -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp -
 mexOpenCV
 
 
- 
 
 %% 参考
 mex -g cannyPF_mex.cpp ../source/cannyPF.cpp ../source/ChainFromEdgeMap.cpp -I"D:\Program Files\opencv\build\include" -L"D:\Program Files\opencv\build\x64\vc15\lib" -lopencv_world343
@@ -17,16 +16,16 @@ mex -output cannyPF_mex cannyPF_mex.cpp ../source/cannyPF.cpp ../source/ChainFro
     -I"../include" -I"U:/my_apps/opencv/build/include" ...
     -L"U:/my_apps/opencv/build/x64/vc15/lib"  -lopencv_world460 -g -v
 
-%% 在不执行命令的情况下，使用 -n 选项可预览编译命令详细信息。输出包含特定于您的平台和编译器的信息
+% 在不执行命令的情况下，使用 -n 选项可预览编译命令详细信息。输出包含特定于您的平台和编译器的信息
 -n
 
-%% Thinkpad 最新版本
+%% in use: Thinkpad version(up to date)
 mex -output mex_CannyPF ./mex_CannyPF.cpp ./src/cannyPF.cpp ./src/ChainFromEdgeMap.cpp ...
     -I"./lib" -I"C:/My_APPs/2_Engineer/opencv/build/include" ...
     -L"C:/My_APPs/2_Engineer/opencv/build/x64/vc15/lib"  -lopencv_world460 -g 
 
 
-%% Pool 最新版本
+%% in use: Pool version(up to date)
 mex -output mex_CannyPF ./mex_CannyPF.cpp ./src/cannyPF.cpp ./src/ChainFromEdgeMap.cpp ...
     -I"./lib" -I"U:/my_apps/opencv/build/include" ...
     -L"U:/my_apps/opencv/build/x64/vc15/lib"  -lopencv_world460 -g 
