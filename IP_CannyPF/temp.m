@@ -9,3 +9,11 @@ for i = 1:1604
     edge_1 = edgeChains(edgeChains(:, 3) == i, :);
     plot(edge_1(:, 1), edge_1(:, 2), 'color', 'green')  
 end
+
+
+
+y = test_func(0);
+
+test_func(0)
+
+isempty(test_func(0))

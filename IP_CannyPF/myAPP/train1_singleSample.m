@@ -1,9 +1,8 @@
-function [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, hyper_parameters] = train1_singleSample(img_rgb, folderName, imgName, img_save_path) %varargin
+function [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, hyper_parameters] = train1_singleSample(img_rgb, folderName, imgName, save_img_path) %varargin
 % 
 % Inputs:
-%   - imgFoldertPath, 
-%   - imgName
-%   - img_save_path
+%   - img_rgb: output of imshow(imgFile)
+%   - save_img_path
 %   - varargin: a cell Array
 
 % declare global variables in `trainHeader.m`
@@ -21,18 +20,19 @@ global windowStepSize;
 global decision_criter;
 global prior_mandrel_percent;
 
+global label_data
 %% test: specific parameters
-GaussSize = uint8(3);
-VMGradient = 70.0;
-
-scale = 1;
-angle_expect = pi/2;
-angle_tolerance = 5/180*pi;
-
-windowWidth = 40;
-windowStepSize = 10;
-decision_criter = 'number';
-prior_mandrel_percent = 1/3;
+% GaussSize = uint8(3);
+% VMGradient = 70.0;
+% 
+% scale = 1;
+% angle_expect = pi/2;
+% angle_tolerance = 5/180*pi;
+% 
+% windowWidth = 40;
+% windowStepSize = 10;
+% decision_criter = 'number';
+% prior_mandrel_percent = 1/3;
 
 %% run function
 % pay attention to the input format of image
@@ -54,14 +54,20 @@ runTime_matlab = toc(ticId);
 %% calculate the output data
 % 1 runTime_c, runTime_matlab  ->  ok!
 % 2 windows_features: elements in one row (pos, number, length, length/number)  ->  ok!
-% 3 left_border_pos, right_border_pos; left_border_label,
-% right_border_label -> metric: MRSE
-label_file = 'U:\my_projs\LineSegmentsDetection\dataset\mandrel_border_labels_manually.json';  % absolut path of label file
-label_data = load_label(label_file);
+% 3 left_border_pos, right_border_pos ->  ok!
+% left_border_label, right_border_label -> metric: MRSE
 
-[left_border_label, right_border_label] = get_label(label_data, folderName, imgName);
+%%% DINGGEN excellent: this combines the training and validation processes together. 
+% for training(there is no label) -> but still get the wanted output data
+try
+    [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);
+catch ME
+    fprintf('Reminder: the image "%s" in folder  %s has no label data!!!\n', imgName, folderName);
+    left_border_label = 0;  % if assign the value `[]`, the following calc_RMSE() function couldn't work 
+    right_border_label = 0;
+end 
+
 metric_RMSE = calc_RMSE(left_border_pos,left_border_label,right_border_pos,right_border_label);
-
 % 4 Hyperparameters: use a struct Array
 hyper_parameters = struct('scale', scale, 'angle_expect', angle_expect, 'angle_tolerance', angle_tolerance, ...
                             'windowWidth', windowWidth, 'windowStepSize', windowStepSize, 'decision_criter', decision_criter, ...
