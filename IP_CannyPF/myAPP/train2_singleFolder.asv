@@ -1,16 +1,16 @@
-function train2_singleFolder(folderName, imgInputPath, imgOutputPath)
+function train2_singleFolder(imgSingleFolder, imgInputPath, imgOutputPath)
 % for test: 
 % imgInputPath = ['U:\my_projs\imgSamples', filesep, imgFolder]; 
 % imgOutputPath = ['U:\my_projs\g_output', filesep, imgFolder]; mkdir(imgOutputPath);
 
-imgFoldertPath = [imgInputPath, filesep, folderName]; 
-imgOutputPath = [imgOutputPath, filesep, folderName]; mkdir(imgOutputPath);
+imgFoldertPath = [imgInputPath, filesep, imgSingleFolder]; 
+imgOutputPath = [imgOutputPath, filesep, imgSingleFolder]; mkdir(imgOutputPath);
 
 imgSamples = dir(imgFoldertPath);
 imgNumber = length(imgSamples)-2;  % the first two elements are `.` and `..`
 
 output_data = cell(imgNumber, 11); % 11 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_pos, left_label, right_pos, right_label, metric, hyperparameters)
-output_data(:, 1) = {folderName};  % output_data is a cellArray.
+output_data(:, 1) = {imgSingleFolder};  % output_data is a cellArray.
 
 for k = 3:imgNumber+2
     imgName = imgSamples(k).name; output_data{k-2, 2} = imgName;
@@ -23,12 +23,12 @@ for k = 3:imgNumber+2
         continue
     end 
     
-    %%% Adjustable: modify the outputs
-    [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, hyper_parameters] = train1_singleSample(img_rgb, folderName, imgName, img_save_path) ;
-    %%% TODO Adjustable: if left_border_pos == 1
-    output_data(k-2, 3:end) = {runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, hyper_parameters};
+    %%% TODO: modify the outputs
+    [runTime, runTime_matlab, left_border_pos, left_maxVal, right_border_pos, right_maxVal, windows_features] = train1_singleSample(img_rgb，imgFoldertPath, imgName, img_save_path);
+    %%% TODO: if left_border_pos == 1
+    output_data(k-2, 3:end) = {runTime, runTime_matlab, left_border_pos, left_maxVal, right_border_pos, right_maxVal, windows_features};
 end
 
 % save data
-data_save_path = [imgOutputPath, filesep, 'output_data.mat'];
+data_save_path = [imgOutputPath, filesep, 'outputData.mat'];
 save(data_save_path, 'output_data');
