@@ -43,7 +43,7 @@ for k = 3:length(imgSamples)
     ticId = tic;
     %the lines variable contains the detected line segmentations it arranged as
     %[x1 y1 x2 y2 probability]
-    %The fullLines are the detected lines. It is arranged as [rho theta probability]
+    % The fullLines are the detected lines by PHT. It is arranged as [rho theta probability]
     [lines, fullLines] =lineSegmentation_HighRes(img, kernels, kernels_flip, kernel_params);
     display('Total time');
     toc(ticId)

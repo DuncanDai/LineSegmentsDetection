@@ -503,7 +503,7 @@ bool MetaLine::crossingCheck(Point2f pts,Point2f pte,int ID)
 				if (e0==1||e1==1||e2==1)
 				{
 					float angleEdge=0;
-					int Rnt=crossSearch(Point2i(xInt,yInt), angleEdge,ID); // 1for finding a edge chain, 0 for non, -1 for another line segment
+					int Rnt=crossSearch(Point2i(xInt,yInt), angleEdge,ID); // 1 for finding a edge chain, 0 for non, -1 for another line segment
 					if (Rnt)
 					{
 						if ((abs(angle-angleEdge)>CV_PI/6.0)||(CV_PI-abs(angle-angleEdge)>CV_PI/6.0))
@@ -548,7 +548,7 @@ bool MetaLine::crossingCheck(Point2f pts,Point2f pte,int ID)
 				if (e0==1||e1==1||e2==1)
 				{
 					float angleEdge=0;
-					int Rnt=crossSearch(Point2i(xInt,yInt), angleEdge,ID); // 1for finding a edge chain, 0 for non, -1 for another line segment
+					int Rnt=crossSearch(Point2i(xInt,yInt), angleEdge,ID); // 1 for finding a edge chain, 0 for non, -1 for another line segment
 					if (Rnt)
 					{
 						if ((abs(angle-angleEdge)>CV_PI/6.0)||(CV_PI-abs(angle-angleEdge)>CV_PI/6.0))

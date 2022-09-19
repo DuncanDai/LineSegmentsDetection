@@ -1,4 +1,4 @@
-function [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, hyper_parameters] = train1_singleSample(img_rgb, folderName, imgName, save_img_path) %varargin
+function [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, save_img_path) 
 % 
 % Inputs:
 %   - img_rgb: output of imshow(imgFile)
@@ -69,9 +69,9 @@ end
 
 metric_RMSE = calc_RMSE(left_border_pos,left_border_label,right_border_pos,right_border_label);
 % 4 Hyperparameters: use a struct Array
-hyper_parameters = struct('scale', scale, 'angle_expect', angle_expect, 'angle_tolerance', angle_tolerance, ...
-                            'windowWidth', windowWidth, 'windowStepSize', windowStepSize, 'decision_criter', decision_criter, ...
-                            'prior_mandrel_percent', prior_mandrel_percent);
+% hyper_parameters = struct('scale', scale, 'angle_expect', angle_expect, 'angle_tolerance', angle_tolerance, ...
+%                             'windowWidth', windowWidth, 'windowStepSize', windowStepSize, 'decision_criter', decision_criter, ...
+%                             'prior_mandrel_percent', prior_mandrel_percent);
 
 %% plot and output
 % during analying the output_data: stop to plot and save the image

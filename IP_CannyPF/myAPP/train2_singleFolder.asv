@@ -22,10 +22,10 @@ imgNumber = length(imgSamples)-2;  % the first two elements are `.` and `..`
 %%% create table
 sz = [imgNumber OUTPUT_ELEMENTS];
 varTypes = {'string', 'string', 'double', 'double', 'double', 'double', 'double', 'double', 'double', 'double', ...
-    'double', 'double', 'double', 'uint16', 'uint16', 'string', 'double'};  % by using class()
-varNames = {"folderName", "imgName", "runTime_cpp", "runTime_matlab", "windows_features", "left_border_pos", "left_border_label", "right_border_pos", "right_border_label", "metric_RMSE", ...
+    };  % by using class()
+varNames = {"runTime_cpp", "runTime_matlab", "windows_features", "left_border_pos", "left_border_label", "right_border_pos", "right_border_label", "metric_RMSE", ...
     "scale", "angle_expect", "angle_tolerance", "windowWidth", "windowStepSize", "decision_criter", "prior_mandrel_percent"};
-output_data = table('Size',sz, 'VariableTypes',varTypes, 'VariableNames',varNames);
+output_data = table('Size',sz,'VariableNames',varNames);
 output_data(:, 1) = {folderName};
 
 

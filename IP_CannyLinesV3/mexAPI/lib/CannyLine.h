@@ -17,7 +17,7 @@ public:
 	CannyLine(void);
 	~CannyLine(void);
 
-	static void cannyLine(cv::Mat &image,std::vector<std::vector<float> > &lines);
+	static void cannyLine(cv::Mat &image, std::vector<std::vector<float> > &lines);
 };
 
 #endif // _CANNY_LINE_H_
