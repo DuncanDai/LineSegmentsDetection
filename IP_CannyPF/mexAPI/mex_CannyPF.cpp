@@ -96,8 +96,8 @@ public:
         std::vector< std::vector<cv::Point> > edgeChains;
         
         chainer.run(image, edgeMap, edgeChains);
+        
         QueryPerformanceCounter(&t2);
-
         time = (double)(t2.QuadPart-t1.QuadPart)/(double)tc.QuadPart; 
         cout << "Running time = " << time * 1000 << "ms" << endl;  //output: ms
         
