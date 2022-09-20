@@ -37,9 +37,9 @@ resizeImageWidth = size(img_rgb, 2) / scale;
 if FLAG_VALID == 1
     k = 1;
     for scale = 1  % 5 values -> stepsize: 0.2
-        for windowWidth = 2 : 2 : 200  % 20 values -> stepsize: 4 -> up to 80
+        for windowWidth = 2 : 2 : 120  % 20 values -> stepsize: 4 -> up to 80
             for windowStepSize = 1 : 3 : 40  % 5 values -> stepsize: 3  -> up to 15
-                for angle_tolerance = (0 : .1 : 30) * pi /180  % unit is rad   20 values -> stepsize: 0.5  -> up to 10
+                for angle_tolerance = (0 : .2 : 30) * pi /180  % unit is rad   20 values -> stepsize: 0.5  -> up to 10
                     for i = 1 : 3   % 3 values
                         decision_criter = decision_criterion{i, 1};  
                         %%% IMPORTANT: here put the training/validation process
@@ -74,7 +74,7 @@ if FLAG_VALID == 1
                         output_data(k, 3:end) = {runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent};
                         k = k + 1;
                         if ~mod(k, 1000)
-                            fprintf('Now: %d k sets of hyperparameter have been tested... \n', k);
+                            fprintf('Now: %d sets of hyperparameter have been tested... \n', k);
 
 %                             save_data_path = ['U:\my_projs\g_output', filesep, 'output_data_validSingleSample.mat'];
 %                             save(save_data_path, 'output_data');

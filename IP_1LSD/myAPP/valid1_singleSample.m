@@ -9,7 +9,7 @@ global output_data;
 OUTPUT_ELEMENTS = 2 + 15;  % see train2_singleFolder.m
 
 %%% create table
-sz = [10000 OUTPUT_ELEMENTS];
+sz = [500000 OUTPUT_ELEMENTS];
 varTypes = {'string', 'string', 'double', 'double', 'cell', 'double', 'double', 'double', 'double', 'double', ...
     'double', 'double', 'double', 'uint16', 'uint16', 'string', 'double'};  % by using class()
 varNames = {'folderName', 'imgName', 'runTime_cpp', 'runTime_matlab', 'windows_features', 'left_border_pos', 'left_border_label', 'right_border_pos', 'right_border_label', 'metric_RMSE', ...
