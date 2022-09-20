@@ -26,8 +26,8 @@ void run_edge_detecter(Mat &image, vector<Vec4f> &edgeLines) {
     
     chainer.run(image, edgeMap, edgeChains);
     
-    
     // compose edgeLines from edgeChains
+    // only takes 0.0001616s, the main program above takes 0.689525s （but in mexAPI takes 0.3s, when implemented there）
     size_t edgeChainsNumber = edgeChains.size();
     edgeLines.resize(edgeChainsNumber); // edgeLines will be declared in mex API
     for (unsigned int i=0; i<edgeChainsNumber; ++i){
