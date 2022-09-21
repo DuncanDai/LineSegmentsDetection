@@ -1,14 +1,18 @@
 【Source Code Files Overview】 2022.08.26 win10
-root/main: demo_start_v2.m
-dir v2: the main MCMLSD 
-dir code: the main supporting code
+root: BACKUP_of_demo.m
+dir Toolkit/mcmlsdV2: the main MCMLSD 
+dir Toolkit/code: the main supporting code
 	- dir ElderZuckerEdgeDetector: API
 	- dir mexfiles: the main supporting code
 	- dir parameters
 	- dir utils 
-dir edges-master: API package (entire project)
-dir Imgs: data
+dir Toolkit/edges-master: API package (entire project)
+dir Resources: image data
 
+// my application
+dir helperFuncs
+dir helperPlots
+dir myApp
 
 ================================================================================
 ### source code file types
@@ -23,6 +27,8 @@ from .m -> use Matlab Coder -> .mex
 
 ================================================================================
 【step1: .c code -> mex file】by using matlab compiler: mex
+The files are in dir dir Toolkit/code/mexfiles
+
 many function in the line segmentation algorithm were mex file, if you are using
 windows or linux system, please recompile following c code into mex file.
     mexRemoveVotes_v3_scale.c

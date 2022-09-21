@@ -1,6 +1,0 @@
-【my info】
-# path
-['..\imgSamples', filesep, xxx]
-
-# file
-['../imgSamples', filesep, 'test1.png']
