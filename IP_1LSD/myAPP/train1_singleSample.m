@@ -149,5 +149,7 @@ end
 % imwrite(f.cdata, save_img_path);
 
 % close;
+%% at last: record variables in debug modul
+printf("Here is a debug point: for check some variables");
 end
 

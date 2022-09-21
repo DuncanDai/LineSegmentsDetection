@@ -4,3 +4,6 @@ img = double(img_gray);
 
 [runTime_cpp, edgeLines] = mex_edgeDetecter(img);
 
+%%
+addpath('../helperPlots');
+draw_lines(edgeLines);

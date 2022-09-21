@@ -1,0 +1,6 @@
+{"scale": {"start": 1,  "step": 1, "end": 8 },  
+ "windowWidth": {"start": 1, "step": 5, "end": 60 },  
+ "windowStepSize": {"start": 1, "step": 1, "end": 15 }, 
+ "angle_tolerance": {"start": 0, "step": 1, "end": 10 },  
+ "decision_criterion": ["number", "length", "length/number" ]}
+
