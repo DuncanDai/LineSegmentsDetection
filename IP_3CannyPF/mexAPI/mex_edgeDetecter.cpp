@@ -2,7 +2,7 @@
  *  the general API for LSD, EDLines, CannyPF and CannyLines
  * 
  *  In C++: 
- *      void edge_detecter(Mat &image, vector<Vec4f> &edgeLines)
+ *      void run_edge_detecter(Mat &image, vector<Vec4f> &edgeLines)
  *
  *  In Matlab:
  *      inputs[0]: 8 bit grayscale image (double)
@@ -24,7 +24,7 @@
 
 #include "mex.hpp"
 #include "mexAdapter.hpp"  // matlab API for C++
-#include "opencv2/opencv.hpp"  // there are some other header of opencv2
+#include "opencv2/opencv.hpp"  // there are some other header of opencv2 in opencv.hpp
 
 // relative path to the lib directory -> pay attention to the directory change.
 #include "./lib/run_edge_detecter.hpp"
@@ -68,9 +68,8 @@ public:
                 image.at<uchar>(i, j) = (uint8_t) (imageFromMatlab[i][j] * 255);  // from matlab(column major order (row, col)) to C++(row major order (col, row)) 
 
         
-        /////////////////////////////////////////
-        /* 3 run c++ module  */
-        /* 3.1 calculate running time */
+        /////* 3 run c++ module  */////
+        // calculate running time
         LARGE_INTEGER t1,t2,tc;
         QueryPerformanceFrequency(&tc);
         QueryPerformanceCounter(&t1);
@@ -149,6 +148,3 @@ private:
         
     }
 };
-
-
-

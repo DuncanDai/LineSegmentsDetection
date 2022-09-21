@@ -15,6 +15,7 @@ imgSamples
 
 # output of matlab
 *.mat
+*.fig
 
 # Prerequisites
 *.d

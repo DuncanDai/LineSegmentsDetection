@@ -7,14 +7,20 @@
 using namespace std;
 using namespace cv;
 
-// `edge_detecter` works like main function: if not be called, no need to create .h file
+// `edge_detecter` works as main function: if it's not called, then there is no need to create .h file
 // image: grayscale CV_8UC1
 void run_edge_detecter(Mat &image, vector<Vec4f> &edgeLines) {
-// 	Ptr< LineSegmentDetector >  lsd = createLineSegmentDetector(LSD_REFINE_ADV, 1.0);  // scale = 1.0; LSD_REFINE_ADV: 1s 2435 edgeLines vs LSD_REFINE_NONE: 0.56s 579 edgeLines
-    Ptr< LineSegmentDetector >  lsd = createLineSegmentDetector(LSD_REFINE_STD, 1.0);  // LSD_REFINE_STD 0.96s  3668 edgeLines
+    // scale = 1.0;  
+    Ptr< LineSegmentDetector >  lsd = createLineSegmentDetector(LSD_REFINE_STD, 1.0);  
+    // Results:
+    // LSD_REFINE_NONE: 0.56s   579 edgeLines
+    // LSD_REFINE_STD   0.96s  3668 edgeLines
+    // LSD_REFINE_ADV:     1s  2435 edgeLines
+    
 	lsd->detect(image, edgeLines); // other parameters aren't needed
 // 	lsd->drawSegments(image, edgeLines);
 }
+
 
 // int main() {
 // 	string image_path = "test1.png";

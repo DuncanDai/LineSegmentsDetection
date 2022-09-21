@@ -1,5 +1,9 @@
 function lines = compose_line_from_edgeChains(edgeChains)
 % take the start and end points of one edgeChain to compose a line
+% Usage: only for (old)mex_CannyPF.cpp -> (old)mex_CannyPF.mexw64
+%   [runTime_cpp, edgeMap, edgeChains] = mex_CannyPF(img, GaussSize, VMGradient);
+%   edgeLines = compose_line_from_edgeChains(edgeChains);
+
 edgeChain_number = edgeChains(end, 3);
 
 lines = zeros(edgeChain_number, 4);

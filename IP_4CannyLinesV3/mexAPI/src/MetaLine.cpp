@@ -1295,7 +1295,7 @@ bool MetaLine::smartRouting(clusters_list_t &segments,float minDeviation,int min
 		Point mid=Point(strings[i][strings[i].size()/2].x,strings[i][strings[i].size()/2].y);
 		cv::putText(stringsImage,text,mid,1,1,colors[i%7],1);
 	}
-//  	imwrite("U:\\\\my_projs\\g_output\\12345stringsImage.bmp", stringsImage);  // in c denied!
+//  	imwrite("U:\\\\my_projs\\g_output\\CannyLines_12345 clusters.bmp", stringsImage);  // in c denied!
 //  	imshow("",stringsImage);
 //  	cv::waitKey(0);
 
@@ -1338,7 +1338,7 @@ bool MetaLine::smartRouting(clusters_list_t &segments,float minDeviation,int min
 		Point mid=times*cv::Point(int(segments[i].pixels[segments[i].size/2].x),int(segments[i].pixels[segments[i].size/2].y));
 		//cv::putText(clustersImage,text,mid,1,1,colors[i%7],1);
 	}
-	imwrite("C:\\12345clustersImage.bmp",clustersImage);
+// 	imwrite("U:\\\\my_projs\\g_output\\CannyLines_12345 clusters+string.bmp",clustersImage);
 // 	imshow(" ",clustersImage);
 // 	cv::waitKey(0);
 
