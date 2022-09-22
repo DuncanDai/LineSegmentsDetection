@@ -1,12 +1,15 @@
 function train3_folders(imgInputPath, imgOutputPath)
-% imgInputPath = 'U:\my_projs\imgSamples';  % includes image folders 
-% imgOutputPath = 'U:\my_projs\g_output';
+global flag_quit;
+
 folders = dir(imgInputPath);
 foldersNumber = length(folders)-2;
 
-for k = 3:foldersNumber+2
-    folderName = folders(k).name;
-    train2_singleFolder(folderName, imgInputPath, imgOutputPath);
+for n = 3:foldersNumber+2
+    folderName = folders(n).name;
+    train2_singleFolder(imgInputPath, folderName, imgOutputPath);
+    if flag_quit  % set in 'main1_train.m' line 72
+        return
+    end
 end
 
 end

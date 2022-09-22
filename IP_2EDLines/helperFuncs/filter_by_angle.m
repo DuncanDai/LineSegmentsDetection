@@ -10,6 +10,6 @@ function valid_inds = filter_by_angle(angles, angleExpect, angleTolerance)
 low = angleExpect - angleTolerance;
 high = angleExpect + angleTolerance;
 
-valid_inds = find(angles >= low & angles <= high);
+valid_inds = find(angles >= low & angles < high);
 end
 

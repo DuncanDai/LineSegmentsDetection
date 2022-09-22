@@ -5,7 +5,7 @@
  *      void run_edge_detecter(Mat &image, vector<Vec4f> &edgeLines)
  *
  *  In Matlab:
- *      inputs[0]: 8 bit grayscale image (double)
+ *      inputs[0]: 8 bit grayscale image (uint8_t)
  *      
  *      outputs[0]: run time of cpp function in this mex_edgeDetecter.cpp
  *      outputs[1]: edgeLines elements in one row -> （x1, y1, x2, y2）
@@ -62,10 +62,10 @@ public:
         cv::Mat image(cv::Size( (int)cols, (int)rows ), CV_8UC1, Scalar(0));
         vector<Vec4f> edgeLines;
 
-        const TypedArray<double> imageFromMatlab = std::move(inputs[0]);   // Issue: inputs[0] from Matlab needs to the same double type, otherwise, Can't convert the Array(uint8s) to this TypedArray
+        const TypedArray<uint8_t> imageFromMatlab = std::move(inputs[0]);   // Issue: inputs[0] from Matlab needs to the same double type, otherwise, Can't convert the Array(uint8s) to this TypedArray
         for(i=0; i<rows; ++i)
             for(j=0; j<cols; ++j)
-                image.at<uchar>(i, j) = (uint8_t) (imageFromMatlab[i][j] * 255);  // from matlab(column major order (row, col)) to C++(row major order (col, row)) 
+                image.at<uchar>(i, j) = imageFromMatlab[i][j];  // from matlab(column major order (row, col)) to C++(row major order (col, row)) 
 
         
         /////* 3 run c++ module  */////
@@ -103,7 +103,7 @@ public:
             edgeLinesInMatlab[i][3] = edgeLines[i][3] + 1;
         }
 
-        stream << "hey I'm OK!" << std::endl; displayOnMATLAB(stream);
+        stream << "Finished!!!" << std::endl; displayOnMATLAB(stream);
         outputs[1] = std::move(edgeLinesInMatlab); 
     }
 
@@ -128,10 +128,10 @@ private:
         }
         
         // inputs[0] is double grayscale image -> Matrix/Array
-        if (inputs[0].getType() != ArrayType::DOUBLE ||
-            inputs[0].getType() == ArrayType::COMPLEX_DOUBLE) {
+        if (inputs[0].getType() != ArrayType::UINT8 ||
+            inputs[0].getType() == ArrayType::COMPLEX_UINT8) {
             matlabPtr->feval(u"error", 
-                0, std::vector<Array>({ factory.createScalar("Input[0] image must be in type DOUBLE") }));
+                0, std::vector<Array>({ factory.createScalar("Input[0] image must be in type UINT8") }));
         }
         
         if (inputs[0].getDimensions().size() != 2) {

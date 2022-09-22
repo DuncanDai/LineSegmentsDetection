@@ -1,5 +1,13 @@
 %% version in use: in Pool  -> (up to date)
-% run in `mexAPI` Workspace
+% Note: run in `mexAPI` Workspace
 mex -output mex_edgeDetecter ./mex_edgeDetecter.cpp ./src/run_edge_detecter.cpp ...
     -I"./lib"  -I"U:/my_apps/myOpencv/install/include" ...
     -L"U:/my_apps/myOpencv/install/x64/vc16/lib"  -lopencv_world460 -g 
+
+
+%% version in use: in my personal PC  -> (up to date)
+% Note: run in `mexAPI` Workspace
+mex -output mex_edgeDetecter ./mex_edgeDetecter.cpp ./src/run_edge_detecter.cpp ...
+    -I"./lib"  -I"C:/My_APPs/2_Engineer/myOpencv/install/include" ...
+    -L"C:/My_APPs/2_Engineer/myOpencv/install/x64/vc16/lib"  -lopencv_world460 
+%-g 
