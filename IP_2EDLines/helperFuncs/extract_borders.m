@@ -82,11 +82,13 @@ else
     error('the decision_criterion should be "number" or "length" ');
 end
 
+% valid region of moving window: in the left side of mandrel ->  (1/2 - prior_mandrel_percent/2)
 left_border_index = left_maxIndex(1);
-left_border_pos = left_valid_windows_features(left_border_index, 1) - windowWidth/2;  % in the left boundry of moving window 
+left_border_pos = left_valid_windows_features(left_border_index, 1) - windowWidth/2;  
 
+% valid region of moving window: in the right side of mandrel -> (1/2 + prior_mandrel_percent/2)
 right_border_index = right_maxIndex(end);
-right_border_pos = right_valid_windows_features(right_border_index, 1) + windowWidth/2; % in the right boundry of moving window
+right_border_pos = right_valid_windows_features(right_border_index, 1) + windowWidth/2; 
 
 % 2 corner case: using prior_mandrel_diameter
 % lenth_threshold, number_threshold help to determine whether it's a corner

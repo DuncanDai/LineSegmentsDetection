@@ -23,19 +23,16 @@ index = 1;
 %% configure: different paths
 %%% general path in Pool
 imgInputPath = 'U:/my_projs/imgSamplesSubTest';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
-save_img_path = 'U:/my_projs/g_output/train_single.png';
 imgOutputPath = 'U:/my_projs/g_output';
 
 
 %%% general path in PC
 imgInputPath = 'D:/My_Data/me_Projs/Proj_MA/images';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
-save_img_path = 'D:/My_Data/me_Projs/Proj_MA/g_output/train_single.png';
 imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
 
 
 %%% path in portable HDD
 imgInputPath = 'E:\dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
-save_img_path = 'D:/My_Data/me_Projs/Proj_MA/g_output/train_single.png';
 imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
 
 

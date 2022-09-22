@@ -1,8 +1,8 @@
-function train2_singleFolder(imgInputPath, folderName, imgOutputPath)
+function train2_singleFolder(imgInputPath, folderName, imgOutputFolder)
 global flag_quit;
 
 imgFoldertPath = [imgInputPath, filesep, folderName]; 
-imgOutputPath = [imgOutputPath, filesep, folderName]; mkdir(imgOutputPath);
+imgOutputFolder = [imgOutputFolder, filesep, folderName]; mkdir(imgOutputFolder);
 
 imgSamples = dir(imgFoldertPath);
 imgNumber = length(imgSamples)-2;  % the first two elements are `.` and `..`
@@ -16,7 +16,6 @@ imgNumber = length(imgSamples)-2;  % the first two elements are `.` and `..`
 
 for n = 3:imgNumber+2
     imgName = imgSamples(n).name; 
-    save_img_path = [imgOutputPath, filesep, imgName(1:end-4), '.png'];
     
     try
         img_rgb = imread([imgFoldertPath, filesep, imgName]);
@@ -26,7 +25,7 @@ for n = 3:imgNumber+2
     end 
     
     % keep the output name here: use it in debug to check the output values
-    [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, save_img_path);
+    [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputFolder);
     if flag_quit  % set in 'main1_train.m' line 72
         return
     end

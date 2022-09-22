@@ -133,14 +133,11 @@ end
 figure;
 imshow(img_gray, 'border', 'tight', 'initialmagnification', 100);  % image is uint8 grayscale
 hold on
-% issue: When there is no edgeLines after the angle fitering, the function
-% will raise an error
-draw_lines(full_edges_filter_by_angle);  legend('detected line segments');
+% issue: When there is no edgeLines after 
+plt1 = draw_lines(full_edges_filter_by_angle);  
 plt2 = draw_borders(left_border_pos, right_border_pos, resizeImageHeight, ':b');  
 plt3 = draw_borders(left_border_label, right_border_label, resizeImageHeight, '-or'); 
-% legend([plt1 plt2 plt3], 'detected line segments', 'border predictions', 'border labels'); 
-legend([plt2 plt3], 'border predictions', 'border labels'); 
-
+legend([plt1 plt2 plt3], 'detected line segments', 'border predictions', 'border labels'); 
 
 %% Output
 save_img_path = [imgOutputPath, filesep, folderName, filesep, imgName];

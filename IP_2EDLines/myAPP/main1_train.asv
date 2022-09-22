@@ -9,12 +9,11 @@
 %       - imgName
 %       - imgOutputPath
 % 
-% Things you need to modify for testing
-%   1 set the optimized hyperparameters (in line 25)
+% Things you need to modify for training
+%   1 initial hyperparameters (in 'main0_header.m': line 11)
 %   2 index limit: set the limitation for index of output_data (in 'train1_singleSample.m': line 25)
 %   3 plot and analyzing (in 'train1_singleSample.m': line 118)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %% run script: 
 clear; clc; close;
 main0_header;
@@ -26,6 +25,7 @@ index = 1;
 %% configure: different paths
 %%% general path in Pool
 imgInputPath = 'U:/my_projs/imgSamplesSubTest';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
+save_img_path = 'U:/my_projs/g_output/train_single.png';
 imgOutputPath = 'U:/my_projs/g_output';
 
 
@@ -49,27 +49,16 @@ end
 
 clear left_border_label  right_border_label;
 
-
-%% TODO: optimized hyperparameters
-scale = 1;
-resizeImageHeight = size(img_rgb, 1) / scale;
-resizeImageWidth = size(img_rgb, 2) / scale;
-
-angle_expect = pi/2;
-angle_tolerance = 5/180*pi;
-
-windowWidth = 40;
-windowStepSize = 10;
-decision_criter = 'number';
-prior_mandrel_percent = 1/3;
-
-%% test all folders
+%% train single sample
+img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
+[runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
 
 
-% TODO: imgInputPath (imgOutputPath is determained according to the platform: Pool or PC)
-imgInputPath = ; % portable HDD or network driver
+%% train single folder
+train2_singleFolder(imgInputPath, folderName, imgOutputPath);
 
 
+%% train all folders
 t1 = datestr(now);
 train3_folders(imgInputPath, imgOutputPath);
 t2 = datestr(now);
@@ -84,6 +73,6 @@ fname = ['output_data_', ...
               num2str(t(4:5), '%02d'), '.mat']; % hour min
 
 
-save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
+save_data_path = [imgOutputPath, filesep, folderName, filesep, fname]; mkdir([imgOutputPath, filesep, folderName]);
 save(save_data_path, 'output_data');
 clear PC_path  Pool_path  t  fname  save_data_path;

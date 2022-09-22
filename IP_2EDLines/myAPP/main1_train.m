@@ -25,19 +25,16 @@ index = 1;
 %% configure: different paths
 %%% general path in Pool
 imgInputPath = 'U:/my_projs/imgSamplesSubTest';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
-save_img_path = 'U:/my_projs/g_output/train_single.png';
 imgOutputPath = 'U:/my_projs/g_output';
 
 
 %%% general path in PC
 imgInputPath = 'D:/My_Data/me_Projs/Proj_MA/images';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
-save_img_path = 'D:/My_Data/me_Projs/Proj_MA/g_output/train_single.png';
 imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
 
 
 %%% path in portable HDD
 imgInputPath = 'E:\dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
-save_img_path = 'D:/My_Data/me_Projs/Proj_MA/g_output/train_single.png';
 imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
 
 
@@ -52,8 +49,9 @@ end
 clear left_border_label  right_border_label;
 
 %% train single sample
+% This helps to check_result
 img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
-[runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, save_img_path);
+[runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
 
 
 %% train single folder
