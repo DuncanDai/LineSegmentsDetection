@@ -10,17 +10,20 @@ global decision_criter;
 global prior_mandrel_percent;
 
 %% copy from table
-row = 114;
+row = 44;
+output = output_data1;  %%%
 
-folderName = output_data.folderName(row);  folderName = char(folderName);
-imgName = output_data.imgName(row);  imgName = char(imgName);
-scale = output_data.scale(row); resizeImageHeight = size(img_rgb, 1) / scale;  resizeImageWidth = size(img_rgb, 2) / scale;
-angle_expect = output_data.angle_expect(row);
-angle_tolerance = output_data.angle_tolerance(row);
-windowWidth = output_data.windowWidth(row); windowWidth = double(windowWidth);
-windowStepSize = output_data.windowStepSize(row); windowStepSize = double(windowStepSize);
-decision_criter = output_data.decision_criter(row); decision_criter = char(decision_criter);
-prior_mandrel_percent = output_data.prior_mandrel_percent(row);
+folderName = output.folderName(row);  folderName = char(folderName);
+imgName = output.imgName(row);  imgName = char(imgName);
+scale = output.scale(row); 
+resizeImageHeight = size(img_rgb, 1) / scale;  resizeImageWidth = size(img_rgb, 2) / scale;
+
+angle_expect = output.angle_expect(row) ;
+angle_tolerance = output.angle_tolerance(row)  ;
+windowWidth = output.windowWidth(row); windowWidth = double(windowWidth);
+windowStepSize = output.windowStepSize(row); windowStepSize = double(windowStepSize);
+decision_criter = output.decision_criter(row); decision_criter = char(decision_criter);
+prior_mandrel_percent = output.prior_mandrel_percent(row);
 
 %%
 imgInputPath = 'E:\dataset_valid';  imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';

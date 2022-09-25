@@ -5,7 +5,7 @@
  *      void run_edge_detecter(Mat &image, vector<Vec4f> &edgeLines)
  *
  *  In Matlab:
- *      inputs[0]: 8 bit grayscale image (double)
+ *      inputs[0]: 8 bit grayscale image (uint)
  *      
  *      outputs[0]: run time of cpp function in this mex_edgeDetecter.cpp
  *      outputs[1]: edgeLines elements in one row -> （x1, y1, x2, y2）

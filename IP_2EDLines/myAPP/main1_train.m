@@ -21,7 +21,6 @@ main0_header;
 FLAG_VALID = 0;  % only for valid process: flag is 1
 index = 1;
 
-
 %% configure: different paths
 %%% general path in Pool
 imgInputPath = 'U:/my_projs/imgSamplesSubTest';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
@@ -43,13 +42,12 @@ try
     [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);  % image name with .png
     fprintf('Result: the border labels are (%d, %d)\n', left_border_label, right_border_label);
 catch ME
-    fprintf('Reminder: the image "%s" in folder  %s is not existed in the label.json file, that means a invalid field of struct array in matlab!!!\n', imgName, folderName);
+    fprintf('(in main1_train.m): the image "%s" in folder  %s is not existed in the label.json file, that means a invalid field of struct array in matlab!!!\n', imgName, folderName);
 end 
 
 clear left_border_label  right_border_label;
 
 %% train single sample
-% This helps to check_result
 img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
 [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
 
@@ -66,9 +64,8 @@ t2 = datestr(now);
 
 %% save data
 t = clock; % Get current time
-% example: output_data_20220922_1347.mat
-fname = ['output_data_', ...
-              num2str(t(1:1), '%04d'), ...  % Year
+% example: out_train_0922_1347.mat
+fname = ['out_train_', ...
               num2str(t(2:3), '%02d'), '_', ...   % -month-day_
               num2str(t(4:5), '%02d'), '.mat']; % hour min
 

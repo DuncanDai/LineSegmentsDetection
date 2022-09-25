@@ -55,7 +55,7 @@ public:
         const size_t rows       = dims[0]; 
         const size_t cols       = dims[1];
         size_t i, j;
-        stream << "Image size (rows, cols): (" << rows << " ," << cols << ")"  << std::endl; displayOnMATLAB(stream);
+        stream << "\nImage size (rows, cols): (" << rows << " ," << cols << ")"  << std::endl; displayOnMATLAB(stream);
 
         /* 2 Data type convertion: from Matlab to C++  */
         // NOTE: input[0] is double image -> OpenCV Canny() requires 8-bit input image
@@ -83,7 +83,7 @@ public:
         time = (double)(t2.QuadPart-t1.QuadPart)/(double)tc.QuadPart; 
         double timeEnd = ((double)getTickCount() - timeStart) / getTickFrequency();
         cout << "Running time in C++ = " << time << "s" << endl;  //output: ms
-        cout << "Running time in OpenCV = " << timeEnd  << "s" << endl;  //output: ms
+//         cout << "Running time in OpenCV = " << timeEnd  << "s" << endl;  //output: ms
         /////////////////////////////////////////
 
         /* 4 Data type convertion: from C++ to Matlab */
@@ -103,7 +103,7 @@ public:
             edgeLinesInMatlab[i][3] = edgeLines[i][3] + 1;
         }
 
-        stream << "Finished!!!" << std::endl; displayOnMATLAB(stream);
+        stream << "Finished!!!\n" << std::endl; displayOnMATLAB(stream);
         outputs[1] = std::move(edgeLinesInMatlab); 
     }
 

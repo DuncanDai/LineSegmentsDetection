@@ -15,10 +15,13 @@ addpath('./helperFuncs');
 % Script: parser JSON to get the parameters.
 % parser_JSON_hyperParams;  % '/myApp' need to be current workspace
 
-% declare global variables in this `trainHeader.m` file
+% declare global variables in this main0_header.m` file
+% Other scripts using follow global variables: 
+%   - train1_singleSample.m
+%   - helperFuncs/check_result.m
 global scale;  scale = 1; % scale is not used in CannyPF -> keep it to 1 by hyperparameter tuning. 
-global angle_expect;  angle_expect = pi/2;
-global angle_tolerance;  angle_tolerance = 5/180*pi;
+global angle_expect;  angle_expect = 90;
+global angle_tolerance;  angle_tolerance = 5;
 
 global resizeImageHeight; 
 global resizeImageWidth; 
@@ -29,21 +32,22 @@ global prior_mandrel_percent;  prior_mandrel_percent = 1/4; % the middle prior_m
 
 global FLAG_VALID; FLAG_VALID = 0;
 global label_data
-label_file = './mandrel_border_labels_manually.json';  % absolut path of label file
+label_file = '../Resources/mandrel_border_labels_manually.json';  % absolut path of label.json file
 label_data = load_label(label_file);
+global is_labeled;  % whether the image is labeled or not, or even not exists in the label.json file
 
 global output_data;
 global index; index = 1;  % index of output_data
 global flag_quit; flag_quit = 0;
 %%% create table 
-OUTPUT_ELEMENTS = 2 + 15;   % 2 + 15 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)
+OUTPUT_ELEMENTS = 2 + 16;   % 2 + 15 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)
 sz = [50000 OUTPUT_ELEMENTS];
 varTypes = {'string', 'string', 'double', 'double', 'cell', 'double', 'double', 'double', 'double', 'double', ...
-    'double', 'double', 'double', 'uint16', 'uint16', 'string', 'double'};  % by using class()
+    'double', 'double', 'double', 'uint16', 'uint16', 'string', 'double', 'string'};  % by using class() to check the type of variable
 varNames = {'folderName', 'imgName', 'runTime_cpp', 'runTime_matlab', 'windows_features', 'left_border_pos', 'left_border_label', 'right_border_pos', 'right_border_label', 'metric_RMSE', ...
-    'scale', 'angle_expect', 'angle_tolerance', 'windowWidth', 'windowStepSize', 'decision_criter', 'prior_mandrel_percent'};
+    'scale', 'angle_expect', 'angle_tolerance', 'windowWidth', 'windowStepSize', 'decision_criter', 'prior_mandrel_percent', 'is_labeled'};
 
-% angle's unit is degree
+% Notice: angle's unit is degree
 output_data = table('Size',sz, 'VariableTypes',varTypes, 'VariableNames',varNames);
 
 clear label_file  OUTPUT_ELEMENTS  sz  varTypes  varNames;

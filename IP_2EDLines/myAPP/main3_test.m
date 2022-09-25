@@ -44,19 +44,18 @@ try
     [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);  % image name with .png
     fprintf('Result: the border labels are (%d, %d)\n', left_border_label, right_border_label);
 catch ME
-    fprintf('Reminder: the image "%s" in folder  %s is not existed in the label.json file, that means a invalid field of struct array in matlab!!!\n', imgName, folderName);
+    fprintf('(in main3_test.m): the image "%s" in folder  %s is not existed in the label.json file, that means a invalid field of struct array in matlab!!!\n', imgName, folderName);
 end 
 
 clear left_border_label  right_border_label;
-
 
 %% TODO: optimized hyperparameters
 scale = 1;
 resizeImageHeight = size(img_rgb, 1) / scale;
 resizeImageWidth = size(img_rgb, 2) / scale;
 
-angle_expect = pi/2;
-angle_tolerance = 5/180*pi;
+angle_expect = 90;
+angle_tolerance = 5;
 
 windowWidth = 40;
 windowStepSize = 10;
@@ -64,10 +63,8 @@ decision_criter = 'number';
 prior_mandrel_percent = 1/3;
 
 %% test all folders
-
-
 % TODO: imgInputPath (imgOutputPath is determained according to the platform: Pool or PC)
-imgInputPath = ; % portable HDD or network driver
+imgInputPath = 'E:\dataset_test'; % portable HDD or network driver
 
 
 t1 = datestr(now);
@@ -77,9 +74,8 @@ t2 = datestr(now);
 
 %% save data
 t = clock; % Get current time
-% example: output_data_20220922_1347.mat
-fname = ['output_data_', ...
-              num2str(t(1:1), '%04d'), ...  % Year
+% example: out_test_0922_1347.mat
+fname = ['out_test_', ...
               num2str(t(2:3), '%02d'), '_', ...   % -month-day_
               num2str(t(4:5), '%02d'), '.mat']; % hour min
 
