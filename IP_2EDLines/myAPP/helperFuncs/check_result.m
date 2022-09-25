@@ -10,13 +10,17 @@ global decision_criter;
 global prior_mandrel_percent;
 
 %% copy from table
-row = 44;
-output = output_data1;  %%%
+global is_plot is_output;
+is_plot = 1; is_output = 0;
+FLAG_VALID = 0; 
+
+row = 219;
+% output_data1 = out; % output_data1 works like a buffer
+% output = output_data1;  %%%
 
 folderName = output.folderName(row);  folderName = char(folderName);
 imgName = output.imgName(row);  imgName = char(imgName);
 scale = output.scale(row); 
-resizeImageHeight = size(img_rgb, 1) / scale;  resizeImageWidth = size(img_rgb, 2) / scale;
 
 angle_expect = output.angle_expect(row) ;
 angle_tolerance = output.angle_tolerance(row)  ;
@@ -28,6 +32,7 @@ prior_mandrel_percent = output.prior_mandrel_percent(row);
 %%
 imgInputPath = 'E:\dataset_valid';  imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
 img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
+resizeImageHeight = size(img_rgb, 1) / scale;  resizeImageWidth = size(img_rgb, 2) / scale;
 % Use default hyperparameter.
 % If you want to check it in the hyperparameter set in output_data -> parser the table like above
 [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);

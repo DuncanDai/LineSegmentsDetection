@@ -51,3 +51,29 @@ varNames = {'folderName', 'imgName', 'runTime_cpp', 'runTime_matlab', 'windows_f
 output_data = table('Size',sz, 'VariableTypes',varTypes, 'VariableNames',varNames);
 
 clear label_file  OUTPUT_ELEMENTS  sz  varTypes  varNames;
+
+%% configure: different paths
+%%% general path in Pool
+imgInputPath = 'U:/my_projs/imgSamplesSubTest';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
+imgOutputPath = 'U:/my_projs/g_output';
+
+
+%%% general path in PC
+imgInputPath = 'D:/My_Data/me_Projs/Proj_MA/images';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
+imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
+
+
+%%% path in portable HDD
+imgInputPath = 'E:\dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
+imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
+
+
+%%% check: whether the image has labels
+try
+    [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);  % image name with .png
+    fprintf('Result: the border labels of the image "%s" in folder "%s" are (%d, %d)\n', imgName, folderName, left_border_label, right_border_label);
+catch ME
+    fprintf('(in main1_train.m): the image "%s" in folder  %s is not existed in the label.json file, that means a invalid field of struct array in matlab!!!\n', imgName, folderName);
+end 
+
+clear left_border_label  right_border_label;

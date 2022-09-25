@@ -18,39 +18,18 @@
 clear; clc; close;
 main0_header;
 
+global is_plot is_output;
+is_plot = 0; is_output = 0;
+
 FLAG_VALID = 1; % only for valid process: flag is 1
 index = 1;
-%% configure: different paths
-%%% general path in Pool
-imgInputPath = 'U:/my_projs/imgSamplesSubTest';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
-imgOutputPath = 'U:/my_projs/g_output';
 
-
-%%% general path in PC
-imgInputPath = 'D:/My_Data/me_Projs/Proj_MA/images';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
-imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
-
-
-%%% path in portable HDD
-imgInputPath = 'E:\dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
-imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
-
-
-%%% check: whether the image has labels
-try
-    [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);  % image name with .png
-    fprintf('Result: the border labels are (%d, %d)\n', left_border_label, right_border_label);
-catch ME
-    fprintf('(in main2_valid.m): the image "%s" in folder  %s is not existed in the label.json file, that means a invalid field of struct array in matlab!!!\n', imgName, folderName);
-end 
-
-clear left_border_label  right_border_label;
 
 %% valid single sample
 img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
 
 t1 = datestr(now);
-[runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, save_img_path);
+[runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
 t2 = datestr(now);
 
 
@@ -62,18 +41,38 @@ t2 = datestr(now);
 
 %% valid all folders
 t1 = datestr(now);
-valid3_folders;
+train3_folders(imgInputPath, imgOutputPath);
 t2 = datestr(now);
 
 
 %% save data
 t = clock; % Get current time
+%%% 1 original output_data (all records are with labels)
 % example: out_valid_0922_1347.mat
 fname = ['out_valid_', ...
               num2str(t(2:3), '%02d'), '_', ...   % -month-day_
               num2str(t(4:5), '%02d'), '.mat']; % hour min
 
-
 save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
 save(save_data_path, 'output_data');
+
+%%% 2 select_sets_good
+fname = ['out_valid_', ...
+              num2str(t(2:3), '%02d'), '_', ...   % -month-day_
+              num2str(t(4:5), '%02d'), '_good.mat']; % hour min
+
+output_data_good = select_sets_good(output_data);
+save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
+save(save_data_path, 'output_data_good');
+
+
+%%% 3 select_sets_bad
+fname = ['out_valid_', ...
+              num2str(t(2:3), '%02d'), '_', ...   % -month-day_
+              num2str(t(4:5), '%02d'), '_bad.mat']; % hour min
+
+output_data_bad = select_sets_bad(output_data);
+save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
+save(save_data_path, 'output_data_bad');
+
 clear PC_path  Pool_path  t  fname  save_data_path;

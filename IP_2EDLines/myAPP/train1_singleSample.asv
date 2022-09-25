@@ -37,13 +37,13 @@ img_gray = rgb2gray(img_rgb);
 %% validation for single sample: only use when in validation
 if FLAG_VALID == 1
     for windowStepSize = 1  % keep windowStepSize value 1
-        for i = 1 : 3   % 3 values
+        for i = 1 : 2   % 2 values of {'number'; 'length'; 'length/number'}
             decision_criter = decision_criterion{i, 1};
-            for scale = 1  % 5 values -> stepsize: 0.2
+            for scale = 1  % (5 values -> stepsize: 0.2)
                 resizeImageHeight = size(img_rgb, 1) / scale;
                 resizeImageWidth = size(img_rgb, 2) / scale;
-                for windowWidth = 6 : 2 : 80  % 35 values -> stepsize: 4 -> up to 80
-                    for angle_tolerance = (0.1 : 1 : 30)   % unit is degree   20 values -> stepsize: 0.5  -> up to 10
+                for windowWidth = 10 : 5 : 40  % (35 values -> stepsize: 4 -> up to 80)
+                    for angle_tolerance = (1 : 1 : 15)   % unit is degree   (20 values -> stepsize: 0.5  -> up to 10)
                         %%% here put the training/validation process
                         ticId = tic;
                         [left_border_pos, right_border_pos, windows_features, full_edges_filter_by_angle] = extract_borders(...
@@ -63,6 +63,7 @@ if FLAG_VALID == 1
                             [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);
                             if left_border_label ==0 & right_border_label ==0   % This image is in the label.json file, but has no label 
                                 is_labeled = 'not labeled';
+                                return  % if not labeled
                             else
                                 is_labeled = 'labeled';
                             end
@@ -71,11 +72,12 @@ if FLAG_VALID == 1
                             left_border_label = 0;  % if assign the value `[]`, the following calc_RMSE() function couldn't work 
                             right_border_label = 0;
                             is_labeled = 'not in the label.json';
+                            return % if not labeled
                         end 
 
                         metric_RMSE = calc_RMSE(left_border_pos,left_border_label,right_border_pos,right_border_label);
                         
-                        output_data(index, :) = {folderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent};
+                        output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent, is_labeled};
                         
                         index = index + 1;
                         if ~mod(index, 100) 
@@ -143,38 +145,45 @@ end
 
 
 %% Plot and output: during analysing the output_data: stop to plot and save the image
-%% Plot
-figure;
-imshow(img_gray, 'border', 'tight', 'initialmagnification', 100);   % img_gray is uint8 grayscale
-hold on
-% issue: When there is no edgeLines after the angle fitering, the function
-% will raise an error
-plt1 = draw_lines(full_edges_filter_by_angle); 
-plt2 = draw_borders(left_border_pos, right_border_pos, resizeImageHeight, ':oc');  
-plt3 = draw_borders(left_border_label, right_border_label, resizeImageHeight, '-b'); 
-% legend([plt1 plt2 plt3], 'detected line segments', 'border predictions', 'border labels'); 
+global is_plot is_output;
 
-% first legend
-lgd = legend(plt3, 'border labels','Location', 'northwest');
- % 创建新坐标系，用get获取原来坐标系的位置并赋值给新坐标系，保证两系重合，设置第二个坐标系不显示
-axesNew = axes('position',get(gca,'position'),'visible','off');
-% 绘制第二个图例时指定在新建的坐标系中
-legend(axesNew,[line3, line4],{'SMA Y Experiment', 'SMA Y Theory'},...
-     'FontSize',9,  'FontName','Arial',  'Location', 'southwest');
+if is_plot
+    %% Plot
+    figure;
+    imshow(img_gray, 'border', 'tight', 'initialmagnification', 100);   % img_gray is uint8 grayscale
+    ax = gca;
+    ax.Toolbar.Visible = 'off';
+    
+    hold on
+    % issue: When there is no edgeLines after the angle fitering, the function
+    % will raise an error
+    plt1 = draw_lines(full_edges_filter_by_angle); 
+    plt2 = draw_borders(left_border_pos, right_border_pos, resizeImageHeight, 'c', '--', 1.5, 'none');  
+    plt3 = draw_borders(left_border_label, right_border_label, resizeImageHeight, 'r', '-', 1, 'o'); 
+    % legend([plt1 plt2 plt3], 'detected line segments', 'border predictions', 'border labels'); 
 
+    draw_borders(resizeImageWidth .* (1/2 - 1/8), resizeImageWidth .* (1/2 + 1/8), resizeImageHeight, 'k', '-', 1, '')
+    
+    % first legend
+    legend(plt3, 'border labels', 'Location', 'northwest');
+    
+    % the rest legends
+    % create new axes: use `get` to create the same axes but set visible=off
+    % ax_position = get(gca,'position');
+    % axNew_position = [axes_position(1)]
+    axNew = axes('position',[0, -0.03, 1, 1],'visible','off');  % [left. bottom, width, height]: normalized to [0, 1] for width, height
+    legend(axNew,[plt1, plt2],{'detected line segments', 'border predictions'}, 'Location', 'northwest');
 
-legend(); 
-ah=axes('position',get(gca,'position'),...
-           'visible','off');
-legend(ah,[plt1, plt2],'detected line segments', 'border predictions','location','west');
-
-%% Output
-save_img_path = [imgOutputPath, filesep, folderName, filesep, imgName];
-f = getframe(gcf);
-imwrite(f.cdata, save_img_path);
-
-% close;
-
+    if is_output
+        %% Output
+        save_img_path = [imgOutputPath, filesep, folderName, filesep, imgName];
+        f = getframe(gcf);
+        
+        imwrite(f.cdata, save_img_path);
+        
+        % close;
+    end
+end
 
 end
 

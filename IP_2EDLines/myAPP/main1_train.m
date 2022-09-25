@@ -14,38 +14,16 @@
 %   2 index limit: set the limitation for index of output_data (in 'train1_singleSample.m': line 25)
 %   3 plot and analyzing (in 'train1_singleSample.m': line 118)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %% run script: 
 clear; clc; close;
 main0_header;
 
+global is_plot is_output;
+is_plot = 0; is_output = 0;
+
 FLAG_VALID = 0;  % only for valid process: flag is 1
 index = 1;
-
-%% configure: different paths
-%%% general path in Pool
-imgInputPath = 'U:/my_projs/imgSamplesSubTest';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
-imgOutputPath = 'U:/my_projs/g_output';
-
-
-%%% general path in PC
-imgInputPath = 'D:/My_Data/me_Projs/Proj_MA/images';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
-imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
-
-
-%%% path in portable HDD
-imgInputPath = 'E:\dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
-imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
-
-
-%%% check: whether the image has labels
-try
-    [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);  % image name with .png
-    fprintf('Result: the border labels are (%d, %d)\n', left_border_label, right_border_label);
-catch ME
-    fprintf('(in main1_train.m): the image "%s" in folder  %s is not existed in the label.json file, that means a invalid field of struct array in matlab!!!\n', imgName, folderName);
-end 
-
-clear left_border_label  right_border_label;
 
 %% train single sample
 img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
