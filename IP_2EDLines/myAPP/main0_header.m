@@ -28,7 +28,7 @@ global resizeImageWidth;
 global windowWidth;  windowWidth = 40;
 global windowStepSize;  windowStepSize = 10;
 global decision_criter;   decision_criter = 'number'; % global only for single variable -> once declare: decision_criterion = 0 (decision_criterion is string cell array); 
-global prior_mandrel_percent;  prior_mandrel_percent = 1/4; % the middle prior_mandrel_percent part is not into consideration
+global prior_mandrel_percent;  prior_mandrel_percent = 3/8; % the middle prior_mandrel_percent part is not into consideration
 
 global FLAG_VALID; FLAG_VALID = 0;
 global label_data

@@ -163,8 +163,9 @@ if is_plot
     plt2 = draw_borders(left_border_pos, right_border_pos, resizeImageHeight, 'c', '--', 1.5, 'none');  
     plt3 = draw_borders(left_border_label, right_border_label, resizeImageHeight, 'r', '-', 1, 'o'); 
     % legend([plt1 plt2 plt3], 'detected line segments', 'border predictions', 'border labels'); 
-
-    draw_borders(resizeImageWidth .* (1/2 - 1/8), resizeImageWidth .* (1/2 + 1/8), resizeImageHeight, 'k', '-', 1, 'none');
+    
+    % set prior_mandrel_percent = 3/8 of middle part (initial in main0_header.m)
+    draw_borders(resizeImageWidth .* (1/2 - 1/8 - 1/32 - 1/32), resizeImageWidth .* (1/2 + 1/8 + 1/32 + 1/32), resizeImageHeight, 'k', '-', 1, 'none');
     
     % first legend
     legend(plt3, 'border labels', 'Location', 'northwest');
