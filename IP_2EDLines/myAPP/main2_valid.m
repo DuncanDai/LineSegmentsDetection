@@ -60,7 +60,7 @@ fname = ['out_valid_', ...
               num2str(t(2:3), '%02d'), '_', ...   % -month-day_
               num2str(t(4:5), '%02d'), '.mat']; % hour min
 
-save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
+save_data_path = [imgOutputPath, filesep, fname];  
 save(save_data_path, 'output_data');
 
 % %%% 2 select_sets_good
