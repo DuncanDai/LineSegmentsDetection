@@ -42,8 +42,8 @@ if FLAG_VALID == 1
             for scale = 1  % (5 values -> stepsize: 0.2)
                 resizeImageHeight = size(img_rgb, 1) / scale;
                 resizeImageWidth = size(img_rgb, 2) / scale;
-                for windowWidth = 10 : 5 : 40  % (35 values -> stepsize: 4 -> up to 80)
-                    for angle_tolerance = (1 : 1 : 15)   % unit is degree   (20 values -> stepsize: 0.5  -> up to 10)
+                for windowWidth = 10 : 4 : 36  % (35 values -> stepsize: 4 -> up to 80)
+                    for angle_tolerance = (1 : 1 : 10)   % unit is degree   (20 values -> stepsize: 0.5  -> up to 10)
                         %%% here put the training/validation process
                         ticId = tic;
                         [left_border_pos, right_border_pos, windows_features, full_edges_filter_by_angle] = extract_borders(...
@@ -63,6 +63,7 @@ if FLAG_VALID == 1
                             [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);
                             if left_border_label ==0 & right_border_label ==0   % This image is in the label.json file, but has no label 
                                 is_labeled = 'not labeled';
+                                metric_RMSE = Inf; % just for output consistence of train2_singleFolder.m, not recorded in output_date
                                 return  % if not labeled
                             else
                                 is_labeled = 'labeled';
@@ -72,6 +73,7 @@ if FLAG_VALID == 1
                             left_border_label = 0;  % if assign the value `[]`, the following calc_RMSE() function couldn't work 
                             right_border_label = 0;
                             is_labeled = 'not in the label.json';
+                            metric_RMSE = Inf; % just for output consistence of train2_singleFolder.m, not recorded in output_date
                             return % if not labeled
                         end 
 

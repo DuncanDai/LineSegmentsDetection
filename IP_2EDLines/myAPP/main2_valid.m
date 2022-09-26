@@ -38,14 +38,21 @@ t1 = datestr(now);
 train2_singleFolder(imgInputPath, folderName, imgOutputPath);
 t2 = datestr(now);
 
+load handel
+sound(y,Fs)
 
 %% valid all folders
 t1 = datestr(now);
 train3_folders(imgInputPath, imgOutputPath);
 t2 = datestr(now);
 
+load handel
+sound(y,Fs)
+%%
+%%% save data
+addpath('./dataAnalyse');
+output_data = select_data_with_label(output_data);
 
-%% save data
 t = clock; % Get current time
 %%% 1 original output_data (all records are with labels)
 % example: out_valid_0922_1347.mat
