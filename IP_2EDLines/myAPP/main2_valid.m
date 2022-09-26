@@ -48,7 +48,7 @@ t2 = datestr(now);
 
 load handel
 sound(y,Fs)
-%%
+
 %%% save data
 addpath('./dataAnalyse');
 output_data = select_data_with_label(output_data);
@@ -63,23 +63,23 @@ fname = ['out_valid_', ...
 save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
 save(save_data_path, 'output_data');
 
-%%% 2 select_sets_good
-fname = ['out_valid_', ...
-              num2str(t(2:3), '%02d'), '_', ...   % -month-day_
-              num2str(t(4:5), '%02d'), '_good.mat']; % hour min
-
-output_data_good = select_sets_good(output_data);
-save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
-save(save_data_path, 'output_data_good');
-
-
-%%% 3 select_sets_bad
-fname = ['out_valid_', ...
-              num2str(t(2:3), '%02d'), '_', ...   % -month-day_
-              num2str(t(4:5), '%02d'), '_bad.mat']; % hour min
-
-output_data_bad = select_sets_bad(output_data);
-save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
-save(save_data_path, 'output_data_bad');
+% %%% 2 select_sets_good
+% fname = ['out_valid_', ...
+%               num2str(t(2:3), '%02d'), '_', ...   % -month-day_
+%               num2str(t(4:5), '%02d'), '_good.mat']; % hour min
+% 
+% output_data_good = select_sets_good(output_data);
+% save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
+% save(save_data_path, 'output_data_good');
+% 
+% 
+% %%% 3 select_sets_bad
+% fname = ['out_valid_', ...
+%               num2str(t(2:3), '%02d'), '_', ...   % -month-day_
+%               num2str(t(4:5), '%02d'), '_bad.mat']; % hour min
+% 
+% output_data_bad = select_sets_bad(output_data);
+% save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
+% save(save_data_path, 'output_data_bad');
 
 clear PC_path  Pool_path  t  fname  save_data_path;

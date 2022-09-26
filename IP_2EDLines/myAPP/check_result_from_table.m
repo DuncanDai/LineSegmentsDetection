@@ -23,7 +23,7 @@ imgInputPath = 'E:\dataset_valid';  imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA
 imgOutputPath = [imgOutputPath, filesep, date_folder];    % mkdir(imgOutputPath);
 
 %%% change the "row" you want to check
-for row = 1:30
+for row = 31
 % for row = 1: size(output, 1)
     folderName = output.folderName(row);  folderName = char(folderName);
     imgName = output.imgName(row);  imgName = char(imgName);
@@ -34,11 +34,11 @@ for row = 1:30
         scale = output.scale(row); 
         
         angle_expect = output.angle_expect(row) ;
-        angle_tolerance = output.angle_tolerance(row)  ;
+        angle_tolerance = output.angle_tolerance(row);   %angle_tolerance = 9;
         windowWidth = output.windowWidth(row); windowWidth = double(windowWidth);
         windowStepSize = output.windowStepSize(row); windowStepSize = double(windowStepSize);
-        decision_criter = output.decision_criter(row); decision_criter = char(decision_criter);
-        prior_mandrel_percent = output.prior_mandrel_percent(row);
+        decision_criter = output.decision_criter(row); decision_criter = char(decision_criter);   %decision_criter = 'length*number';
+        prior_mandrel_percent = output.prior_mandrel_percent(row);   prior_mandrel_percent = 5/16;
         
         img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
         resizeImageHeight = size(img_rgb, 1) / scale;  resizeImageWidth = size(img_rgb, 2) / scale;
