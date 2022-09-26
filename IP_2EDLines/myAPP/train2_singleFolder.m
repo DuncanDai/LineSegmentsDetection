@@ -1,5 +1,4 @@
 function train2_singleFolder(imgInputPath, folderName, imgOutputFolder)
-
 % if we want to stop the train/valid/test process, use flag_quit
 global flag_quit;
 
@@ -18,7 +17,7 @@ imgNumber = length(imgSamples)-2;  % the first two elements are `.` and `..`
 
 for n = 3:imgNumber+2
     imgName = imgSamples(n).name; 
-    
+
     try
         img_rgb = imread([imgFoldertPath, filesep, imgName]);
     catch ME

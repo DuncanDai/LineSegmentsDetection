@@ -12,11 +12,11 @@ global scale;
 global angle_expect;
 global angle_tolerance;
 
-global resizeImageHeight; resizeImageHeight = size(img_rgb, 1) / scale;
+global resizeImageHeight; resizeImageHeight = size(img_rgb, 1) / scale;  % for the "else" part in the follow if-statement
 global resizeImageWidth; resizeImageWidth = size(img_rgb, 2) / scale;
 global windowWidth;
-global windowStepSize;
-global decision_criter;  decision_criterion = {'number'; 'length'; 'length/number'};
+global windowStepSize; 
+global decision_criter;  decision_criterion = {'number'; 'length'; 'length*number';'length/number'};
 global prior_mandrel_percent;
 
 global FLAG_VALID;
@@ -37,13 +37,13 @@ img_gray = rgb2gray(img_rgb);
 %% validation for single sample: only use when in validation
 if FLAG_VALID == 1
     for windowStepSize = 1  % keep windowStepSize value 1
-        for i = 1 : 2   % 2 values of {'number'; 'length'; 'length/number'}
+        for i = 1 : 3   % the front 3 values of {'number'; 'length'; 'length*number'; 'length/number'}
             decision_criter = decision_criterion{i, 1};
             for scale = 1  % (5 values -> stepsize: 0.2)
                 resizeImageHeight = size(img_rgb, 1) / scale;
                 resizeImageWidth = size(img_rgb, 2) / scale;
-                for windowWidth = 10 : 4 : 36  % (35 values -> stepsize: 4 -> up to 80)
-                    for angle_tolerance = (1 : 1 : 10)   % unit is degree   (20 values -> stepsize: 0.5  -> up to 10)
+                for windowWidth = 6 : 2 : 50  % (35 values -> stepsize: 4 -> up to 80)
+                    for angle_tolerance = (1 : 0.5 : 20)   % unit is degree   (20 values -> stepsize: 0.5  -> up to 10)
                         %%% here put the training/validation process
                         ticId = tic;
                         [left_border_pos, right_border_pos, windows_features, full_edges_filter_by_angle] = extract_borders(...
@@ -63,7 +63,7 @@ if FLAG_VALID == 1
                             [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);
                             if left_border_label ==0 & right_border_label ==0   % This image is in the label.json file, but has no label 
                                 is_labeled = 'not labeled';
-                                metric_RMSE = Inf; % just for output consistence of train2_singleFolder.m, not recorded in output_date
+                                metric_RMSE = Inf; %  call function in train2_singleFolder.m need the output of metric_RMSE, however, not recorded in output_data
                                 return  % if not labeled
                             else
                                 is_labeled = 'labeled';
@@ -98,7 +98,7 @@ if FLAG_VALID == 1
     end
     
     
-else
+else  % check & test (for classical IP there is no train process)
     ticId = tic;
     [left_border_pos, right_border_pos, windows_features, full_edges_filter_by_angle] = extract_borders(...
                                                     edgeLines, resizeImageWidth, windowWidth, windowStepSize, ...
@@ -147,7 +147,7 @@ end
 
 
 %% Plot and output: during analysing the output_data: stop to plot and save the image
-global is_plot is_output;
+global is_plot is_save;
 
 if is_plot
     %% Plot
@@ -159,32 +159,37 @@ if is_plot
     hold on
     % issue: When there is no edgeLines after the angle fitering, the function
     % will raise an error
-    plt1 = draw_lines(full_edges_filter_by_angle); 
-    plt2 = draw_borders(left_border_pos, right_border_pos, resizeImageHeight, 'c', '--', 1.5, 'none');  
-    plt3 = draw_borders(left_border_label, right_border_label, resizeImageHeight, 'r', '-', 1, 'o'); 
-    % legend([plt1 plt2 plt3], 'detected line segments', 'border predictions', 'border labels'); 
-    
-    % set prior_mandrel_percent = 3/8 of middle part (initial in main0_header.m)
-    draw_borders(resizeImageWidth .* (1/2 - 1/8 - 1/32 - 1/32), resizeImageWidth .* (1/2 + 1/8 + 1/32 + 1/32), resizeImageHeight, 'k', '-', 1, 'none');
+    plt1 = draw_borders(left_border_label, right_border_label, resizeImageHeight, 'r', '-', 1, 'o');    
+    plt2 = draw_lines(full_edges_filter_by_angle); 
+    plt3 = draw_borders(left_border_pos, right_border_pos, resizeImageHeight, 'c', '--', 1.5, 'none');  
+
+    % draw the line in the center of image in x-axis.
+    plt4 = line([resizeImageWidth/2 resizeImageWidth/2], [1 resizeImageHeight],'Color','k', 'LineStyle', ':', 'LineWidth', 1);
+    % set prior_mandrel_percent = 5/16 of middle part (initial in main0_header.m)
+    plt5 = draw_borders(resizeImageWidth .* (1/2 - 1/8 - 1/32), resizeImageWidth .* (1/2 + 1/8 + 1/32), resizeImageHeight, 'k', '-', 1, 'none');
     
     % first legend
-    legend(plt3, 'border labels', 'Location', 'northwest');
+    legend(plt1, 'border labels', 'Location', 'northwest');
     
     % the rest legends
     % create new axes: use `get` to create the same axes but set visible=off
     % ax_position = get(gca,'position');
     % axNew_position = [axes_position(1)]
-    axNew = axes('position',[0, -0.03, 1, 1],'visible','off');  % [left. bottom, width, height]: normalized to [0, 1] for width, height
-    legend(axNew,[plt1, plt2],{'detected line segments', 'border predictions'}, 'Location', 'northwest');
+    axDetect = axes('position',[0, -0.03, 1, 1],'visible','off');  % [left. bottom, width, height]: normalized to [0, 1] for width, height
+    legend(axDetect,[plt2, plt3],{'detected line segments', 'border predictions'}, 'Location', 'northwest');
 
-    if is_output
+    axFixed = axes('position',[0, -0.08, 1, 1],'visible','off');  % [left. bottom, width, height]: normalized to [0, 1] for width, height
+    legend(axFixed,[plt4, plt5],{'center of x-axis', 'prior: permissible mandrel percentage'}, 'Location', 'northwest');
+
+
+    if is_save
         %% Output
-        save_img_path = [imgOutputPath, filesep, folderName, filesep, imgName];
+        save_img_path = [imgOutputPath, filesep, folderName,'sep',imgName];
         f = getframe(gcf);
         
         imwrite(f.cdata, save_img_path);
         
-        % close;
+        close;
     end
 end
 

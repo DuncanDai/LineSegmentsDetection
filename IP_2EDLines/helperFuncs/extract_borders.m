@@ -55,8 +55,9 @@ for i = 1:(windows_num-1)
 end
 
 %% feature engineering
+feature_length_multiple_number = windows_features(:, 3) .* windows_features(:, 2);
 feature_length_divide_number = windows_features(:, 3) ./ windows_features(:, 2);
-windows_features = [windows_features, feature_length_divide_number];  % add an extra feature
+windows_features = [windows_features, feature_length_multiple_number, feature_length_divide_number];  % add an extra feature
 
 %% find the border index: left peak, right peak
 % 1 prior knowledge: the percentage of mandrel in image ->  (1/4 ~ 1/3) -> 
@@ -71,19 +72,23 @@ left_valid_windows_features = windows_features( windows_features(:, 1) <= valid_
 right_valid_windows_features = windows_features( windows_features(:, 1) >= valid_right_boundary, : );
 
 if strcmp(decision_criterion, 'number')
-    [~, left_maxIndex] = max(left_valid_windows_features(:, 2));
-    [~, right_maxIndex] = max(right_valid_windows_features(:, 2));
+    [left_maxVal, ~] = max(left_valid_windows_features(:, 2));
+    [right_maxVal, ~] = max(right_valid_windows_features(:, 2));
 elseif strcmp(decision_criterion, 'length')
-    [~, left_maxIndex] = max(left_valid_windows_features(:, 3));
-    [~, right_maxIndex] = max(right_valid_windows_features(:, 3));
+    [left_maxVal, ~] = max(left_valid_windows_features(:, 3));
+    [right_maxVal, ~] = max(right_valid_windows_features(:, 3));
+elseif strcmp(decision_criterion, 'length*number')
+    [left_maxVal, ~] = max(left_valid_windows_features(:, 4));
+    [right_maxVal, ~] = max(right_valid_windows_features(:, 4));
 elseif strcmp(decision_criterion, 'length/number')
-    [~, left_maxIndex] = max(left_valid_windows_features(:, 4));
-    [~, right_maxIndex] = max(right_valid_windows_features(:, 4));
+    [left_maxVal, ~] = max(left_valid_windows_features(:, 5));
+    [right_maxVal, ~] = max(right_valid_windows_features(:, 5));
 else
     error('the decision_criterion should be "number" or "length" ');
 end
 
 % valid region of moving window: in the left side of mandrel ->  (1/2 - prior_mandrel_percent/2)
+left_maxIndex = left_valid_windows_features(left_valid_windows_features(:, 2)==left_maxVal, 1);
 left_border_index = left_maxIndex(1);
 if left_valid_windows_features(left_border_index, 2) == 0  % the number of edge lines is 0
     left_border_pos = 0;
@@ -92,6 +97,7 @@ else
 end
 
 % valid region of moving window: in the right side of mandrel -> (1/2 + prior_mandrel_percent/2)
+right_maxIndex = right_valid_windows_features(right_valid_windows_features(:, 2)==right_maxVal, 1);
 right_border_index = right_maxIndex(end);
 if right_valid_windows_features(right_border_index, 2) == 0  % the number of edge lines is 0
     right_border_pos = 0;

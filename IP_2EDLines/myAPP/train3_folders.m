@@ -1,5 +1,4 @@
 function train3_folders(imgInputPath, imgOutputPath)
-
 % if we want to stop the train/valid/test process, use flag_quit
 global flag_quit;
 

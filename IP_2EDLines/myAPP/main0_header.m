@@ -6,6 +6,8 @@
 %   3 main3_test.m for test
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+close all; clc;
+
 %% common header for differnet situations.
 addpath('../helperFuncs');
 addpath('../helperPlots');
@@ -21,14 +23,14 @@ addpath('./helperFuncs');
 %   - helperFuncs/check_result.m
 global scale;  scale = 1; % scale is not used in CannyPF -> keep it to 1 by hyperparameter tuning. 
 global angle_expect;  angle_expect = 90;
-global angle_tolerance;  angle_tolerance = 5;
+global angle_tolerance;  angle_tolerance = 9;
 
 global resizeImageHeight; 
 global resizeImageWidth; 
-global windowWidth;  windowWidth = 40;
-global windowStepSize;  windowStepSize = 10;
-global decision_criter;   decision_criter = 'number'; % global only for single variable -> once declare: decision_criterion = 0 (decision_criterion is string cell array); 
-global prior_mandrel_percent;  prior_mandrel_percent = 3/8; % the middle prior_mandrel_percent part is not into consideration
+global windowWidth;  windowWidth = 30;
+global windowStepSize;  windowStepSize = 1;
+global decision_criter;   decision_criter = 'length*number'; % global only for single variable -> once declare: decision_criterion = 0 (decision_criterion is string cell array); 
+global prior_mandrel_percent;  prior_mandrel_percent = 5/16; % the middle prior_mandrel_percent part is not into consideration
 
 global FLAG_VALID; FLAG_VALID = 0;
 global label_data
@@ -69,8 +71,8 @@ imgInputPath = 'D:\dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName 
 imgOutputPath = 'D:\g_output';
 
 %%% path in portable HDD of PC
-% imgInputPath = 'E:\dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
-% imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
+imgInputPath = 'E:\dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
+imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
 
 
 %% check: whether the image has labels
