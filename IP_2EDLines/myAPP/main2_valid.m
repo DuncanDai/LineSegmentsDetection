@@ -48,7 +48,7 @@ t2 = datestr(now);
 
 load handel
 sound(y,Fs)
-
+%%
 %%% save data
 addpath('./dataAnalyse');
 output_data = select_data_with_label(output_data);

@@ -42,7 +42,7 @@ if FLAG_VALID == 1
             for scale = 1  % (5 values -> stepsize: 0.2)
                 resizeImageHeight = size(img_rgb, 1) / scale;
                 resizeImageWidth = size(img_rgb, 2) / scale;
-                for windowWidth = 6 : 2 : 44  % (35 values -> stepsize: 4 -> up to 80)
+                for windowWidth = 8 : 4 : 40  % (35 values -> stepsize: 4 -> up to 80)
                     for angle_tolerance = (2 : 1 : 15)   % unit is degree   (20 values -> stepsize: 0.5  -> up to 10)
                         %%% here put the training/validation process
                         ticId = tic;
