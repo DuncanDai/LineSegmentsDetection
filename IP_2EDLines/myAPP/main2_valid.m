@@ -35,12 +35,25 @@ t2 = datestr(now);
 
 %% valid single folder
 t1 = datestr(now);
+folderName = '2022-04-28_13-09-34';
 train2_singleFolder(imgInputPath, folderName, imgOutputPath);
 t2 = datestr(now);
 
-load handel
-sound(y,Fs)
+addpath('./dataAnalyse');
+output_data_1 = select_data_with_label(output_data);
+clear output_data;
+t = clock; % Get current time
+%%% 1 original output_data (all records are with labels)
+% example: out_valid_0922_1347.mat
+fname = ['out_valid_', ...
+              num2str(t(2:3), '%02d'), '_', ...   % -month-day_
+              num2str(t(4:5), '%02d'), '.mat']; % hour min
 
+save_data_path = [imgOutputPath, filesep, fname];  
+save(save_data_path, 'output_data_1');
+
+load chirp
+sound(y,Fs)
 %% valid all folders
 t1 = datestr(now);
 train3_folders(imgInputPath, imgOutputPath);

@@ -26,7 +26,7 @@ global is_labeled;
 
 global output_data;  % in valid1_singleSample.m
 global index;  % index of output_data
-global flag_quit; index_limit = 100;  % should be divided by 100
+global flag_quit; index_limit = 500;  % should be divided by 100
 %% run function
 % pay attention to the input format of image
 img_gray = rgb2gray(img_rgb);  
@@ -37,13 +37,13 @@ img_gray = rgb2gray(img_rgb);
 %% validation for single sample: only use when in validation
 if FLAG_VALID == 1
     for windowStepSize = 1  % keep windowStepSize value 1
-        for i = 1 : 3   % the front 3 values of {'number'; 'length'; 'length*number'; 'length/number'}
+        for i = [1, 3]   % select 2 values of {'number'; 'length'; 'length*number'; 'length/number'}
             decision_criter = decision_criterion{i, 1};
-            for scale = 1  % (5 values -> stepsize: 0.2)
+            for scale = 1  % (3 values -> stepsize: 0.2)
                 resizeImageHeight = size(img_rgb, 1) / scale;
                 resizeImageWidth = size(img_rgb, 2) / scale;
-                for windowWidth = 8 : 4 : 40  % (35 values -> stepsize: 4 -> up to 80)
-                    for angle_tolerance = (2 : 1 : 15)   % unit is degree   (20 values -> stepsize: 0.5  -> up to 10)
+                for windowWidth = 6:4:42  % (10 values -> stepsize: 4 )
+                    for angle_tolerance = 2:1:15   % unit is degree   (14 values -> stepsize: 0.5  -> up to 10)
                         %%% here put the training/validation process
                         ticId = tic;
                         [left_border_pos, right_border_pos, windows_features, full_edges_filter_by_angle] = extract_borders(...
@@ -82,8 +82,9 @@ if FLAG_VALID == 1
                         output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent, is_labeled};
                         
                         index = index + 1;
-                        if ~mod(index, 100) 
-                            fprintf('%d samples tested! Time is %s\n', index, datestr(now));
+                        if ~mod(index, 500) 
+                            fprintf('Now: is image "%s" in the folder "%s"\n', imgName, folderName);
+                            fprintf('Now: %d samples tested! Time is %s\n', index, datestr(now));
 %                             if index == index_limit
 %                                 fprintf('Manually terminated: index is %d \n', index);
 %                                 flag_quit = 1;

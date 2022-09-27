@@ -43,7 +43,7 @@ global index; index = 1;  % index of output_data
 global flag_quit; flag_quit = 0;
 %%% create table 
 OUTPUT_ELEMENTS = 2 + 16;   % 2 + 15 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)
-sz = [800000 OUTPUT_ELEMENTS];
+sz = [300000 OUTPUT_ELEMENTS];
 varTypes = {'string', 'string', 'double', 'double', 'cell', 'double', 'double', 'double', 'double', 'double', ...
     'double', 'double', 'double', 'uint16', 'uint16', 'string', 'double', 'string'};  % by using class() to check the type of variable
 varNames = {'folderName', 'imgName', 'runTime_cpp', 'runTime_matlab', 'windows_features', 'left_border_pos', 'left_border_label', 'right_border_pos', 'right_border_label', 'metric_RMSE', ...
@@ -67,12 +67,12 @@ imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
 
 %%% path in portable HDD of pool 
 % Notice: DHH in disk D:\
-imgInputPath = 'D:\dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
-imgOutputPath = 'D:\g_output';
+imgInputPath = 'D:/dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
+imgOutputPath = 'D:/g_output';
 
 %%% path in portable HDD of PC
-% imgInputPath = 'E:\dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
-% imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
+imgInputPath = 'E:/dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
+imgOutputPath = 'E:/g_output';
 
 
 %% check: whether the image has labels
