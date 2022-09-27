@@ -43,7 +43,7 @@ global index; index = 1;  % index of output_data
 global flag_quit; flag_quit = 0;
 %%% create table 
 OUTPUT_ELEMENTS = 2 + 16;   % 2 + 15 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)
-sz = [300000 OUTPUT_ELEMENTS];
+sz = [40000 OUTPUT_ELEMENTS];
 varTypes = {'string', 'string', 'double', 'double', 'cell', 'double', 'double', 'double', 'double', 'double', ...
     'double', 'double', 'double', 'uint16', 'uint16', 'string', 'double', 'string'};  % by using class() to check the type of variable
 varNames = {'folderName', 'imgName', 'runTime_cpp', 'runTime_matlab', 'windows_features', 'left_border_pos', 'left_border_label', 'right_border_pos', 'right_border_label', 'metric_RMSE', ...
