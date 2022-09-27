@@ -83,8 +83,8 @@ if FLAG_VALID == 1
                         
                         index = index + 1;
                         if ~mod(index, 500) 
-                            fprintf('Now: is image "%s" in the folder "%s"\n', imgName, folderName);
-                            fprintf('Now: %d samples tested! Time is %s\n', index, datestr(now));
+                            fprintf('Now(valid): image "%s" in the folder "%s"\n', imgName, folderName);
+                            fprintf('Now(valid): %d samples tested! Time is %s\n', index, datestr(now));
 %                             if index == index_limit
 %                                 fprintf('Manually terminated: index is %d \n', index);
 %                                 flag_quit = 1;
@@ -135,8 +135,9 @@ else  % check & test (for classical IP there is no train process)
     output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent, is_labeled};
     
     index = index + 1;
-    if ~mod(index, 100) 
-        fprintf('%d samples tested! Time is %s\n', index, datestr(now));
+    if ~mod(index, 500) 
+        fprintf('Now(test): this is the image "%s" in the folder "%s"\n', imgName, folderName);
+        fprintf('Now(test): %d samples tested! Time is %s\n', index, datestr(now));
 %         if index == index_limit
 %             fprintf('Manually terminated: index is %d \n', index);
 %             flag_quit = 1;

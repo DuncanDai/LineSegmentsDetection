@@ -1,6 +1,6 @@
-########################################
-#   daidinggen@hotmail.com   2022.09   #
-########################################
+####################################################
+######    daidinggen@hotmail.com   2022.09    ######
+####################################################
 # Usage
 step1: Check the path (in "main0_header.m")
     - in Pool or on PC
@@ -10,8 +10,7 @@ step3: Notice the global variables
 
 optional: choose to select in "dataAnalyse"
 optional: choose to check the result
-    - "check_result.m"
-    - "check_imgs.m"
+    - "check_result_from_table.m"
 
 
 ###############################################
@@ -24,4 +23,4 @@ optional: choose to check the result
     - valid: portable HDD
     - test: portable HDD
 
-2 output path -> check_result.m
+2 output path -> "check_result_from_table.m"
