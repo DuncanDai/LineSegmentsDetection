@@ -1,5 +1,5 @@
-function corner_case_table = choose_corner_case(output_data, RMSE_threshold)
-data_bad = select_sets_bad(output_data);
+function corner_case_table = choose_corner_case(output_data, RMSE_low_threshold)
+data_bad = select_data_through_RMSE(output_data, RMSE_low_threshold, 3000);
 data_bad.name = data_bad.folderName + 'sep' + data_bad.imgName;
 unique_files = unique(data_bad.name);
 unique_size = size(unique_files, 1);
@@ -20,7 +20,7 @@ for i=1:unique_size
     img =  file(23:end);
     
     sub_data = output_data(output_data.folderName == folder & output_data.imgName == img, :);
-    if all(sub_data.metric_RMSE >= RMSE_threshold)
+    if all(sub_data.metric_RMSE >= RMSE_low_threshold)
         corner_case_table(index, :) = {folder, img};
         index = index + 1;
     end
