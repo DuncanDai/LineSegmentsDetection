@@ -37,13 +37,13 @@ img_gray = rgb2gray(img_rgb);
 %% validation for single sample: only use when in validation
 if FLAG_VALID == 1
     for windowStepSize = 1  % keep windowStepSize value 1
-        for i = 3   % select 2 values of {'number'; 'length'; 'length*number'; 'length/number'}
+        for i = [1, 3]   % select 2 values of {'number'; 'length'; 'length*number'; 'length/number'}
             decision_criter = decision_criterion{i, 1};
             for scale = 1  % (3 values -> stepsize: 0.2)
                 resizeImageHeight = size(img_rgb, 1) / scale;
                 resizeImageWidth = size(img_rgb, 2) / scale;
-                for windowWidth = 10:4:62  % (11 values -> stepsize: 4 )
-                    for angle_tolerance = 10:1:35   % unit is degree   (18 values -> stepsize: 0.5  -> up to 10)
+                for windowWidth = 6:4:70  % (11 values -> stepsize: 4 )
+                    for angle_tolerance = 5:1:35   % unit is degree   (18 values -> stepsize: 0.5  -> up to 10)
                         %%% here put the training/validation process
                         ticId = tic;
                         [left_border_pos, right_border_pos, windows_features, full_edges_filter_by_angle] = extract_borders(...
@@ -79,7 +79,7 @@ if FLAG_VALID == 1
 
                         metric_RMSE = calc_RMSE(left_border_pos,left_border_label,right_border_pos,right_border_label);
                         
-                        output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
+                        output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
                         
                         index = index + 1;
                         if ~mod(index, 500) 
@@ -132,7 +132,7 @@ else  % check & test (for classical IP there is no train process)
     metric_RMSE = calc_RMSE(left_border_pos,left_border_label,right_border_pos,right_border_label);
     %%% Issue: if left_border_pos == 0, which means no window_feature -> just record it in output_data for further analyse
 
-    output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
+    output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
     
     index = index + 1;
     if ~mod(index, 500) 

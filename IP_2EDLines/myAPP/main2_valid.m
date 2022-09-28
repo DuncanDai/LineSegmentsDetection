@@ -40,8 +40,8 @@ train2_singleFolder(imgInputPath, folderName, imgOutputPath);
 t2 = datestr(now);
 
 addpath('./dataAnalyse');
-output_data_1 = select_data_with_label(output_data);
-clear output_data;
+output_data = select_data_with_label(output_data);
+
 
 t = clock; % Get current time
 %%% 1 original output_data (all records are with labels)
@@ -51,22 +51,19 @@ fname = ['out_valid_', ...
               num2str(t(4:5), '%02d'), '_', folderName, '.mat']; % hour min
 
 save_data_path = [imgOutputPath, filesep, fname];  
-save(save_data_path, 'output_data_1');
+save(save_data_path, 'output_data');
 
 
 load chirp
 sound(y,Fs)
-%% valid all folders: 1 + 2
-% valid all folders 1
+%% valid all folders: 
 t1 = datestr(now);
-imgInputPath = 'D:/dataset_valid';
 train3_folders(imgInputPath, imgOutputPath);
 t2 = datestr(now);
 
 %%% save data
 addpath('./dataAnalyse');
-output_data1 = select_data_with_label(output_data);
-clear output_data;
+output_data = select_data_with_label(output_data);
 
 t = clock; % Get current time
 %%% 1 original output_data (all records are with labels)
@@ -76,41 +73,14 @@ fname = ['out_valid_', ...
               num2str(t(4:5), '%02d'), '.mat']; % hour min
 
 save_data_path = [imgOutputPath, filesep, fname];  
-save(save_data_path, 'output_data1');
+save(save_data_path, 'output_data');
 
 
-% valid all folders 2
-clear;
-main0_header;
-
-global is_plot is_save;
-is_plot = 0; is_save = 0;
-
-FLAG_VALID = 1; % only for valid process: flag is 1
-index = 1;
-
-t3 = datestr(now);
-imgInputPath = 'D:/dataset_valid_append';
-train3_folders(imgInputPath, imgOutputPath);
-t4 = datestr(now);
-
-%%% save data
-addpath('./dataAnalyse');
-output_data2 = select_data_with_label(output_data);
-clear output_data;
-
-t = clock; % Get current time
-%%% 1 original output_data (all records are with labels)
-% example: out_valid_0922_1347.mat
-fname = ['out_valid_', ...
-              num2str(t(2:3), '%02d'), '_', ...   % -month-day_
-              num2str(t(4:5), '%02d'), '.mat']; % hour min
-
-save_data_path = [imgOutputPath, filesep, fname];  
-save(save_data_path, 'output_data2');
-
-load handel
+load chirp
 sound(y,Fs)
+
+% load handel
+% sound(y,Fs)
 %%
 %%% save data
 addpath('./dataAnalyse');
@@ -125,6 +95,12 @@ fname = ['out_valid_', ...
 
 save_data_path = [imgOutputPath, filesep, fname];  
 save(save_data_path, 'output_data');
+
+load chirp
+sound(y,Fs)
+
+% load handel
+% sound(y,Fs)
 
 % %%% 2 select_sets_good
 % fname = ['out_valid_', ...
@@ -145,4 +121,4 @@ save(save_data_path, 'output_data');
 % save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
 % save(save_data_path, 'output_data_bad');
 
-clear  t  fname  save_data_path;
+clear y Fs t  fname  save_data_path;
