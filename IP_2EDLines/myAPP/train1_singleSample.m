@@ -37,13 +37,13 @@ img_gray = rgb2gray(img_rgb);
 %% validation for single sample: only use when in validation
 if FLAG_VALID == 1
     for windowStepSize = 1  % keep windowStepSize value 1
-        for i = [1, 3]   % select 2 values of {'number'; 'length'; 'length*number'; 'length/number'}
+        for i = 3   % select 2 values of {'number'; 'length'; 'length*number'; 'length/number'}
             decision_criter = decision_criterion{i, 1};
             for scale = 1  % (3 values -> stepsize: 0.2)
                 resizeImageHeight = size(img_rgb, 1) / scale;
                 resizeImageWidth = size(img_rgb, 2) / scale;
-                for windowWidth = 6:4:46  % (11 values -> stepsize: 4 )
-                    for angle_tolerance = 8:1:25   % unit is degree   (18 values -> stepsize: 0.5  -> up to 10)
+                for windowWidth = 10:4:62  % (11 values -> stepsize: 4 )
+                    for angle_tolerance = 10:1:35   % unit is degree   (18 values -> stepsize: 0.5  -> up to 10)
                         %%% here put the training/validation process
                         ticId = tic;
                         [left_border_pos, right_border_pos, windows_features, full_edges_filter_by_angle] = extract_borders(...
