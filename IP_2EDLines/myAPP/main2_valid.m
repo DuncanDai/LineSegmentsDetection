@@ -65,7 +65,8 @@ t2 = datestr(now);
 
 %%% save data
 addpath('./dataAnalyse');
-output_data = select_data_with_label(output_data);
+output_data1 = select_data_with_label(output_data);
+clear output_data;
 
 t = clock; % Get current time
 %%% 1 original output_data (all records are with labels)
@@ -75,7 +76,7 @@ fname = ['out_valid_', ...
               num2str(t(4:5), '%02d'), '.mat']; % hour min
 
 save_data_path = [imgOutputPath, filesep, fname];  
-save(save_data_path, 'output_data');
+save(save_data_path, 'output_data1');
 
 
 % valid all folders 2
@@ -95,7 +96,8 @@ t4 = datestr(now);
 
 %%% save data
 addpath('./dataAnalyse');
-output_data = select_data_with_label(output_data);
+output_data2 = select_data_with_label(output_data);
+clear output_data;
 
 t = clock; % Get current time
 %%% 1 original output_data (all records are with labels)
@@ -105,7 +107,7 @@ fname = ['out_valid_', ...
               num2str(t(4:5), '%02d'), '.mat']; % hour min
 
 save_data_path = [imgOutputPath, filesep, fname];  
-save(save_data_path, 'output_data');
+save(save_data_path, 'output_data2');
 
 load handel
 sound(y,Fs)
