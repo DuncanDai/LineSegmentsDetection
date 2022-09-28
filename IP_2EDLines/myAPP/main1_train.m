@@ -27,7 +27,7 @@ index = 1;
 
 %% train single sample
 img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
-[runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
+[runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
 
 
 %% train single folder

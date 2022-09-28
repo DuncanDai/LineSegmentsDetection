@@ -71,24 +71,24 @@ valid_right_boundary = resizeImageWidth - valid_side_range + 1;
 left_valid_windows_features = windows_features( windows_features(:, 1) <= valid_left_boundary, : );
 right_valid_windows_features = windows_features( windows_features(:, 1) >= valid_right_boundary, : );
 
-if strcmp(decision_criterion, 'number')
+if strcmp(decision_criterion, 'num')
     idx = 2;
     [left_maxVal, ~] = max(left_valid_windows_features(:, idx));
     [right_maxVal, ~] = max(right_valid_windows_features(:, idx));
-elseif strcmp(decision_criterion, 'length')
+elseif strcmp(decision_criterion, 'len')
     idx = 3;
     [left_maxVal, ~] = max(left_valid_windows_features(:, idx));
     [right_maxVal, ~] = max(right_valid_windows_features(:, idx));
-elseif strcmp(decision_criterion, 'length*number')
+elseif strcmp(decision_criterion, 'len*num')
     idx = 4;
     [left_maxVal, ~] = max(left_valid_windows_features(:, idx));
     [right_maxVal, ~] = max(right_valid_windows_features(:, idx));
-elseif strcmp(decision_criterion, 'length/number')
+elseif strcmp(decision_criterion, 'len/num')
     idx = 5;
     [left_maxVal, ~] = max(left_valid_windows_features(:, idx));
     [right_maxVal, ~] = max(right_valid_windows_features(:, idx));
 else
-    error('the decision_criterion should be "number" or "length" ');
+    error('the decision_criterion should be "num", "len" or extend features');
 end
 
 % valid region of moving window: in the left side of mandrel ->  (1/2 - prior_mandrel_percent/2)

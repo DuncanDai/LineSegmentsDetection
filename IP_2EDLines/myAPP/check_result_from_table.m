@@ -38,13 +38,13 @@ for row = 31
         windowWidth = output.windowWidth(row); windowWidth = double(windowWidth);
         windowStepSize = output.windowStepSize(row); windowStepSize = double(windowStepSize);
         decision_criter = output.decision_criter(row); decision_criter = char(decision_criter);   %decision_criter = 'length*number';
-        prior_mandrel_percent = output.prior_mandrel_percent(row);   prior_mandrel_percent = 5/16;
+        prior_excluded_middle_percent = output.prior_excluded_middle_percent(row);   prior_excluded_middle_percent = 5/16;
         
         img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
         resizeImageHeight = size(img_rgb, 1) / scale;  resizeImageWidth = size(img_rgb, 2) / scale;
         % Use default hyperparameter.
         % If you want to check it in the hyperparameter set in output_data -> parser the table like above
-        [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
+        [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
     end
 end
 

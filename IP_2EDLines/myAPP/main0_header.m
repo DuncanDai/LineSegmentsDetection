@@ -29,8 +29,8 @@ global resizeImageHeight;
 global resizeImageWidth; 
 global windowWidth;  windowWidth = 30;
 global windowStepSize;  windowStepSize = 1;
-global decision_criter;   decision_criter = 'length*number'; % global only for single variable -> once declare: decision_criterion = 0 (decision_criterion is string cell array); 
-global prior_mandrel_percent;  prior_mandrel_percent = 5/16; % the middle prior_mandrel_percent part is not into consideration
+global decision_criter;   decision_criter = 'len*num'; % global only for single variable -> once declare: decision_criterion = 0 (decision_criterion is string cell array); 
+global prior_excluded_middle_percent;  prior_excluded_middle_percent = 5/16; % the middle prior_mandrel_percent part is not into consideration
 
 global FLAG_VALID; FLAG_VALID = 0;
 global label_data
@@ -44,10 +44,10 @@ global flag_quit; flag_quit = 0;
 %%% create table 
 OUTPUT_ELEMENTS = 2 + 16;   % 2 + 15 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)
 sz = [40000 OUTPUT_ELEMENTS];
-varTypes = {'string', 'string', 'double', 'double', 'cell', 'double', 'double', 'double', 'double', 'double', ...
-    'double', 'double', 'double', 'uint16', 'uint16', 'string', 'double', 'string'};  % by using class() to check the type of variable
+varTypes = {'string', 'string', 'single', 'single', 'cell', 'single', 'single', 'single', 'single', 'single', ...
+    'single', 'single', 'single', 'uint8', 'uint8', 'string', 'single', 'logical'};  % by using class() to check the type of variable
 varNames = {'folderName', 'imgName', 'runTime_cpp', 'runTime_matlab', 'windows_features', 'left_border_pos', 'left_border_label', 'right_border_pos', 'right_border_label', 'metric_RMSE', ...
-    'scale', 'angle_expect', 'angle_tolerance', 'windowWidth', 'windowStepSize', 'decision_criter', 'prior_mandrel_percent', 'is_labeled'};
+    'scale', 'angle_expect', 'angle_tolerance', 'windowWidth', 'windowStepSize', 'decision_criter', 'prior_excluded_middle_percent', 'is_labeled'};
 
 % Notice: angle's unit is degree
 output_data = table('Size',sz, 'VariableTypes',varTypes, 'VariableNames',varNames);
@@ -70,9 +70,9 @@ imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
 imgInputPath = 'D:/dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
 imgOutputPath = 'D:/g_output';
 
-%%% path in portable HDD of PC
-% imgInputPath = 'E:/dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
-% imgOutputPath = 'E:/g_output';
+%% path in portable HDD of PC
+imgInputPath = 'E:/dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
+imgOutputPath = 'E:/g_output';
 
 
 %% check: whether the image has labels

@@ -29,7 +29,7 @@ index = 1;
 img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
 
 t1 = datestr(now);
-[runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
+[runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
 t2 = datestr(now);
 
 
@@ -56,7 +56,7 @@ save(save_data_path, 'output_data_1');
 
 load chirp
 sound(y,Fs)
-%% valid all folders 1 + 2
+%% valid all folders: 1 + 2
 % valid all folders 1
 t1 = datestr(now);
 imgInputPath = 'D:/dataset_valid';

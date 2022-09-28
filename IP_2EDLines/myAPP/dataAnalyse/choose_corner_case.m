@@ -1,7 +1,7 @@
 function corner_case_table = choose_corner_case(output_data, RMSE_low_threshold)
-data_bad = select_data_through_RMSE(output_data, RMSE_low_threshold, 3000);
-data_bad.name = data_bad.folderName + 'sep' + data_bad.imgName;
-unique_files = unique(data_bad.name);
+bad_data = select_data_through_RMSE(output_data, RMSE_low_threshold, 3000);  % 3000 is bigger than the max value of RMSE
+bad_data.name = bad_data.folderName + 'sep' + bad_data.imgName;
+unique_files = unique(bad_data.name);
 unique_size = size(unique_files, 1);
 
 OUTPUT_ELEMENTS = 2;   % 2 + 15 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)

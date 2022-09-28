@@ -33,7 +33,7 @@ angle_tolerance = 5;
 
 windowWidth = 40;
 windowStepSize = 10;
-decision_criter = 'number';
+decision_criter = 'num';
 prior_mandrel_percent = 1/3;
 
 %% test all folders

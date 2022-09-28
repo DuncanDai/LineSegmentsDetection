@@ -1,4 +1,4 @@
-function [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath) 
+function [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath) 
 % 
 % Inputs:
 %   - img_rgb: output of imshow(imgFile)
@@ -16,8 +16,8 @@ global resizeImageHeight; resizeImageHeight = size(img_rgb, 1) / scale;  % for t
 global resizeImageWidth; resizeImageWidth = size(img_rgb, 2) / scale;
 global windowWidth;
 global windowStepSize; 
-global decision_criter;  decision_criterion = {'number'; 'length'; 'length*number';'length/number'};
-global prior_mandrel_percent;
+global decision_criter;  decision_criterion = {'num'; 'len'; 'len*num';'len/num'};
+global prior_excluded_middle_percent;
 
 global FLAG_VALID;
 
@@ -48,7 +48,7 @@ if FLAG_VALID == 1
                         ticId = tic;
                         [left_border_pos, right_border_pos, windows_features, full_edges_filter_by_angle] = extract_borders(...
                                                     edgeLines, resizeImageWidth, windowWidth, windowStepSize, ...
-                                                    angle_expect, angle_tolerance, decision_criter, prior_mandrel_percent);
+                                                    angle_expect, angle_tolerance, decision_criter, prior_excluded_middle_percent);
                         runTime_matlab = toc(ticId);
                         
                         %% calculate the output data
@@ -62,24 +62,24 @@ if FLAG_VALID == 1
                         try
                             [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);
                             if left_border_label ==0 & right_border_label ==0   % This image is in the label.json file, but has no label 
-                                is_labeled = 'not labeled';
+                                is_labeled = false;
                                 metric_RMSE = Inf; %  call function in train2_singleFolder.m need the output of metric_RMSE, however, not recorded in output_data
                                 return  % if not labeled
                             else
-                                is_labeled = 'labeled';
+                                is_labeled = true;
                             end
                         catch ME  % This image is not in the label.json file
                             fprintf('Reminder: the image "%s" in folder  %s is not existed in the label.json file, that means a invalid field of struct array in matlab!!!\n', imgName, folderName);
                             left_border_label = 0;  % if assign the value `[]`, the following calc_RMSE() function couldn't work 
                             right_border_label = 0;
-                            is_labeled = 'not in the label.json';
+                            is_labeled = false;
                             metric_RMSE = Inf; % just for output consistence of train2_singleFolder.m, not recorded in output_date
                             return % if not labeled
                         end 
 
                         metric_RMSE = calc_RMSE(left_border_pos,left_border_label,right_border_pos,right_border_label);
                         
-                        output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent, is_labeled};
+                        output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
                         
                         index = index + 1;
                         if ~mod(index, 500) 
@@ -103,7 +103,7 @@ else  % check & test (for classical IP there is no train process)
     ticId = tic;
     [left_border_pos, right_border_pos, windows_features, full_edges_filter_by_angle] = extract_borders(...
                                                     edgeLines, resizeImageWidth, windowWidth, windowStepSize, ...
-                                                    angle_expect, angle_tolerance, decision_criter, prior_mandrel_percent);
+                                                    angle_expect, angle_tolerance, decision_criter, prior_excluded_middle_percent);
     runTime_matlab = toc(ticId);
     
     %% calculate the output data
@@ -117,22 +117,22 @@ else  % check & test (for classical IP there is no train process)
     try
         [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);
         if left_border_label ==0 & right_border_label ==0   % This image is in the label.json file, but has no label 
-            is_labeled = 'not labeled';
+            is_labeled = false;
         else
-            is_labeled = 'labeled';
+            is_labeled = true;
         end
     catch ME  % This image is not in the label.json file
         fprintf('Reminder: the image "%s" in folder  %s is not existed in the label.json file, that means a invalid field of struct array in matlab!!!\n', imgName, folderName);
         left_border_label = 0;  % if assign the value `[]`, the following calc_RMSE() function couldn't work 
         right_border_label = 0;
-        is_labeled = 'not in the label.json';
+        is_labeled = false;
     end 
 
 
     metric_RMSE = calc_RMSE(left_border_pos,left_border_label,right_border_pos,right_border_label);
     %%% Issue: if left_border_pos == 0, which means no window_feature -> just record it in output_data for further analyse
 
-    output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent, is_labeled};
+    output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
     
     index = index + 1;
     if ~mod(index, 500) 
