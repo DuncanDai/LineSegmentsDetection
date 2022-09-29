@@ -23,11 +23,11 @@ addpath('./helperFuncs');
 %   - helperFuncs/check_result.m
 global scale;  scale = 1; % scale is not used in CannyPF -> keep it to 1 by hyperparameter tuning. 
 global angle_expect;  angle_expect = 90;
-global angle_tolerance;  angle_tolerance = 9;
+global angle_tolerance;  angle_tolerance = 25;
 
 global resizeImageHeight; 
 global resizeImageWidth; 
-global windowWidth;  windowWidth = 30;
+global windowWidth;  windowWidth = 34;
 global windowStepSize;  windowStepSize = 1;
 global decision_criter;   decision_criter = 'len*num'; % global only for single variable -> once declare: decision_criterion = 0 (decision_criterion is string cell array); 
 global prior_excluded_middle_percent;  prior_excluded_middle_percent = 5/16; % the middle prior_mandrel_percent part is not into consideration
@@ -43,7 +43,7 @@ global index; index = 1;  % index of output_data
 global flag_quit; flag_quit = 0;
 %%% create table 
 OUTPUT_ELEMENTS = 2 + 15;   % 2 + 15 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)
-sz = [1200000 OUTPUT_ELEMENTS];
+sz = [600000 OUTPUT_ELEMENTS];
 varTypes = {'string', 'string', 'single', 'single', 'single', 'single', 'single', 'single', 'single', ...
     'single', 'single', 'single', 'uint8', 'uint8', 'string', 'single', 'logical'};  % by using class() to check the type of variable
 varNames = {'folderName', 'imgName', 'runTime_cpp', 'runTime_matlab', 'left_border_pos', 'left_border_label', 'right_border_pos', 'right_border_label', 'metric_RMSE', ...

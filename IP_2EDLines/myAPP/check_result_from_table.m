@@ -5,25 +5,54 @@ main0_header;
 global is_plot is_save;
 
 %%% NOTICE!!! optional settings
-is_plot = 1; is_save = 0;  
+is_plot = 1; is_save = 1;  
 FLAG_VALID = 0; 
 
 %%% input the row you want to check
-% output_buffer = test_data; % output_data1 works like a buffer
+% output_buffer = corner_case_1_50; % output_data1 works like a buffer
 output = output_buffer;  
 
 
 %%% plot
 t = clock; % Get current time
-date_folder = ['check_', ...
+date_folder = ['check_result_', ...
           num2str(t(2:3), '%02d')];   % -month-day
 
+%%% in PC
+% imgInputPath = 'E:\dataset_valid';  imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
+% imgOutputPath = [imgOutputPath, filesep, date_folder];    % mkdir(imgOutputPath);
 
-imgInputPath = 'E:\dataset_valid';  imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
-imgOutputPath = [imgOutputPath, filesep, date_folder];    % mkdir(imgOutputPath);
+%%% in pool-206
+imgInputPath = 'D:\dataset_valid';  imgOutputPath = 'D:/g_output';
+imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
 
+%% Method 1: use the optimized hyper-parameters (in main0_header.m)
 %%% change the "row" you want to check
-for row = 31
+for row = 42
+% for row = 1: size(output, 1)
+    folderName = output.folderName(row);  folderName = char(folderName);
+    imgName = output.imgName(row);  imgName = char(imgName);
+    if exist([imgOutputPath, filesep, folderName, 'sep', imgName],'file')
+        fprintf("\nalready existed...\n")
+        continue
+    else
+%         angle_tolerance = 3;  % special case
+%         windowWidth = 14;
+        img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
+        resizeImageHeight = size(img_rgb, 1) / scale;  resizeImageWidth = size(img_rgb, 2) / scale;
+        % Use default hyperparameter.
+        % If you want to check it in the hyperparameter set in output_data -> parser the table like above
+        [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
+    end
+end
+
+clear t row;
+
+
+
+%% Method 2: use the original hyper-parameters
+%%% change the "row" you want to check
+for row = [32, 191, 283, 591, 597, 877, 894, 1720, 1762]
 % for row = 1: size(output, 1)
     folderName = output.folderName(row);  folderName = char(folderName);
     imgName = output.imgName(row);  imgName = char(imgName);

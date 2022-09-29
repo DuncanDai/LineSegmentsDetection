@@ -1,4 +1,4 @@
-function result = post_process_output_data(output_data, corner_case, has_corner_case)
+function result = groupby_hyperparams_from_output(output_data, corner_case, has_corner_case)
 % has_corner_case is a logical value: [true, flase]
 if ~has_corner_case
     output_data_with_corner_case = add_corner_case_label(output_data, corner_case);

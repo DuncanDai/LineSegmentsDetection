@@ -44,11 +44,11 @@ full_edges = [edgeLines, lengths, angles];
 valid_inds = filter_by_angle(angles, angle_expect, angle_tolerance);
 full_edges_filter_by_angle = full_edges(valid_inds, :);
 
-windows_num = idivide(resizeImageWidth, int16(windowStepSize), 'ceil');
+windows_num = idivide(int16(resizeImageWidth), int16(windowStepSize), 'ceil');
 windows_features = zeros(windows_num, 3);   % original 3 elements in a row -> (window_pos, number, length)
 for i = 1:(windows_num-1)
-    windowStart = 1 + (windowStepSize * (i-1));
-    windowEnd = windowStart + windowWidth - 1;
+    windowStart = 1 + (int16(windowStepSize) * (i-1));
+    windowEnd = windowStart + int16(windowWidth) - 1;
     [window_pos, edges_number, edges_length] = get_window_features(full_edges_filter_by_angle, ...
                                                                   windowStart, windowEnd);
     windows_features(i, :) = [window_pos, edges_number, edges_length];
