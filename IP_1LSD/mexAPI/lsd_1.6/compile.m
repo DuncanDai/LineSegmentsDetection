@@ -14,7 +14,7 @@
 
 %% compile
 % mex -O -output lsd lsd_mexFunc.c lsd.c
-mex -output lsd_mexFunc lsd_mexFunc.c lsd.c
+mex -output mex_lsd mex_lsd.c lsd.c
 %% test
 % clear all; close all; clc;
 % chairs = imread('chairs.pgm');

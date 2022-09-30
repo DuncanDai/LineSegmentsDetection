@@ -19,11 +19,13 @@
 clear; clc; close;
 main0_header;
 
+global is_plot is_save;
+is_plot = 1; is_save = 1;
+
 FLAG_VALID = 0;  % only for valid process: flag is 1
 index = 1;
-
-
 %% TODO: optimized hyperparameters
+load('U:\my_projs\LineSegmentsDetection\IP_2EDLines\myAPP\dataAnalyse\result_0929_0828.mat');
 result = sortrows(result,'mean_metric_RMSE','ascend');
 output = result(1, :);
 
@@ -49,7 +51,10 @@ train3_folders(imgInputPath, imgOutputPath);
 t2 = datestr(now);
 
 
-%% save data
+%%% save data
+addpath('./dataAnalyse');
+output_data = select_data_with_label(output_data);
+
 t = clock; % Get current time
 % example: out_test_0922_1347.mat
 fname = ['out_test_', ...
@@ -59,4 +64,9 @@ fname = ['out_test_', ...
 
 save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];
 save(save_data_path, 'output_data');
-clear PC_path  Pool_path  t  fname  save_data_path;
+
+load chirp
+sound(y,Fs)
+
+clear  t fname save_data_path y Fs;
+

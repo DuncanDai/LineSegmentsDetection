@@ -15,6 +15,7 @@
 
 #include "mex.h"
 
+#include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "lsd.h"
@@ -104,7 +105,20 @@ void mexFunction(int nlhs, mxArray* plhs[],
 //     mexPrintf("the pixel of image is %ld \n", sizeof(image)/sizeof(double)); // can vbe deleted (image is a double pointer refers to 1D-array, so the output is only 1)
     
     // call lsd_scale()
+    // calculate running time
+    LARGE_INTEGER t1,t2,tc;
+    QueryPerformanceFrequency(&tc);
+    QueryPerformanceCounter(&t1);
+    double time;
+    //double timeStart = (double)getTickCount(); 
+    
     output = lsd_scale(&num_lines, image, ncols, mrows, scale);
+    
+    QueryPerformanceCounter(&t2);
+    time = (double)(t2.QuadPart-t1.QuadPart)/(double)tc.QuadPart; 
+    //double timeEnd = ((double)getTickCount() - timeStart) / getTickFrequency();
+    mexPrintf("Running time in C++ = %f s \n", time);
+    // cout << "Running time in C++ = " << time << "s" << endl;  //error in c API
     mexPrintf("number of detected lines is %d \n", num_lines);
     
     

@@ -6,7 +6,7 @@ data = load_JSON(fname);
 % VMGradient = 70.0;
 
 % parameters: prior knowledge
-angle_expect = pi/2;
+angle_expect = 90;
 prior_mandrel_percent = 1/3;  % the percentage of middle part is excluded 
 
 % Paser the hyperparameter from JSON file.

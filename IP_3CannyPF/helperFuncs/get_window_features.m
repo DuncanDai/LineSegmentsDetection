@@ -1,18 +1,19 @@
-function [edges_number, edges_length, window_pos] = extract_window_features(full_edges_filter_by_angle, windowStart, windowEnd)
+function [window_pos, edges_number, edges_length] = get_window_features(full_edges_filter_by_angle, windowStart, windowEnd)
 % Description: From the detected edges, use moving window to count the
 % edges number in the window (the edges should have a angle
 % within the angle tolerance) and to calculate the edges length in the window
 %
 % Inputs:
 %   - full_edges_filter_by_angle: elements in one row -> (x1, y1, x2, y2, ..., length, angle)
-%   - scale (default is 4): the scale/resize size in x axis
 %   - windowStart (in pixels): the start position of window in the original image
 %   - windowEnd (in pixels): the end position of window in the original image
 %
 % Outputs: the features in one single window
+%   - window_pos
 %   - count
 %   - length
-%   - window_pos
+%   - ... (extra features)
+%   
 %
 % Preconditions: none
 %
