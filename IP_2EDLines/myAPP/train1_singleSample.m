@@ -119,6 +119,8 @@ else  % check & test (for classical IP there is no train process)
         [left_border_label, right_border_label] = get_label(label_data, folderName, imgName);
         if left_border_label ==0 & right_border_label ==0   % This image is in the label.json file, but has no label 
             is_labeled = false;
+            metric_RMSE = Inf; %  call function in train2_singleFolder.m need the output of metric_RMSE, however, not recorded in output_data
+            return  % if not labeled
         else
             is_labeled = true;
         end
@@ -127,6 +129,8 @@ else  % check & test (for classical IP there is no train process)
         left_border_label = 0;  % if assign the value `[]`, the following calc_RMSE() function couldn't work 
         right_border_label = 0;
         is_labeled = false;
+        metric_RMSE = Inf; % just for output consistence of train2_singleFolder.m, not recorded in output_date
+        return % if not labeled
     end 
 
 

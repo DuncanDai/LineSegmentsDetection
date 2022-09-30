@@ -52,6 +52,9 @@ t2 = datestr(now);
 
 
 %%% save data
+addpath('./dataAnalyse');
+output_data = select_data_with_label(output_data);
+
 t = clock; % Get current time
 % example: out_test_0922_1347.mat
 fname = ['out_test_', ...
