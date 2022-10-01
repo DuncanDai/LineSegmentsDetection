@@ -34,7 +34,7 @@ global prior_excluded_middle_percent;  prior_excluded_middle_percent = 5/16; % t
 
 global FLAG_VALID; FLAG_VALID = 0;
 global label_data
-label_file = '../Resources/mandrel_border_labels_manually.json';  % absolut path of label.json file
+label_file = '../../g_dataset/mandrel_border_labels_manually.json';  % absolut path of label.json file
 label_data = load_label(label_file);
 global is_labeled;  % whether the image is labeled or not, or even not exists in the label.json file
 
