@@ -4,12 +4,12 @@ function valid_inds = filter_by_angle(angles, angleExpect, angleTolerance)
 %
 % Input:
 %   - angles: the angles of the edges
-%   - angleExpect (in rad): angle of inclination of the border (recomended: (90 degree /180*pi) rad)
-%   - angleTolerance (in rad): tolerance of the angle (recomended: (5 degree /180*pi) rad)
+%   - angleExpect (in degree): angle of inclination of the border (recomended: 90 degree )
+%   - angleTolerance (in degree): tolerance of the angle (recomended: 5 degree)
 
 low = angleExpect - angleTolerance;
 high = angleExpect + angleTolerance;
 
-valid_inds = find(angles >= low & angles <= high);
+valid_inds = find(angles >= low & angles < high);
 end
 

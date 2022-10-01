@@ -13,7 +13,14 @@ function valid_inds = filter_by_window(edges_filtered_by_angle, windowStart, win
 min_x_val = min(edges_filtered_by_angle(:, 1), edges_filtered_by_angle(:, 3));
 max_x_val = max(edges_filtered_by_angle(:, 1), edges_filtered_by_angle(:, 3));
 
-invalid_inds = find(min_x_val >= windowEnd | max_x_val <= windowStart);
-valid_inds = setdiff(1:size(edges_filtered_by_angle,1), invalid_inds);
+% 09.22 only edgeLines in the window will be included
+valid_inds = find(min_x_val >= windowStart & max_x_val <= windowEnd);
+
+
+% (outdated) any intersection edgeLines will be included
+% invalid_inds = find(min_x_val >= windowEnd | max_x_val <= windowStart);
+% valid_inds = setdiff(1:size(edges_filtered_by_angle,1), invalid_inds);
+
+
 end
 

@@ -1,11 +1,10 @@
 img_rgb = imread('./Resources/test.png');
 img_gray = rgb2gray(img_rgb);  
-img = double(img_gray); 
 
-[runTime_cpp, edgeLines] = mex_edgeDetecter(img);
+[runTime_cpp, edgeLines] = mex_edgeDetecter(img_gray);
 
 %%
-addpath('../helperPlots');
+addpath('./helperPlots');
 
 imshow(img_gray);
 hold on;

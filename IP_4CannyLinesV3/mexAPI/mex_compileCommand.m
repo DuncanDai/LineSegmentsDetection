@@ -2,5 +2,5 @@
 % run in `mexAPI` Workspace
 mex -output mex_edgeDetecter ./mex_edgeDetecter.cpp ./src/run_edge_detecter.cpp ./src/buffer_2d.cpp ./src/CannyLine.cpp ./src/MetaLine.cpp ...
     -I"./lib"  -I"U:/my_apps/myOpencv/install/include" ...
-    -L"U:/my_apps/myOpencv/install/x64/vc16/lib"  -lopencv_world460 -g 
+    -L"U:/my_apps/myOpencv/install/x64/vc16/lib"  -lopencv_world460 %-g 
 
