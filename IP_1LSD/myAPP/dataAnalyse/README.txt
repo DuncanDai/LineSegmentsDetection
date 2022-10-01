@@ -61,4 +61,4 @@ mean(output_data.metric_RMSE);
         - runtime
         - RMSE
 
-    plus: corner_case -> figures
+    plus: corner_case -> save figures
