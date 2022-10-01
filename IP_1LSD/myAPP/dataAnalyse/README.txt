@@ -40,9 +40,25 @@ result = groupby_hyperparams_from_output(output_data, corner_case, true);
 
 #########################################
 [Analyse of the test output (only one set of optimized hyper-parameters)]
+mean(output_data.metric_RMSE);
+
 1 Distribution of RMSE
     - histogramm with texts
     - in ascending order -> plot
 
 2 analyse the result of histogramm -> select_data_through_RMSE.m + check_result_from_table.m
-    - choose 3 range: 100-500, 500-2000, > 2000
+    - choose at least 3 range based on histogramm -> check_result for analyzing the effect of algorithms.
+
+3 get_final_result.m (min mean max std) -> get_final_result.m
+    - runtime in C++
+    - runtime in Matlab
+    - RMSE
+    
+    1) single method: three-line table
+        - column: min mean max std
+        - row: c++, matlab, RMSE
+    2) all methods: boxplot
+        - runtime
+        - RMSE
+
+    plus: corner_case -> figures

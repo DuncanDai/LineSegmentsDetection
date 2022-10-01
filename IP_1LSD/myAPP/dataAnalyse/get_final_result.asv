@@ -1,0 +1,16 @@
+function final_result = get_final_result(test_result)
+% (min mean max std)
+%     - runtime in C++
+%     - runtime in Matlab
+%     - RMSE
+
+Fine_avg(1:end, 'mean_Fine_pearllog') = varfun(@exp,Fine_avg,'InputVariables','mean_Fine_pearllog');
+
+final_result(:, 'min_runTime_cpp') = varfun(@min, test_result, 'InputVariables', {'runTime_cpp', 'runTime_matlab', 'metric_RMSE'});
+final_result(:, 'mean_runTime_cpp') = varfun(@mean, test_result, 'InputVariables', 'runTime_cpp');
+final_result(:, 'max_runTime_cpp') = varfun(@max, test_result, 'InputVariables', 'runTime_cpp');
+final_result(:, 'std_runTime_cpp') = varfun(@std, test_result, 'InputVariables', 'runTime_cpp');
+
+
+
+end

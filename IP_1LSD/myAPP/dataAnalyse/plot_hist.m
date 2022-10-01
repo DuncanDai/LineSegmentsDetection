@@ -1,11 +1,11 @@
 % edges = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 200, 250, 500, 1000, 2000, 2500];
-hist = histogram(out.metric_RMSE);  % , edges
+hist = histogram(output_data.metric_RMSE);  % , edges
 
-set(gca, 'Ygrid','on'); %纵坐标刻度显示网格
-xtips = double(hist.BinEdges(1:end-1) + 50);   % bin的长度是50
+set(gca, 'Ygrid','on'); 
+xtips = double(hist.BinEdges(1:end-1));  
 ytips = hist.Values; 
 labels = string(hist.Values); 
-text(xtips, ytips, labels,'HorizontalAlignment','center',...
+text(xtips, ytips, labels,'HorizontalAlignment','left',...
     'VerticalAlignment','bottom')
 
 

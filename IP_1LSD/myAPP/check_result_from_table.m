@@ -9,7 +9,7 @@ is_plot = 1; is_save = 1;
 FLAG_VALID = 0; 
 
 %%% input the row you want to check
-output_buffer = tmp; % output_data1 works like a buffer
+output_buffer = test_RMSE_30_70; % output_data1 works like a buffer
 output = output_buffer;  
 
 
@@ -23,12 +23,12 @@ date_folder = ['check_result_', ...
 % imgOutputPath = [imgOutputPath, filesep, date_folder];    % mkdir(imgOutputPath);
 
 %%% in pool-206 valid
-imgInputPath = 'D:\dataset_valid';  imgOutputPath = 'D:/g_output';
+imgInputPath = 'D:/dataset_valid';  imgOutputPath = 'D:/g_output';
 imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
 
 %%% in pool-206 test
-% imgInputPath = 'D:\dataset_test';  imgOutputPath = 'D:/g_output';
-% imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
+imgInputPath = 'D:/dataset_test';  imgOutputPath = 'D:/g_output/valid+test_1001_0950 (LSD)';
+imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
 
 %% Method 1: use the optimized hyper-parameters (in main0_header.m)
 %%% change the "row" you want to check
@@ -56,8 +56,8 @@ clear t row;
 
 %% Method 2: use the original hyper-parameters
 %%% change the "row" you want to check
-for row = [1, 2]
-% for row = 1: size(output, 1)
+% for row = [1, 2]
+for row = 1: size(output, 1)
     folderName = output.folderName(row);  folderName = char(folderName);
     imgName = output.imgName(row);  imgName = char(imgName);
     if exist([imgOutputPath, filesep, folderName, 'sep', imgName],'file')
