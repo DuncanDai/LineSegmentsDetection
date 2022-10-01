@@ -1,4 +1,5 @@
 function corner_case_table = choose_corner_case(output_data, RMSE_low_threshold)
+
 bad_data = select_data_through_RMSE(output_data, RMSE_low_threshold, 3000);  % 3000 is bigger than the max value of RMSE
 bad_data.name = bad_data.folderName + 'sep' + bad_data.imgName;
 unique_files = unique(bad_data.name);
