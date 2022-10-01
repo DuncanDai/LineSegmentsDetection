@@ -20,14 +20,14 @@ clear;
 main0_header;
 
 global is_plot is_save;
-is_plot = 0; is_save = 0;
+is_plot = 1; is_save = 0;
 
 FLAG_VALID = 0;  % only for valid process: flag is 1
 index = 1;
 
 %% train single sample
 img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
-[runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
+train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);  % output result is in "output_data"
 
 
 %% train single folder

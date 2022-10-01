@@ -26,7 +26,7 @@ for n = 3:imgNumber+2
     end 
     
     % keep the output name here: use it in debug modul to check the output values
-    [runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent] = train1_singleSample(img_rgb, folderName, imgName, imgOutputFolder);
+    train1_singleSample(img_rgb, folderName, imgName, imgOutputFolder);
     if flag_quit  % set in 'main1_train.m' line 72
         return
     end

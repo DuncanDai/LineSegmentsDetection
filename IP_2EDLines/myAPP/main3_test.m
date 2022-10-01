@@ -15,18 +15,19 @@
 %   3 plot and analyzing (in 'train1_singleSample.m': line 118)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+clear; 
 %% run script: 
-clear; clc; close;
+clc; close;
 main0_header;
 
 global is_plot is_save;
-is_plot = 1; is_save = 1;
+is_plot = 0; is_save = 0;
 
 FLAG_VALID = 0;  % only for valid process: flag is 1
 index = 1;
 %% TODO: optimized hyperparameters
-load('U:\my_projs\LineSegmentsDetection\IP_2EDLines\myAPP\dataAnalyse\result_0929_0828.mat');
-result = sortrows(result,'mean_metric_RMSE','ascend');
+% load('U:\my_projs\LineSegmentsDetection\IP_2EDLines\myAPP\dataAnalyse\result_0929_0828.mat');
+result = sortrows(result,'mean_metric_RMSE','ascend');  % "result" is generated from validation README.txt
 output = result(1, :);
 
 scale = output.scale; 
@@ -38,8 +39,8 @@ windowStepSize = output.windowStepSize; windowStepSize = single(windowStepSize);
 decision_criter = output.decision_criter; decision_criter = char(decision_criter);   %decision_criter = 'length*number';
 prior_excluded_middle_percent = output.prior_excluded_middle_percent;   prior_excluded_middle_percent = 5/16;
 
-img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
-resizeImageHeight = size(img_rgb, 1) / scale;  resizeImageWidth = size(img_rgb, 2) / scale;
+% img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
+% resizeImageHeight = size(img_rgb, 1) * scale;  resizeImageWidth = size(img_rgb, 2) * scale;
 
 %% test all folders
 % TODO: imgInputPath (imgOutputPath is determained according to the platform: Pool or PC)
