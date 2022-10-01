@@ -58,11 +58,11 @@ public:
         stream << "\nImage size (rows, cols): (" << rows << " ," << cols << ")"  << std::endl; displayOnMATLAB(stream);
 
         /* 2 Data type convertion: from Matlab to C++  */
-        // NOTE: input[0] is double image -> OpenCV Canny() requires 8-bit input image
+        // NOTE: input[0] is uint8 image -> OpenCV Canny() requires 8-bit input image
         cv::Mat image(cv::Size( (int)cols, (int)rows ), CV_8UC1, Scalar(0));
         vector<Vec4f> edgeLines;
 
-        const TypedArray<uint8_t> imageFromMatlab = std::move(inputs[0]);   // Issue: inputs[0] from Matlab needs to the same double type, otherwise, Can't convert the Array(uint8s) to this TypedArray
+        const TypedArray<uint8_t> imageFromMatlab = std::move(inputs[0]);   // Issue: inputs[0] from Matlab needs to the same uint8 type
         for(i=0; i<rows; ++i)
             for(j=0; j<cols; ++j)
                 image.at<uchar>(i, j) = imageFromMatlab[i][j];  // from matlab(column major order (row, col)) to C++(row major order (col, row)) 
@@ -74,14 +74,14 @@ public:
         QueryPerformanceFrequency(&tc);
         QueryPerformanceCounter(&t1);
         double time;
-        double timeStart = (double)getTickCount(); 
+//         double timeStart = (double)getTickCount(); 
         
         // run cpp function
         run_edge_detecter(image, edgeLines);
 
         QueryPerformanceCounter(&t2);
         time = (double)(t2.QuadPart-t1.QuadPart)/(double)tc.QuadPart; 
-        double timeEnd = ((double)getTickCount() - timeStart) / getTickFrequency();
+//         double timeEnd = ((double)getTickCount() - timeStart) / getTickFrequency();
         cout << "Running time in C++ = " << time << "s" << endl;  //output: ms
 //         cout << "Running time in OpenCV = " << timeEnd  << "s" << endl;  //output: ms
         /////////////////////////////////////////
@@ -131,7 +131,7 @@ private:
         if (inputs[0].getType() != ArrayType::UINT8 ||
             inputs[0].getType() == ArrayType::COMPLEX_UINT8) {
             matlabPtr->feval(u"error", 
-                0, std::vector<Array>({ factory.createScalar("Input[0] image must be in type UINT8(grayscale), not double") }));
+                0, std::vector<Array>({ factory.createScalar("Input[0] image must be in type UINT8") }));
         }
         
         if (inputs[0].getDimensions().size() != 2) {

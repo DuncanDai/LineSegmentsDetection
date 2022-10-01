@@ -2,11 +2,11 @@ fname = 'hyperParams.json';
 data = load_JSON(fname);
 
 % parameters of CannyPF
-GaussSize = uint8(3);
-VMGradient = 70.0;
+% GaussSize = uint8(3);
+% VMGradient = 70.0;
 
 % parameters: prior knowledge
-angle_expect = pi/2;
+angle_expect = 90;
 prior_mandrel_percent = 1/3;  % the percentage of middle part is excluded 
 
 % Paser the hyperparameter from JSON file.
