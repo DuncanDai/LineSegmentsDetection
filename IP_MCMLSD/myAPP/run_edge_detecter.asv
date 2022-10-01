@@ -1,5 +1,0 @@
-function [runTime_cpp, edgeLines] = mex_edgeDetecter(img);
-clear; clc; close all;
-
-
-
