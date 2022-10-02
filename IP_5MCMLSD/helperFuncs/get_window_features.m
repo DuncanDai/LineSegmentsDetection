@@ -9,10 +9,9 @@ function [windowStart, windowEnd, edges_number, edges_length] = get_window_featu
 %   - windowEnd (in pixels): the end position of window in the original image
 %
 % Outputs: the features in one single window
-%   - windowStart
-%   - windowEnd
-%   - edges_number
-%   - edges_length
+%   - window_pos
+%   - count
+%   - length
 %   - ... (extra features)
 %   
 %
@@ -23,7 +22,6 @@ function [windowStart, windowEnd, edges_number, edges_length] = get_window_featu
 
 valid_inds = filter_by_window(full_edges_filter_by_angle, windowStart, windowEnd);
 valid_edges_full = full_edges_filter_by_angle(valid_inds, :);
-
 
 [edges_number, edges_length] = calc_edges_number_and_length(valid_edges_full);
 end

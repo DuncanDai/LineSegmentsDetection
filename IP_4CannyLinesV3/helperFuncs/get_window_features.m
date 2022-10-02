@@ -1,4 +1,4 @@
-function [window_pos, edges_number, edges_length] = get_window_features(full_edges_filter_by_angle, windowStart, windowEnd)
+function [windowStart, windowEnd, edges_number, edges_length] = get_window_features(full_edges_filter_by_angle, windowStart, windowEnd)
 % Description: From the detected edges, use moving window to count the
 % edges number in the window (the edges should have a angle
 % within the angle tolerance) and to calculate the edges length in the window
@@ -24,6 +24,5 @@ valid_inds = filter_by_window(full_edges_filter_by_angle, windowStart, windowEnd
 valid_edges_full = full_edges_filter_by_angle(valid_inds, :);
 
 [edges_number, edges_length] = calc_edges_number_and_length(valid_edges_full);
-window_pos = (windowStart + windowEnd)./2;
 end
 

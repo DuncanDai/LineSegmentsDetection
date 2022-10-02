@@ -22,7 +22,7 @@ save(, 'corner_case*');  %'corner_case_1001_0950.mat'
 
 
 ### Commands 2: choose a corner_case -> manually
-corner_case = corner_case6_300; % me: check the result in "test" -> LSD: corner_case2_40
+corner_case = corner_case2_40; % me: check the result in "test" -> LSD: corner_case2_40
 output_data = add_corner_case_label(output_data, corner_case);
 
 

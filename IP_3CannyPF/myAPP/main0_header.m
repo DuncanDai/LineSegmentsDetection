@@ -42,11 +42,11 @@ global output_data;
 global index; index = 1;  % index of output_data
 global flag_quit; flag_quit = 0;
 %%% create table 
-OUTPUT_ELEMENTS = 2 + 15;   % 2 + 15 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)
+OUTPUT_ELEMENTS = 2 + 17;   % 2 + 17 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)
 sz = [1000000 OUTPUT_ELEMENTS];
-varTypes = {'string', 'string', 'single', 'single', 'single', 'single', 'single', 'single', 'single', ...
+varTypes = {'string', 'string', 'single', 'single', 'single', 'single', 'single', 'single', 'single', 'single', 'single', ...
     'single', 'single', 'single', 'uint8', 'uint8', 'string', 'single', 'logical'};  % by using class() to check the type of variable
-varNames = {'folderName', 'imgName', 'runTime_cpp', 'runTime_matlab', 'left_border_pos', 'left_border_label', 'right_border_pos', 'right_border_label', 'metric_RMSE', ...
+varNames = {'folderName', 'imgName', 'runTime_cpp', 'runTime_matlab', 'left_pos1', 'left_pos2', 'left_border_label', 'right_pos1', 'right_pos2', 'right_border_label', 'metric_RMSE', ...
     'scale', 'angle_expect', 'angle_tolerance', 'windowWidth', 'windowStepSize', 'decision_criter', 'prior_excluded_middle_percent', 'is_labeled'};
 
 % Notice: angle's unit is degree

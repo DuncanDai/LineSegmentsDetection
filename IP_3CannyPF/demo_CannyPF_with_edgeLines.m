@@ -9,4 +9,4 @@ addpath('./helperPlots');
 
 imshow(img_gray);
 hold on;
-draw_lines(edgeLines);
+draw_edgeLines(edgeLines);

@@ -56,7 +56,7 @@ imageWidth = size(img_rgb,2);
 
 %% validation for single sample: only use when in validation -> maximal 840 samples in one set of hyper-params
 if FLAG_VALID == 1
-    for scale = 0.25  % 1 values
+    for scale = 0.5  % 1 values
         % resize
         resizeImageHeight = round( imageHeight*scale ); 
         resizeImageWidth  = round( imageWidth*scale );
@@ -66,15 +66,15 @@ if FLAG_VALID == 1
         for windowStepSize = 1  % keep windowStepSize value 1
             for i = [2, 4]   % select values of {'num'; 'len'; 'len*num'; 'len/num'}
                 decision_criter = decision_criterion{i, 1};
-                for windowWidth = 2:1:11  % 10 values (stepsize: 4 ) (attention the factor of scale)
+                for windowWidth = 2:2:24  % 10 values (stepsize: 4 ) (attention the factor of scale)
                     for angle_tolerance = 3:1:30   % 28 values  (unit is degree)
                         %%% here put the training/validation process
                         ticId = tic;
-                        [left_border_pos, right_border_pos, windows_features, full_edges_filter_by_angle] = extract_borders(...
-                                                    edgeLines, resizeImageWidth, windowWidth, windowStepSize, ...
+                        [left_pos1, left_pos2, right_pos1, right_pos2, windows_features, full_edges_filter_by_angle] = extract_borders(...
+                                                    edgeLines, resizeImageHeight, resizeImageWidth, windowWidth, windowStepSize, ...
                                                     angle_expect, angle_tolerance, decision_criter, prior_excluded_middle_percent);
-                        left_border_pos  = round( left_border_pos/scale );
-                        right_border_pos = round( right_border_pos/scale );
+                        left_pos1  = round( left_pos1/scale ); left_pos2  = round( left_pos2/scale );
+                        right_pos1  = round( right_pos1/scale ); right_pos2  = round( right_pos2/scale );
                         runTime_matlab = toc(ticId);
                         %% calculate the output data
                         % 1 runTime_c, runTime_matlab  ->  ok!
@@ -82,9 +82,9 @@ if FLAG_VALID == 1
                         % 3 left_border_pos, right_border_pos ->  ok!
 
                         % left_border_label, right_border_label -> metric: MRSE
-                        metric_RMSE = calc_RMSE(left_border_pos,left_border_label,right_border_pos,right_border_label);
+                        metric_RMSE = calc_RMSE(left_pos1, left_pos2, left_border_label, right_pos1, right_pos2, right_border_label);
 
-                        output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
+                        output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, left_pos1, left_pos2, left_border_label, right_pos1, right_pos2, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
 
                         index = index + 1;
                         if ~mod(index, 500) 
@@ -112,11 +112,11 @@ else  % check & test (for classical IP there is no train process)
     [runTime_cpp, edgeLines] = mex_edgeDetecter(img_scale);
     
     ticId = tic;
-    [left_border_pos, right_border_pos, windows_features, full_edges_filter_by_angle] = extract_borders(...
-                                                    edgeLines, resizeImageWidth, windowWidth, windowStepSize, ...
+    [left_pos1, left_pos2, right_pos1, right_pos2, windows_features, full_edges_filter_by_angle] = extract_borders(...
+                                                    edgeLines, resizeImageHeight, resizeImageWidth, windowWidth, windowStepSize, ...
                                                     angle_expect, angle_tolerance, decision_criter, prior_excluded_middle_percent);
-    left_border_pos  = round( left_border_pos/scale );
-    right_border_pos = round( right_border_pos/scale );
+    left_pos1  = round( left_pos1/scale ); left_pos2  = round( left_pos2/scale );
+    right_pos1  = round( right_pos1/scale ); right_pos2  = round( right_pos2/scale );
     runTime_matlab = toc(ticId);
     
     %% calculate the output data
@@ -124,10 +124,10 @@ else  % check & test (for classical IP there is no train process)
     % 2 windows_features: elements in one row (pos, number, length, length/number)  ->  ok!
     % 3 left_border_pos, right_border_pos ->  ok!
     % left_border_label, right_border_label -> metric: MRSE
-    metric_RMSE = calc_RMSE(left_border_pos,left_border_label,right_border_pos,right_border_label);
+    metric_RMSE = calc_RMSE(left_pos1, left_pos2, left_border_label, right_pos1, right_pos2, right_border_label);
     %%% Issue: if left_border_pos == 0, which means no window_feature -> just record it in output_data for further analyse
 
-    output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
+    output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, left_pos1, left_pos2, left_border_label, right_pos1, right_pos2, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
     
     index = index + 1;
     if ~mod(index, 500) 
@@ -162,15 +162,15 @@ if is_plot
     hold on
     % issue: When there is no edgeLines after the angle fitering, the function
     % will raise an error
-    plt1 = draw_borders(left_border_label, right_border_label, imageHeight, 'r', '-', 1, 'o');
+    plt1 = draw_two_borders(left_border_label, left_border_label, right_border_label, right_border_label, imageHeight, 'r', '-', 1, 'o');
     full_edges_filter_by_angle(:, 1:4) = full_edges_filter_by_angle(:, 1:4)./scale;
-    plt2 = draw_lines(full_edges_filter_by_angle); 
-    plt3 = draw_borders(left_border_pos, right_border_pos, imageHeight, 'c', '--', 1.5, 'none');  
+    plt2 = draw_edgeLines(full_edges_filter_by_angle); 
+    plt3 = draw_two_borders(left_pos1, left_pos2, right_pos1, right_pos2, imageHeight, 'c', '--', 1.5, 'none');  
 
     % draw the line in the center of image in x-axis.
     plt4 = line([imageWidth/2 imageWidth/2], [1 imageHeight],'Color','k', 'LineStyle', ':', 'LineWidth', 1);
     % set prior_mandrel_percent = 5/16 of middle part (initial in main0_header.m)
-    plt5 = draw_borders(imageWidth .* (1/2 - 1/8 - 1/32), imageWidth .* (1/2 + 1/8 + 1/32), imageHeight, 'k', '-', 1, 'none');
+    plt5 = draw_two_borders(imageWidth .* (1/2 - 1/8 - 1/32), imageWidth .* (1/2 - 1/8 - 1/32), imageWidth .* (1/2 + 1/8 + 1/32), imageWidth .* (1/2 + 1/8 + 1/32), imageHeight, 'k', '-', 1, 'none');
     
     % first legend
     legend(plt1, 'border labels', 'Location', 'northwest');
