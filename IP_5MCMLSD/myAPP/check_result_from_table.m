@@ -9,7 +9,7 @@ is_plot = 1; is_save = 1;
 FLAG_VALID = 0; 
 
 %%% input the row you want to check
-output_buffer = test_RMSE_30_70; % output_data1 works like a buffer
+output_buffer = corner_case6_300; % output_data1 works like a buffer
 output = output_buffer;  
 
 
@@ -27,13 +27,13 @@ imgInputPath = 'D:/dataset_valid';  imgOutputPath = 'D:/g_output';
 imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
 
 %%% in pool-206 test
-imgInputPath = 'D:/dataset_test';  imgOutputPath = 'D:/g_output/valid+test_1001_0950 (LSD)';
-imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
+% imgInputPath = 'D:/dataset_test';  imgOutputPath = 'D:/g_output/valid+test_1001_0950 (LSD)';
+% imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
 
 %% Method 1: use the optimized hyper-parameters (in main0_header.m)
 %%% change the "row" you want to check
-for row = 42
-% for row = 1: size(output, 1)
+% for row = 42
+for row = 1: size(output, 1)
     folderName = output.folderName(row);  folderName = char(folderName);
     imgName = output.imgName(row);  imgName = char(imgName);
     if exist([imgOutputPath, filesep, folderName, 'sep', imgName],'file')
@@ -43,7 +43,7 @@ for row = 42
 %         angle_tolerance = 3;  % special case
 %         windowWidth = 14;
         img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
-        resizeImageHeight = size(img_rgb, 1) / scale;  resizeImageWidth = size(img_rgb, 2) / scale;
+        resizeImageHeight = size(img_rgb, 1) * scale;  resizeImageWidth = size(img_rgb, 2) * scale;
         % Use default hyperparameter.
         % If you want to check it in the hyperparameter set in output_data -> parser the table like above
         train1_singleSample(img_rgb, folderName, imgName, imgOutputPath);
@@ -54,7 +54,7 @@ clear t row;
 
 
 
-%% Method 2: use the original hyper-parameters
+%% Method 2: use the original hyper-parameters in output_data
 %%% change the "row" you want to check
 % for row = [1, 2]
 for row = 1: size(output, 1)

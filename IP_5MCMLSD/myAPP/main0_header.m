@@ -24,11 +24,11 @@ addpath('../Toolkit/mcmlsdV2/');
 %   - helperFuncs/check_result.m
 global scale; scale = 0.25; % scale is not used in CannyPF -> keep it to 1 by hyperparameter tuning. 
 global angle_expect;  angle_expect = 90;
-global angle_tolerance;  angle_tolerance = 25;
+global angle_tolerance;  angle_tolerance = 12;
 
 global resizeImageHeight; 
 global resizeImageWidth; 
-global windowWidth;  windowWidth = 8;  % Note: scale is 0.25 -> 34 (when scale is 1.0)
+global windowWidth;  windowWidth = 11;  % Note: scale is 0.25 -> 34 (when scale is 1.0)
 global windowStepSize;  windowStepSize = 1;
 global decision_criter;   decision_criter = 'len'; % global only for single variable -> once declare: decision_criterion = 0 (decision_criterion is string cell array); 
 global prior_excluded_middle_percent;  prior_excluded_middle_percent = 5/16; % the middle prior_mandrel_percent part is not into consideration
@@ -41,7 +41,7 @@ global is_labeled;  % whether the image is labeled or not, or even not exists in
 
 global kernels   kernels_flip   kernel_params;
 img = imread('../Resources/test.png');
-img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
+img = imresize(img, [round(size(img,1) * scale), round(size(img,2) * scale)]);
 %compute the kernel for the image size
 %you only need to compute the kernal once for one type of image size
 [kernels, kernels_flip, kernel_params] = kernelInitialization(img);
