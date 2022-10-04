@@ -11,7 +11,9 @@ close all; clc;
 addpath('../helperFuncs');
 addpath('../helperPlots');
 addpath('./');
+addpath('./dataAnalyse');
 addpath('./helperFuncs');
+
 
 addpath(genpath('../Toolkit/code/'));
 addpath(genpath('../Toolkit/edges-master/'));
@@ -40,7 +42,7 @@ label_data = load_label(label_file);
 global is_labeled;  % whether the image is labeled or not, or even not exists in the label.json file
 
 global kernels   kernels_flip   kernel_params;
-img = imread('../Resources/test.png');
+img = imread('../../g_dataset/test.png');
 img = imresize(img, [round(size(img,1) * scale), round(size(img,2) * scale)]);
 %compute the kernel for the image size
 %you only need to compute the kernal once for one type of image size
@@ -52,7 +54,7 @@ global index; index = 1;  % index of output_data
 global flag_quit; flag_quit = 0;
 %%% create table 
 OUTPUT_ELEMENTS = 2 + 17;   % 2 + 17 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)
-sz = [1000000 OUTPUT_ELEMENTS];
+sz = [1400000 OUTPUT_ELEMENTS];
 varTypes = {'string', 'string', 'single', 'single', 'single', 'single', 'single', 'single', 'single', 'single', 'single', ...
     'single', 'single', 'single', 'uint8', 'uint8', 'string', 'single', 'logical'};  % by using class() to check the type of variable
 varNames = {'folderName', 'imgName', 'runTime_cpp', 'runTime_matlab', 'left_pos1', 'left_pos2', 'left_border_label', 'right_pos1', 'right_pos2', 'right_border_label', 'metric_RMSE', ...
@@ -64,11 +66,6 @@ output_data = table('Size',sz, 'VariableTypes',varTypes, 'VariableNames',varName
 clear label_file img OUTPUT_ELEMENTS  sz  varTypes  varNames;
 
 %% configure: different paths
-%%% general path in Pool
-imgInputPath = 'U:/my_projs/imgSamplesSubTest';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
-imgOutputPath = 'U:/my_projs/g_output';
-
-
 %%% general path in PC
 imgInputPath = 'D:/My_Data/me_Projs/Proj_MA/images';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
 imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';

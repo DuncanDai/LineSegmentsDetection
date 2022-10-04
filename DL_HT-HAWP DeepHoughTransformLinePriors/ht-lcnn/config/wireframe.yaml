@@ -1,8 +1,8 @@
 io:
   vote_index: vote_index_128_128_3_1.mat
   logdir: logs/
-  datadir: data/wireframe/
-  outdir: results/
+  datadir: D:/data_wireframe/wireframe
+  outdir: D:/dl_output/
   resume_from: 
   num_workers: 4
   tensorboard_port: 0
@@ -13,7 +13,7 @@ model:
       mean: [109.730, 103.832, 98.681]
       stddev: [22.275, 22.124, 23.229]
 
-  batch_size: 5
+  batch_size: 3  # original: 5
   batch_size_eval: 2
 
   # backbone multi-task parameters

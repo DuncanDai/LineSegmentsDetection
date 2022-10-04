@@ -77,7 +77,7 @@ def main():
         vote_index = sio.loadmat(C.io.vote_index)['vote_index']
     else:
         vote_index = hough_transform(rows=128, cols=128, theta_res=3, rho_res=1)
-        sio.savemat(C.io.vote_index, {'vote_index': vote_index})
+        # sio.savemat(C.io.vote_index, {'vote_index': vote_index})  # original save the .mat data (> 1GB)
     vote_index = torch.from_numpy(vote_index).float().contiguous().to(device)
     print('load vote_index', vote_index.shape)
 
@@ -149,7 +149,7 @@ def main():
             plt.gca().xaxis.set_major_locator(plt.NullLocator())
             plt.gca().yaxis.set_major_locator(plt.NullLocator())
             plt.imshow(im)
-            plt.savefig(imname.replace(".png", f"-{t:.02f}.svg"), bbox_inches="tight")
+            # plt.savefig(imname.replace(".png", f"-{t:.02f}.svg"), bbox_inches="tight")  # save in the path, where test.png is -> but change suffix .png to .svg
             plt.show()
             plt.close()
 

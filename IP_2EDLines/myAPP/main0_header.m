@@ -12,6 +12,8 @@ close all; clc;
 addpath('../helperFuncs');
 addpath('../helperPlots');
 addpath('../mexAPI');
+addpath('./');
+addpath('./dataAnalyse');
 addpath('./helperFuncs');
 
 % Script: parser JSON to get the parameters.

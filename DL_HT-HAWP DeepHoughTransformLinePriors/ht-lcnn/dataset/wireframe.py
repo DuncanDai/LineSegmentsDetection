@@ -201,7 +201,7 @@ def main():
         with open(anno_file, "r") as f:
             dataset = json.load(f)
 
-        def handle(data):
+        def handle(data):   # AttributeError: Can't pickle local object 'main.<locals>.handle'  -> https://blog.csdn.net/qq_43331089/article/details/126227288
             im = cv2.imread(os.path.join(data_root, "images", data["filename"]))
             prefix = data["filename"].split(".")[0]
             lines = np.array(data["lines"]).reshape(-1, 2, 2)
@@ -224,7 +224,7 @@ def main():
                 save_heatmap(f"{path}_3", im[::-1, ::-1], lines3)
             print("Finishing", os.path.join(data_output, batch, prefix))
 
-        parmap(handle, dataset, 16)
+        parmap(handle, dataset, 0)   # me dinggen - itiv 215 -> output of multiprocessing.cpu_count() is 6, less than 16  -> when it's 0, will be counted in utils.py in lcnn folder
 
 
 if __name__ == "__main__":

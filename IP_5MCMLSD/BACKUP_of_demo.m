@@ -7,7 +7,7 @@ addpath(genpath('Toolkit/edges-master/'));
 addpath('Toolkit/mcmlsdV2/');
 
 
-img = imread(['Resources', filesep, 'test.png']);  % P1040823hr.JPG
+img = imread('../g_dataset/test.png'); % P1040823hr.JPG
 img = imresize(img, [round(size(img,1)/4), round(size(img,2)/4)]);
 
 %compute the kernel for the image size

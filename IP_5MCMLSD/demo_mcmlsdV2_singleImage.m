@@ -12,7 +12,7 @@ addpath('Toolkit/mcmlsdV2/');
 MIN_LINE_NUMBER = 15;
 
 %%% dinggen test
-img_path = './Resources/test.png';
+img_path = '../g_dataset/test.png';
 img_origin = imread(img_path);
 
 % 1/16 size to the original image

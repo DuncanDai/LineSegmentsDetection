@@ -110,7 +110,7 @@ def main():
     # 2. model
     ### load vote_index matrix for Hough transform
     ### defualt settings: (128, 128, 3, 1)
-    if os.path.isfile(C.io.vote_index):
+    if os.path.isfile(C.io.vote_index):  # if there is already this file, HT don't need to be calculated.
         print('load vote_index ... ')
         vote_index = sio.loadmat(C.io.vote_index)['vote_index']
     else:

@@ -12,6 +12,8 @@ close all; clc;
 addpath('../helperFuncs');
 addpath('../helperPlots');
 addpath('../mexAPI');
+addpath('./');
+addpath('./dataAnalyse');
 addpath('./helperFuncs');
 
 % Script: parser JSON to get the parameters.
@@ -55,10 +57,6 @@ output_data = table('Size',sz, 'VariableTypes',varTypes, 'VariableNames',varName
 clear label_file  OUTPUT_ELEMENTS  sz  varTypes  varNames;
 
 %% configure: different paths
-%%% general path in Pool
-imgInputPath = 'U:/my_projs/imgSamplesSubTest';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
-imgOutputPath = 'U:/my_projs/g_output';
-
 
 %%% general path in PC
 imgInputPath = 'D:/My_Data/me_Projs/Proj_MA/images';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
