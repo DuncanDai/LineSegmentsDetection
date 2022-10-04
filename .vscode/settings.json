@@ -1,5 +1,7 @@
 {
     "files.associations": {
         "vector": "cpp"
-    }
+    },
+    "python.dataScience.jupyterServerURI": "local",
+    "python.pythonPath": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe"
 }

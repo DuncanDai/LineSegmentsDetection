@@ -1,3 +1,7 @@
+### preprare work
+get_RMSE2()  -> metric_RMSE, metric_RMSE_polyfit
+
+
 [Analyse of the validation output] original data: "output_data" from validation
 
 Extra: observe the "output_data" to select the more resonable range of hyper-parameters
