@@ -66,7 +66,7 @@ if FLAG_VALID == 1
         for windowStepSize = 1  % keep windowStepSize value 1
             for i = [2, 4]   % select values of {'num'; 'len'; 'len*num'; 'len/num'}
                 decision_criter = decision_criterion{i, 1};
-                for windowWidth = 2:2:24  % 10 values (stepsize: 4 ) (attention the factor of scale)
+                for windowWidth = 2:2:24  % 12 values (stepsize: 4 ) (attention the factor of scale)
                     for angle_tolerance = 3:1:30   % 28 values  (unit is degree)
                         %%% here put the training/validation process
                         ticId = tic;

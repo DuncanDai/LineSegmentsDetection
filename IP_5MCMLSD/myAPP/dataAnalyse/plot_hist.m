@@ -1,3 +1,5 @@
+%% for test output_data
+
 % edges = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 200, 250, 500, 1000, 2000, 2500];
 hist = histogram(output_data.metric_RMSE);  % , edges
 

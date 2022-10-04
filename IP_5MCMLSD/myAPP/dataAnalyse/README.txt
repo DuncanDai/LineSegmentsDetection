@@ -18,11 +18,11 @@ corner_case94_900 = choose_corner_case(output_data, 900);
 corner_case95_1000 = choose_corner_case(output_data, 1000);
 corner_case96_1500 = choose_corner_case(output_data, 1500);
 corner_case97_2000 = choose_corner_case(output_data, 2000);
-save(, 'corner_case*');  %'corner_case_1001_0950.mat'
+save('corner_case_.mat', 'corner_case*');  %'corner_case_1001_0950.mat'
 
 
 ### Commands 2: choose a corner_case -> manually
-corner_case = corner_case2_40; % me: check the result in "test" -> LSD: corner_case2_40
+corner_case = corner_case7_400; % me: check the result in "test" -> LSD: corner_case2_40
 output_data = add_corner_case_label(output_data, corner_case);
 
 

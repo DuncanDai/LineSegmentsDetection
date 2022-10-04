@@ -47,13 +47,16 @@ prior_excluded_middle_percent = output.prior_excluded_middle_percent;   prior_ex
 imgInputPath = 'D:\dataset_test'; % portable HDD or network driver
 
 
+load chirp
+sound(y,Fs)
+
 t1 = datestr(now);
 train3_folders(imgInputPath, imgOutputPath);
 t2 = datestr(now);
 
 
 %%% save data
-addpath('./dataAnalyse');
+% addpath('./dataAnalyse');
 output_data = select_data_with_label(output_data);
 
 t = clock; % Get current time

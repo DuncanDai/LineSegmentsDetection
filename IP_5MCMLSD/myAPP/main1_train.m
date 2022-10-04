@@ -20,7 +20,7 @@ clear;
 main0_header;
 
 global is_plot is_save;
-is_plot = 1; is_save = 1;
+is_plot = 1; is_save = 0;
 
 FLAG_VALID = 0;  % only for valid process: flag is 1
 index = 1;
