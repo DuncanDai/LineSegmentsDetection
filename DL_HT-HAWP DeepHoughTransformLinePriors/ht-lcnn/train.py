@@ -43,7 +43,7 @@ from lcnn.models.HT import hough_transform
 def get_outdir(identifier):
     # load config
     name = str(datetime.datetime.now().strftime("%y%m%d-%H%M%S"))
-    name += "-%s" % identifier
+    name += "-%s" % identifier   # name with identifier
     outdir = osp.join(osp.expanduser(C.io.logdir), name)
     if not osp.exists(outdir):
         os.makedirs(outdir)
@@ -53,9 +53,9 @@ def get_outdir(identifier):
 
 
 def main():
-    args = docopt(__doc__)
+    args = docopt(__doc__)  # from __doc__ info in the above
     config_file = args["<yaml-config>"] or "config/wireframe.yaml"
-    C.update(C.from_yaml(filename=config_file))
+    C.update(C.from_yaml(filename=config_file))  # update a dict -> all the items()
     M.update(C.model)
     pprint.pprint(C, indent=4)
     resume_from = C.io.resume_from
@@ -69,7 +69,7 @@ def main():
     os.environ["CUDA_VISIBLE_DEVICES"] = args["--devices"]
     if torch.cuda.is_available():
         device_name = "cuda"
-        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.deterministic = True  # me?
         torch.cuda.manual_seed(0)
         print("Let's use", torch.cuda.device_count(), "GPU(s)!")
     else:
@@ -77,7 +77,6 @@ def main():
     device = torch.device(device_name)
 
     # 1. dataset
-
     # uncomment for debug DataLoader
     # wireframe.datasets.WireframeDataset(datadir, split="train")[0]
     # sys.exit(0)
@@ -85,7 +84,7 @@ def main():
     datadir = C.io.datadir
     kwargs = {
         "collate_fn": collate,
-        "num_workers": C.io.num_workers if os.name != "nt" else 0,
+        "num_workers": C.io.num_workers if os.name != "nt" else 0,  # os.name is either 'posix' or 'nt'  
         "pin_memory": True,
     }
     train_loader = torch.utils.data.DataLoader(
@@ -162,7 +161,7 @@ def main():
 
     if resume_from:
         optim.load_state_dict(checkpoint["optim_state_dict"])
-    outdir = resume_from or get_outdir(args["--identifier"])
+    outdir = resume_from or get_outdir(args["--identifier"])  # args can be in __doc__ described
     print("outdir:", outdir)
 
     try:

@@ -67,5 +67,5 @@ optim:
   lr: 4.0e-4
   amsgrad: True
   weight_decay: 1.0e-4
-  max_epoch: 24
-  lr_decay_epoch: 10
+  max_epoch: 10   # original: 24
+  lr_decay_epoch: 4  # original: 10

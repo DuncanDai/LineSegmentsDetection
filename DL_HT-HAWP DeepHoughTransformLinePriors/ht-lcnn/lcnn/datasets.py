@@ -14,7 +14,7 @@ from torch.utils.data.dataloader import default_collate
 from lcnn.config import M
 
 
-class WireframeDataset(Dataset):
+class WireframeDataset(Dataset):  # Dataset base class
     def __init__(self, rootdir, split):
         self.rootdir = rootdir
         filelist = glob.glob(f"{rootdir}/{split}/*_label.npz")
@@ -23,20 +23,20 @@ class WireframeDataset(Dataset):
         ### experiments on subsets
         # filelist = filelist[0:int(len(filelist) * 0.1)]
 
-        print(f"n{split}:", len(filelist))
+        print(f"number of {split}:", len(filelist))
         self.split = split
-        self.filelist = filelist
+        self.filelist = filelist  # all image name list with suffix
 
     def __len__(self):
         return len(self.filelist)
 
     def __getitem__(self, idx):
         iname = self.filelist[idx][:-10].replace("_a0", "").replace("_a1", "") + ".png"
-        image = io.imread(iname).astype(float)[:, :, :3]
+        image = io.imread(iname).astype(float)[:, :, :3]  # image data: 3D
         if "a1" in self.filelist[idx]:
-            image = image[:, ::-1, :]
-        image = (image - M.image.mean) / M.image.stddev
-        image = np.rollaxis(image, 2).copy()
+            image = image[:, ::-1, :]   # order reverse in the 2nd dimension
+        image = (image - M.image.mean) / M.image.stddev  # normalized in 3D
+        image = np.rollaxis(image, 2).copy()  # 2nd axis to 0-position
 
         # npz["jmap"]: [J, H, W]    Junction heat map
         # npz["joff"]: [J, 2, H, W] Junction offset within each pixel

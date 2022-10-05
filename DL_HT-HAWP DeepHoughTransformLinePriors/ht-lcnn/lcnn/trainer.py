@@ -196,11 +196,11 @@ class Trainer(object):
             self.iteration += 1
             self._write_metrics(1, loss.item(), "training", do_print=False)
 
-            if self.iteration % 4 == 0:
+            if self.iteration % 10 == 0:
                 pprint(
                     f"{self.epoch:03}/{self.iteration * self.batch_size // 1000:04}k| "
                     + "| ".join(map("{:.5f}".format, self.avg_metrics[0]))
-                    + f"| {4 * self.batch_size / (timer() - time):04.1f} "
+                    + f"| {10 * self.batch_size / (timer() - time):04.1f} "   # batch(s) per second
                 )
                 time = timer()
             # num_images = self.batch_size * self.iteration
