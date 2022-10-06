@@ -12,7 +12,8 @@ g_datastet
 **/.vs
 
 # output of matlab 
-*.mat  # upload only once (in initial)
+# upload only once - in initial
+*.mat  
 *.fig
 
 # Prerequisites
