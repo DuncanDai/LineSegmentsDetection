@@ -8,10 +8,7 @@ opts.nPos=5e5; opts.nNeg=5e5;     % decrease to speedup training
 opts.useParfor=0;                 % parallelize if sufficient memory
 
 %% train edge detector (~20m/8Gb per tree, proportional to nPos/nNeg)
-ticID = tic; 
-model=edgesTrain(opts); 
-t = toc(ticID); % will load model if already trained
-disp(['Inside MCM: running time for edgesTrain = ', num2str(t), ' second(s)']);
+tic, model=edgesTrain(opts); toc; % will load model if already trained
 
 %% set detection parameters (can set after training)
 model.opts.multiscale=0;          % for top accuracy set multiscale=1

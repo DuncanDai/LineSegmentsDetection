@@ -3,7 +3,7 @@
 %   1 the initial variables
 %       - FLAG_VALID = 1: only for valid process: flag is 1
 %       - index: initial index of output_data
-%   2 the path  (in 'main0_header.m': line 43)
+%   2 the path  (in 'config_path.m': line 66)
 %       - imgInputPath
 %       - imgInputPath
 %       - imgName
@@ -68,7 +68,7 @@ output_data = select_data_with_label(output_data);
 
 % metric = 'metric_RMSE_polyfit';
 metric = 'metric_RMSE_vertical';
-fprintf('(in main3_test.m) Please set mean_metric_RMSE!!! metric_RMSE is "%s"', metric);
+fprintf('(in run_2valid.m) Please set mean_metric_RMSE!!! metric_RMSE is "%s"', metric);
 output_data = set_metric_RMSE(output_data, metric);   %  'metric_RMSE_vertical' or 'metric_RMSE_polyfit'
 
 

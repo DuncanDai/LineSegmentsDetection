@@ -1,4 +1,4 @@
-function  [left_window_start, left_pos1, left_pos2, right_window_start, right_pos1, right_pos2, windows_features, full_edges_filter_by_angle] = extract_borders(edgeLines, resizeImageHeight, resizeImageWidth, windowWidth, windowStepSize, ...
+function  [left_window_start, left_pos1, left_pos2, left_num, left_len, right_window_start, right_pos1, right_pos2, right_num, right_len, windows_features, full_edges_filter_by_angle] = extract_borders(edgeLines, resizeImageHeight, resizeImageWidth, windowWidth, windowStepSize, ...
                                                                                                             angle_expect, angle_tolerance, decision_criterion, prior_mandrel_percent) %, prior_mandrel_diameter, lenth_threshold, number_threshold)
 % Description: From the detected edge lines, use moving window to count the
 % number of edge lines in the window (the edge lines should have a angle within the angle tolerance) and
@@ -96,6 +96,7 @@ end
 
 if (idx == 6) & (isnan(left_maxVal))  % (special case: "len/num") the number of edge lines is 0  
     left_pos1 = 0;  left_pos2 = 0; left_window_start = 0;
+    left_num = 0; left_len = 0;
 else
     % valid region of moving window: in the left side of mandrel ->  (1/2 - prior_mandrel_percent/2)
     left_maxIndex = find(left_valid_windows_features(:, idx)==left_maxVal);
@@ -103,9 +104,13 @@ else
     left_window_index = left_maxIndex(1);
     if left_valid_windows_features(left_window_index, 3) == 0  % the number of edge lines is 0
         left_pos1 = 0;  left_pos2 = 0; left_window_start = 0;
+        left_num = 0; left_len = 0;
     else
         left_window_start = left_valid_windows_features(left_window_index, 1);  
         left_window_end = left_valid_windows_features(left_window_index, 2);  
+        left_num = left_valid_windows_features(left_window_index, 3); 
+        left_len = left_valid_windows_features(left_window_index, 4); 
+
         max_inds = filter_by_window(full_edges_filter_by_angle, left_window_start, left_window_end);
         max_window_with_edgeLines = full_edges_filter_by_angle(max_inds, 1:4);  % 4 elements: (x1, y1, x2, y2)
         
@@ -117,15 +122,20 @@ end
 % same process fot the right side
 if (idx == 6) & (isnan(right_maxVal))
     right_pos1 = 0; right_pos2 = 0; right_window_start = 0;
+    right_num = 0; right_len = 0;
 else
     % valid region of moving window: in the right side of mandrel -> (1/2 + prior_mandrel_percent/2)
     right_maxIndex = find(right_valid_windows_features(:, idx)==right_maxVal); 
     right_window_index = right_maxIndex(end);
     if right_valid_windows_features(right_window_index, 3) == 0  
-        right_pos1 = 0; right_pos2 = 0; right_window_start = 0;
+        right_pos1 = 0; right_pos2 = 0; right_window_start = 0; 
+        right_num = 0; right_len = 0;
     else
         right_window_start = right_valid_windows_features(right_window_index, 1);  
         right_window_end = right_valid_windows_features(right_window_index, 2);  
+        right_num = right_valid_windows_features(right_window_index, 3); 
+        right_len = right_valid_windows_features(right_window_index, 4);
+
         max_inds = filter_by_window(full_edges_filter_by_angle, right_window_start, right_window_end);
         max_window_with_edgeLines = full_edges_filter_by_angle(max_inds, 1:4); % 4 elements: (x1, y1, x2, y2)
         

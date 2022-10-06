@@ -3,7 +3,7 @@
 %   1 the initial variables
 %       - FLAG_VALID = 0: only for valid process: flag is 1
 %       - index: initial index of output_data
-%   2 the path  (in 'main0_header.m': line 43)
+%   2 the path  (in 'config_path.m': line 66)
 %       - imgInputPath
 %       - imgInputPath
 %       - imgName
@@ -32,7 +32,7 @@ index = 1;
 % 'metric_RMSE_vertical' or 'metric_RMSE_polyfit'
 % mean_metric_RMSE = 'metric_RMSE_polyfit';
 mean_metric_RMSE = 'metric_RMSE_vertical';
-fprintf('(in main3_test.m) Please set mean_metric_RMSE!!! mean_metric_RMSE is "%s"', mean_metric_RMSE);
+fprintf('(in run_3test.m) Please set mean_metric_RMSE!!! mean_metric_RMSE is "%s"', mean_metric_RMSE);
 
 result = sortrows(result,mean_metric_RMSE,'ascend');  % "result" is generated from validation README.txt
 output = result(1, :);

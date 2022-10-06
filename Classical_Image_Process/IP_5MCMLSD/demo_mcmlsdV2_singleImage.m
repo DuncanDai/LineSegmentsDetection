@@ -17,23 +17,23 @@ img_origin = imread(img_path);
 
 % 1/16 size to the original image
 % dinggen 08.26 test: full size
-img = imresize(img_origin, [round(size(img_origin,1)/4), round(size(img_origin,2)/4)]);
+img_rgb = imresize(img_origin, [round(size(img_origin,1)/4), round(size(img_origin,2)/4)]);
 
 %compute the kernel for the image size
 %you only need to compute the kernal once for one an image size
 % dinggen 2022.08.26 you only need to compute the kernal once for one type image size
-[kernels, kernels_flip, kernel_params] =kernelInitialization(img);
+[kernels, kernels_flip, kernel_params] =kernelInitialization(img_rgb);
 
 %the lines variable contains the detected line segmentations it arranged as
 %[x1 y1 x2 y2 probability]
 %The fullLines are the detected lines. It is arranged as [rho theta probability]
 ticId = tic;
-[lines, fullLines] =lineSegmentation_HighRes(img, kernels, kernels_flip, kernel_params);
+[lines, fullLines] =lineSegmentation_HighRes(img_rgb, kernels, kernels_flip, kernel_params);
 display('Total time');
 toc(ticId)
 
 fig = figure;
-imshow(img);
+imshow(img_rgb);
 hold on
 %Order lines by probability
 lines = sortrows(lines, -5);
@@ -48,9 +48,9 @@ end
 
 %please use code in Evaluation code.zip to evaluate the performance of the line segmentation algorithm
 % The lines2 is arranged as [x1 y1 x2 y2 probability score], see mcmlsd2Algo() to know what score is
-[lines2] = mcmlsd2Algo(lines,img);
+[lines2] = mcmlsd2Algo(lines,img_rgb);
 fig = figure;
-imshow(img);
+imshow(img_rgb);
 hold all
 %Order lines by probability
 lines2 = sortrows(lines2, -6);

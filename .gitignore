@@ -7,14 +7,12 @@ DL-LETR LineSegmentDetectionUsingTransformersWithoutEdges/.git
 
 # dataset and output in the process
 g_datastet
-g_output
-imgSamples
 
 # visual studio output
 **/.vs
 
-# output of matlab
-*.mat
+# output of matlab 
+*.mat  # upload only once (in initial)
 *.fig
 
 # Prerequisites

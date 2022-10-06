@@ -3,7 +3,7 @@
 %   1 the initial variables
 %       - FLAG_VALID = 0: only for valid process: flag is 1
 %       - index: initial index of output_data
-%   2 the path  (in 'main0_header.m': line 43)
+%   2 the path  (in 'config_path.m': line 66)
 %       - imgInputPath
 %       - imgInputPath
 %       - imgName

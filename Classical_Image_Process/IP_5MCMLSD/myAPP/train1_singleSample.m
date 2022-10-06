@@ -55,8 +55,10 @@ imageHeight = size(img_rgb,1);
 imageWidth = size(img_rgb,2);
 
 %% validation for single sample: only use when in validation -> maximal 840 samples in one set of hyper-params
+config_hyperParams;
+
 if FLAG_VALID == 1
-    for scale = 0.5  % 1 values
+    for scale = scale_range  % 1 values
         % resize
         resizeImageHeight = round( imageHeight*scale ); 
         resizeImageWidth  = round( imageWidth*scale );
@@ -64,17 +66,20 @@ if FLAG_VALID == 1
         % img_gray: uint8_t format
         [runTime_cpp, edgeLines] = mex_edgeDetecter(img_scale);
         for windowStepSize = 1  % keep windowStepSize value 1
-            for i = [2, 4]   % select values of {'num'; 'len'; 'len*num'; 'len/num'}
+            for i = criterion_range   % select values of {'num'; 'len'; 'len*num'; 'len/num'}
                 decision_criter = decision_criterion{i, 1};
-                for windowWidth = 2:2:44  % 12 values (stepsize: 4 ) (attention the factor of scale)
-                    for angle_tolerance = 2:1:30   % 28 values  (unit is degree)
+                for windowWidth = width_range  % 12 values (stepsize: 4 ) (attention the factor of scale)
+                    for angle_tolerance = angle_toler_range   % 28 values  (unit is degree)
                         %%% here put the training/validation process
                         ticId = tic;
-                        [left_pos1, left_pos2, right_pos1, right_pos2, windows_features, full_edges_filter_by_angle] = extract_borders(...
+                        [left_window_start, left_pos1, left_pos2, left_num, left_len, right_window_start, right_pos1, right_pos2, right_num, right_len, windows_features, full_edges_filter_by_angle] = extract_borders(...
                                                     edgeLines, resizeImageHeight, resizeImageWidth, windowWidth, windowStepSize, ...
                                                     angle_expect, angle_tolerance, decision_criter, prior_excluded_middle_percent);
+                        
+                        left_window_start  = round( left_window_start/scale ); right_window_start  = round( right_window_start/scale );
                         left_pos1  = round( left_pos1/scale ); left_pos2  = round( left_pos2/scale );
                         right_pos1  = round( right_pos1/scale ); right_pos2  = round( right_pos2/scale );
+                        left_len = round( left_len/scale ); right_len  = round( right_len/scale );
                         runTime_matlab = toc(ticId);
                         %% calculate the output data
                         % 1 runTime_c, runTime_matlab  ->  ok!
@@ -82,9 +87,9 @@ if FLAG_VALID == 1
                         % 3 left_border_pos, right_border_pos ->  ok!
 
                         % left_border_label, right_border_label -> metric: MRSE
-                        metric_RMSE = calc_RMSE(left_pos1, left_pos2, left_border_label, right_pos1, right_pos2, right_border_label);
+                        [metric_RMSE_vertical, metric_RMSE_polyfit] = calc_RMSE(left_pos1, left_pos2, left_border_label, right_pos1, right_pos2, right_border_label);
 
-                        output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, left_pos1, left_pos2, left_border_label, right_pos1, right_pos2, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
+                        output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, left_window_start, left_pos1, left_pos2, left_border_label, left_num, left_len, right_window_start, right_pos1, right_pos2, right_border_label, right_num, right_len, metric_RMSE_vertical, metric_RMSE_polyfit, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
 
                         index = index + 1;
                         if ~mod(index, 500) 
@@ -112,22 +117,24 @@ else  % check & test (for classical IP there is no train process)
     [runTime_cpp, edgeLines] = mex_edgeDetecter(img_scale);
     
     ticId = tic;
-    [left_pos1, left_pos2, right_pos1, right_pos2, windows_features, full_edges_filter_by_angle] = extract_borders(...
-                                                    edgeLines, resizeImageHeight, resizeImageWidth, windowWidth, windowStepSize, ...
-                                                    angle_expect, angle_tolerance, decision_criter, prior_excluded_middle_percent);
+    [left_window_start, left_pos1, left_pos2, left_num, left_len, right_window_start, right_pos1, right_pos2, right_num, right_len, windows_features, full_edges_filter_by_angle] = extract_borders(...
+                                edgeLines, resizeImageHeight, resizeImageWidth, windowWidth, windowStepSize, ...
+                                angle_expect, angle_tolerance, decision_criter, prior_excluded_middle_percent);
+    
+    left_window_start  = round( left_window_start/scale ); right_window_start  = round( right_window_start/scale );
     left_pos1  = round( left_pos1/scale ); left_pos2  = round( left_pos2/scale );
     right_pos1  = round( right_pos1/scale ); right_pos2  = round( right_pos2/scale );
+    left_len = round( left_len/scale ); right_len  = round( right_len/scale );
     runTime_matlab = toc(ticId);
-    
     %% calculate the output data
     % 1 runTime_c, runTime_matlab  ->  ok!
     % 2 windows_features: elements in one row (pos, number, length, length/number)  ->  ok!
     % 3 left_border_pos, right_border_pos ->  ok!
+    
     % left_border_label, right_border_label -> metric: MRSE
-    metric_RMSE = calc_RMSE(left_pos1, left_pos2, left_border_label, right_pos1, right_pos2, right_border_label);
-    %%% Issue: if left_border_pos == 0, which means no window_feature -> just record it in output_data for further analyse
-
-    output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, left_pos1, left_pos2, left_border_label, right_pos1, right_pos2, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
+    [metric_RMSE_vertical, metric_RMSE_polyfit] = calc_RMSE(left_pos1, left_pos2, left_border_label, right_pos1, right_pos2, right_border_label);
+    
+    output_data(index, 1:end) = {folderName, imgName, runTime_cpp, runTime_matlab, left_window_start, left_pos1, left_pos2, left_border_label, left_num, left_len, right_window_start, right_pos1, right_pos2, right_border_label, right_num, right_len, metric_RMSE_vertical, metric_RMSE_polyfit, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_excluded_middle_percent, is_labeled};
     
     index = index + 1;
     if ~mod(index, 500) 

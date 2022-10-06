@@ -47,14 +47,14 @@ global index; index = 1;  % index of output_data
 global flag_quit; flag_quit = 0;
 
 %%% create table 
-OUTPUT_ELEMENTS = 4 + 8 + 2 +8;   % 22 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)
+OUTPUT_ELEMENTS = 4 + 12 + 2 +8;   % 26 elements in one row (imgFolderName, imgName, runTime_cpp, runTime_matlab, windows_features, left_border_pos, left_border_label, right_border_pos, right_border_label, metric_RMSE, scale, angle_expect, angle_tolerance, windowWidth, windowStepSize, decision_criter, prior_mandrel_percent)
 sz = [1000000 OUTPUT_ELEMENTS];
 varTypes = {'string', 'string', 'single', 'single', ...
-    'single', 'single', 'single', 'single', 'single', 'single', 'single', 'single', ...
+    'single', 'single', 'single', 'single', 'single', 'single', 'single', 'single', 'single', 'single', 'single', 'single',...
     'single', 'single', ...
     'single', 'single', 'single', 'uint8', 'uint8', 'string', 'single', 'logical'};  % by using class() to check the type of variable
 varNames = {'folderName', 'imgName', 'runTime_cpp', 'runTime_matlab', ...
-    'left_window_start', 'left_pos1', 'left_pos2', 'left_border_label', 'right_window_start', 'right_pos1', 'right_pos2', 'right_border_label', ...
+    'left_window_start', 'left_pos1', 'left_pos2', 'left_border_label', 'left_num', 'left_len', 'right_window_start', 'right_pos1', 'right_pos2', 'right_border_label', 'right_num', 'right_len',...
     'metric_RMSE_vertical', 'metric_RMSE_polyfit', ...
     'scale', 'angle_expect', 'angle_tolerance', 'windowWidth', 'windowStepSize', 'decision_criter', 'prior_excluded_middle_percent', 'is_labeled'};
 
@@ -73,10 +73,12 @@ imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
 %%% path in portable HDD of pool 
 % Notice: DHH in disk D:\
 imgInputPath = 'D:/dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
+imgName = '2727648000.png';  % corner_case
 imgOutputPath = 'D:/g_output';
 
 %% path in portable HDD of PC
 imgInputPath = 'E:/dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
+imgName = '2727648000.png';  % corner_case
 imgOutputPath = 'E:/g_output';
 
 
