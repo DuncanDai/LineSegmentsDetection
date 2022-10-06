@@ -56,7 +56,7 @@ imageWidth = size(img_rgb,2);
 
 %% validation for single sample: only use when in validation -> maximal 840 samples in one set of hyper-params
 if FLAG_VALID == 1
-    for scale = 1.0  % 1 values
+    for scale = [1.0, 0.8]  % 1 values
         % resize
         resizeImageHeight = round( imageHeight*scale ); 
         resizeImageWidth  = round( imageWidth*scale );
@@ -64,10 +64,10 @@ if FLAG_VALID == 1
         % img_gray: uint8_t format
         [runTime_cpp, edgeLines] = mex_edgeDetecter(img_scale);
         for windowStepSize = 1  % keep windowStepSize value 1
-            for i = 1:3   % select values of {'num'; 'len'; 'len*num'; 'len/num'}
+            for i = 3   % select values of {'num'; 'len'; 'len*num'; 'len/num'}
                 decision_criter = decision_criterion{i, 1};
-                for windowWidth = 6:4:42  % 10 values (stepsize: 4 )
-                    for angle_tolerance = 3:1:30   % 28 values  (unit is degree)
+                for windowWidth = 18:2:50  % 10 values (stepsize: 4 )
+                    for angle_tolerance = 4:1:28   % 28 values  (unit is degree)
                         %%% here put the training/validation process
                         ticId = tic;
                         [left_pos1, left_pos2, right_pos1, right_pos2, windows_features, full_edges_filter_by_angle] = extract_borders(...

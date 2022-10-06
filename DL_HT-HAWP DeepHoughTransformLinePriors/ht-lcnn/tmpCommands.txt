@@ -1,8 +1,11 @@
+python ./train.py -d 0 --identifier baseline config/wireframe.yaml
+
+
 <path-to-pretrained-pth>: U:/my_projs/Deep-Hough-Transform-Line-Priors/pretrained_models/ht_lcnn/checkpoint.pth.tar
 <path-to-image>: U:/my_projs/LineSegmentsDetection/g_dataset/test.png
 
 python ./demo.py -d 0 config/wireframe.yaml D:/dl_pretrained/ht_lcnn/checkpoint.pth.tar U:/my_projs/LineSegmentsDetection/g_dataset/test.png
 
-
-
 python dataset/wireframe.py D:/data_wireframe/wireframe_raw D:/data_wireframe/preprocessed_data
+
+D:/data_wireframe/wireframe

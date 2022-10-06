@@ -55,7 +55,11 @@ save(save_data_path, 'output_data');
 
 load chirp
 sound(y,Fs)
+
 %% valid all folders: 
+load chirp
+sound(y,Fs)
+
 t1 = datestr(now);
 train3_folders(imgInputPath, imgOutputPath);
 t2 = datestr(now);
