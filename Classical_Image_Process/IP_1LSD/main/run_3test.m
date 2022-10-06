@@ -31,9 +31,10 @@ index = 1;
 
 % 'metric_RMSE_vertical' or 'metric_RMSE_polyfit'
 % mean_metric_RMSE = 'metric_RMSE_polyfit';
-mean_metric_RMSE = 'metric_RMSE_vertical';
+mean_metric_RMSE = 'mean_metric_RMSE';
 fprintf('(in run_3test.m) Please set mean_metric_RMSE!!! mean_metric_RMSE is "%s"', mean_metric_RMSE);
 
+% best set(out_valid_1006_0456(LSD).mat): 1	0.31250000	0.80000001	1	90	6	32	"len*num"  
 result = sortrows(result,mean_metric_RMSE,'ascend');  % "result" is generated from validation README.txt
 output = result(1, :);
 
@@ -53,6 +54,8 @@ prior_excluded_middle_percent = output.prior_excluded_middle_percent;   prior_ex
 % TODO: imgInputPath (imgOutputPath is determained according to the platform: Pool or PC)
 imgInputPath = 'D:/dataset_test'; % portable HDD or network driver
 
+load chirp
+sound(y,Fs)
 
 t1 = datestr(now);
 train3_folders(imgInputPath, imgOutputPath);
@@ -66,7 +69,7 @@ t = clock; % Get current time
 % example: out_test_0922_1347.mat
 fname = ['out_test_', ...
               num2str(t(2:3), '%02d'), '_', ...   % -month-day_
-              num2str(t(4:5), '%02d'), '(lsd).mat']; % hour min
+              num2str(t(4:5), '%02d'), '(LSD).mat']; % hour min
 
 
 save_data_path = [imgOutputPath, filesep, folderName, filesep, fname];

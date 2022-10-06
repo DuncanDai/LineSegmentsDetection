@@ -77,9 +77,9 @@ imgName = '2727648000.png';  % corner_case
 imgOutputPath = 'D:/g_output';
 
 %% path in portable HDD of PC
-imgInputPath = 'E:/dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
+% imgInputPath = 'E:/dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
 % imgName = '2727648000.png';  % corner_case
-imgOutputPath = 'E:/g_output';
+% imgOutputPath = 'E:/g_output';
 
 
 %% check: whether the image has labels

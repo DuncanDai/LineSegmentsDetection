@@ -30,16 +30,15 @@ optional: choose to check the result
 
 
 ####################################################
-######    daidinggen@hotmail.com   2022.20    ######
+######    daidinggen@hotmail.com   2022.10    ######
 ####################################################
+[Analyse of the validation output] original data name: "output_data" from validation
 ### preprare work
-set_metric_RMSE.m -> metric_RMSE_vertical, metric_RMSE_polyfit
+(already finished!) set_metric_RMSE.m -> metric_RMSE_vertical, metric_RMSE_polyfit
+config_path;
+load .mat data;
 
-[Analyse of the validation output] original data: "output_data" from validation
-
-Extra: observe the "output_data" to select the more resonable range of hyper-parameters
-
-### Commands 1 choose_corner_case.m -> corner_case (RMSE threshold = ...)
+(don't need anymore!) ### Commands 1: choose_corner_case.m -> corner_case (RMSE threshold = ...)
 corner_case1_30 = choose_corner_case(output_data, 30);
 corner_case2_40 = choose_corner_case(output_data, 40);
 corner_case3_50 = choose_corner_case(output_data, 50);
@@ -58,22 +57,21 @@ corner_case97_2000 = choose_corner_case(output_data, 2000);
 save(, 'corner_case*');  %'corner_case_1001_0950.mat'
 
 
-### Commands 2: choose a corner_case -> manually
+(don't need anymore!) ### Commands 2: choose a corner_case -> manually
 corner_case = corner_case2_40; % me: check the result in "test" -> LSD: corner_case2_40
 output_data = add_corner_case_label(output_data, corner_case);
 
-
-### Commands 3: has_corner_case = true
-    - groupby hyper-parameters -> "result"
-    - choose the best set of hyper-parameters
-result = groupby_hyperparams_from_output(output_data, corner_case, true);
-
-
-### Commands 4: has_corner_case = false
+(don't need anymore!) ### Commands 3: has_corner_case = false
      - groupby hyper-parameters -> "result"
      - choose the best set of hyper-parameters
 % result = groupby_hyperparams_from_output(output_data, corner_case, false);
 
+
+### Commands: has_corner_case = true
+    - groupby hyper-parameters -> "result"
+    - choose the best set of hyper-parameters
+result = groupby_hyperparams_from_output(output_data, corner_case, true);
+save('result.mat', 'result');
 
 #########################################
 [Analyse of the test output (only one set of optimized hyper-parameters)]

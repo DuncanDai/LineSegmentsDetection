@@ -31,7 +31,7 @@ index = 1;
 
 % 'metric_RMSE_vertical' or 'metric_RMSE_polyfit'
 % mean_metric_RMSE = 'metric_RMSE_polyfit';
-mean_metric_RMSE = 'metric_RMSE_vertical';
+mean_metric_RMSE = 'mean_metric_RMSE';
 fprintf('(in run_3test.m) Please set mean_metric_RMSE!!! mean_metric_RMSE is "%s"', mean_metric_RMSE);
 
 result = sortrows(result,mean_metric_RMSE,'ascend');  % "result" is generated from validation README.txt
@@ -53,6 +53,8 @@ prior_excluded_middle_percent = output.prior_excluded_middle_percent;   prior_ex
 % TODO: imgInputPath (imgOutputPath is determained according to the platform: Pool or PC)
 imgInputPath = 'D:/dataset_test'; % portable HDD or network driver
 
+load chirp
+sound(y,Fs)
 
 t1 = datestr(now);
 train3_folders(imgInputPath, imgOutputPath);
