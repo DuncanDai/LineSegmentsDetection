@@ -11,8 +11,8 @@ CannyLine::~CannyLine(void)
 
 void CannyLine::cannyLine(cv::Mat &image,std::vector<std::vector<float> > &lines)
 {
-	MetaLine deterctor;
+	MetaLine detector;
 	float gausSigma=1.0;
 	int gausHalfSize=1;
-	deterctor.MetaLineDetection(image,gausSigma,gausHalfSize,lines);
+	detector.MetaLineDetection(image,gausSigma,gausHalfSize,lines);
 }

@@ -33,7 +33,7 @@ label_file = '../../g_dataset/mandrel_border_labels_manually.json';  % absolut p
 %   - train1_singleSample.m
 %   - helperFuncs/check_result.m
 
-global scale; scale = 0.25; % scale is not used in CannyPF -> keep it to 1 by hyperparameter tuning. 
+global scale; scale = 0.5; % scale is not used in CannyPF -> keep it to 1 by hyperparameter tuning. 
 fprintf("Please set the scale to get the kernel infos!!! scale is '%f' \n", scale);
 global angle_expect;  angle_expect = 90;
 global angle_tolerance;  angle_tolerance = 25;
