@@ -1,4 +1,4 @@
-% the range hyperparameters
+% the range hyperparameters: 870 values
 scale_range = 0.25;  % [0.25, 0.5]
 criterion_range = [2, 4]; % 2 represent "len"
 width_range = 2:2:30; 

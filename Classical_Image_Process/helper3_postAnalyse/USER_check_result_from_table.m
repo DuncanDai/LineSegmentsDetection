@@ -1,4 +1,4 @@
-main0_header;
+config_path;
 
 
 %% copy from table
@@ -9,7 +9,7 @@ is_plot = 1; is_save = 1;
 FLAG_VALID = 0; 
 
 %%% input the row you want to check
-output_buffer = test_RMSE_30_70; % output_data1 works like a buffer
+output_buffer = sub_test_result_over_1000; % output_data1 works like a buffer
 output = output_buffer;  
 
 
@@ -23,11 +23,11 @@ date_folder = ['check_result_', ...
 % imgOutputPath = [imgOutputPath, filesep, date_folder];    % mkdir(imgOutputPath);
 
 %%% in pool-206 valid
-imgInputPath = 'D:/dataset_valid';  imgOutputPath = 'D:/g_output';
-imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
+% imgInputPath = 'D:/dataset_valid';  imgOutputPath = 'D:/g_output';
+% imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
 
 %%% in pool-206 test
-imgInputPath = 'D:/dataset_test';  imgOutputPath = 'D:/g_output/valid+test_1001_0950 (LSD)';
+imgInputPath = 'D:/dataset_test';  imgOutputPath = 'D:/g_output';
 imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
 
 %% Method 1: use the optimized hyper-parameters (in main0_header.m)

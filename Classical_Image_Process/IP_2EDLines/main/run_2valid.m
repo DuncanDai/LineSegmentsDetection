@@ -47,7 +47,7 @@ t = clock; % Get current time
 % example: out_valid_0922_1347.mat
 fname = ['out_valid_', ...
               num2str(t(2:3), '%02d'), '_', ...   % -month-day_
-              num2str(t(4:5), '%02d'), '_', folderName, '(lsd).mat']; % hour min
+              num2str(t(4:5), '%02d'), '_', folderName, '(EDLines).mat']; % hour min
 
 save_data_path = [imgOutputPath, filesep, fname];  
 save(save_data_path, 'output_data');
