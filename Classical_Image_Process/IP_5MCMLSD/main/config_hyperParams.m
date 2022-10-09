@@ -6,7 +6,7 @@ angle_toler_range = 2:1:30;   % 28 values  (unit is degree)
 
 
 % scale_range = 0.5;  % 1 values
-% criterion_range = 2;
+% criterion_range = 2; % len
 % width_range = 26;
 % angle_toler_range = 8;
 

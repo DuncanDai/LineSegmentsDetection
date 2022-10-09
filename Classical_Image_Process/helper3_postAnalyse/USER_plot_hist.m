@@ -1,12 +1,15 @@
-% edges = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 200, 250, 500, 1000, 2000, 2500];
+edges = [0, 20, 50, 200, 500, 2000, 2500];
 % me choose: metric_RMSE_vertical  or  metric_RMSE_polyfit
-hist = histogram(output_data.metric_RMSE_vertical);  % , edges
+
+hist = histogram(output_data.metric_RMSE, edges);  % , edges
+xticks(edges(1:end)); %xtickangle(90);
+xticklabels({'0','20','50','200', '500', '2000', '2500'})
 
 set(gca, 'Ygrid','on'); 
-xtips = double(hist.BinEdges(1:end-1));  
+xtips = (edges(1:end-1) + edges(2:end))/2; %double(hist.BinEdges(1:end-1));  
 ytips = hist.Values; 
 labels = string(hist.Values); 
-text(xtips, ytips, labels,'HorizontalAlignment','left',...
+text(xtips, ytips, labels,'HorizontalAlignment','center',...  %left, center, right
     'VerticalAlignment','bottom')
 
 

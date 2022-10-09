@@ -27,13 +27,13 @@ label_file = '../../g_dataset/mandrel_border_labels_manually.json';  % absolut p
 % Other scripts using follow global variables: 
 %   - train1_singleSample.m
 %   - helperFuncs/check_result.m
-global scale; scale = 1.0; % scale is not used in CannyPF -> keep it to 1 by hyperparameter tuning. 
+global scale; scale = 0.8; % scale is not used in CannyPF -> keep it to 1 by hyperparameter tuning. 
 global angle_expect;  angle_expect = 90;
-global angle_tolerance;  angle_tolerance = 25;
+global angle_tolerance;  angle_tolerance = 6;
 
 global resizeImageHeight; 
 global resizeImageWidth; 
-global windowWidth;  windowWidth = 34;
+global windowWidth;  windowWidth = 32;
 global windowStepSize;  windowStepSize = 1;
 global decision_criter;   decision_criter = 'len*num'; % global only for single variable -> once declare: decision_criterion = 0 (decision_criterion is string cell array); 
 global prior_excluded_middle_percent;  prior_excluded_middle_percent = 5/16; % the middle prior_mandrel_percent part is not into consideration

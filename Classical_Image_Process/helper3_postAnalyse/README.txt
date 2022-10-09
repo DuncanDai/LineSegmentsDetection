@@ -35,8 +35,8 @@ optional: choose to check the result
 [Analyse of the validation output] original data name: "output_data" from validation
 ### preprare work
 (already finished!) output_data = set_metric_RMSE(output_data, metric) -> metric: metric_RMSE_vertical, metric_RMSE_polyfit
-config_path;  % in the "<IP method>/main" folder
-load output_data.mat; % saved in the "<IP method>/main" folder
+config_path;  % in the "main" folder
+load output_data.mat; % saved in the "main" folder
 
 (Note: don't need anymore!) ### Commands 1: choose_corner_case.m -> corner_case (RMSE threshold = ...)
 corner_case1_30 = choose_corner_case(output_data, 30);
@@ -72,7 +72,7 @@ output_data = add_corner_case_label(output_data, corner_case);
     - choose the best set of hyper-parameters
 % in "helper3_postAnalyse" folder
 result = groupby_hyperparams_from_output(output_data, [], true);  
-save('result.mat', 'result');
+save('()valid_result.mat', 'result');
 
 ##########################################################
 ######    test: daidinggen@hotmail.com   2022.10    #####
@@ -80,6 +80,10 @@ save('result.mat', 'result');
 Only for MCMLSD: notice the "scale" -> calculate related kernel params!
     - scale = 0.25 -> kernel size: 927
     - scale = 0.5 -> kernel size: 1857
+
+Note:
+>> which savefig
+U:\my_projs\LineSegmentsDetection\Classical_Image_Process\IP_5MCMLSD\Toolkit\edges-master\toolbox-master\external\other\savefig.m
 ###############   Now: run test!!!   ##########################
 
 
@@ -97,13 +101,18 @@ mean(output_data.metric_RMSE);
 
 2 analyse the result of histogramm -> select_data_through_RMSE.m + check_result_from_table.m
     - choose at least 3 range based on histogramm -> check_result for analyzing the effect of algorithms.
-    ### for LSD
+    ### for all
+sub_test_result_0_20 = select_data_through_RMSE(output_data, 0, 20);
+sub_test_result_20_50 = select_data_through_RMSE(output_data, 20, 50);
 
-sub_test_result_30_90 = select_data_through_RMSE(output_data, 30, 90);
-sub_test_result_90_500 = select_data_through_RMSE(output_data, 90, 500);
-sub_test_result_500_1000 = select_data_through_RMSE(output_data, 500, 1000);
-sub_test_result_over_1000 = select_data_through_RMSE(output_data, 1000, 3000);
-save('sub_test_result().mat', 'sub_test_result_*');
+sub_test_result_50_200 = select_data_through_RMSE(output_data, 50, 200);
+sub_test_result_200_500 = select_data_through_RMSE(output_data, 200, 500);
+sub_test_result_500_2000 = select_data_through_RMSE(output_data, 500, 2000);
+sub_test_result_over_2000 = select_data_through_RMSE(output_data, 2000, 3000);
+save('()sub_test_result.mat', 'sub_test_result_*');
+
+
+
 
 2' USER_check_result_from_table.m  - plot & save the corner_case result
 
