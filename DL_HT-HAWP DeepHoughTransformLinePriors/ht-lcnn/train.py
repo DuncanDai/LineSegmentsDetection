@@ -54,7 +54,7 @@ def get_outdir(identifier):
 
 def main():
     args = docopt(__doc__)  # from __doc__ info in the above
-    config_file = args["<yaml-config>"] or "config/wireframe.yaml"
+    config_file = args["<yaml-config>"] or "config/wireframe.yaml"  # default is ...
     C.update(C.from_yaml(filename=config_file))  # update a dict -> all the items()
     M.update(C.model)
     pprint.pprint(C, indent=4)
