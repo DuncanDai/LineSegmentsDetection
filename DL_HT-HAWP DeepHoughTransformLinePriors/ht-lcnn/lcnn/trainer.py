@@ -51,12 +51,13 @@ class Trainer(object):
         self.max_epoch = C.optim.max_epoch
         self.lr_decay_epoch = C.optim.lr_decay_epoch
         self.num_stacks = C.model.num_stacks
-        self.mean_loss = self.best_mean_loss = 1e1000
+        self.mean_loss = self.best_mean_loss = 1e1000  # np.isinf() == true
 
         self.loss_labels = None
         self.avg_metrics = None
         self.metrics = np.zeros(0)
 
+    ### run tensorboard on the cluster
     # def run_tensorboard(self):
     #     board_out = osp.join(self.out, "tensorboard")
     #     if not osp.exists(board_out):
@@ -66,10 +67,10 @@ class Trainer(object):
     #     p = subprocess.Popen(
     #         ["tensorboard", f"--logdir={board_out}", f"--port={C.io.tensorboard_port}"]
     #     )
-    #
+    
     #     def killme():
     #         os.kill(p.pid, signal.SIGTERM)
-    #
+    
     #     atexit.register(killme)
 
     def _loss(self, result):

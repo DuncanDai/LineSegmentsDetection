@@ -1,8 +1,8 @@
 io:
   vote_index: vote_index_128_128_3_1.mat
   logdir: logs/
-  datadir: C:/Users/udjny/wireframe
-  outdir: C:/Users/udjny/dl_output
+  datadir: E:/data_wireframe/wireframe
+  outdir: logs/dl_output
   resume_from: 
   num_workers: 4
   tensorboard_port: 0

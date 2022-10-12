@@ -28,7 +28,7 @@ from docopt import docopt
 import lcnn.utils
 import lcnn.metric
 
-GT = "data/wireframe/valid/*.npz"
+GT = "E:/data_wireframe/wireframe/valid/*.npz"  #"data/wireframe/valid/*.npz"
 
 
 def line_score(path, threshold=5):
@@ -74,6 +74,7 @@ if __name__ == "__main__":
         return [100 * line_score(f"{path}/*.npz", t) for t in [5, 10, 15]]
 
     dirs = sorted(sum([glob.glob(p) for p in args["<path>"]], []))
+    print(dirs)
     results = lcnn.utils.parmap(work, dirs)
 
     for d, msAP in zip(dirs, results):
