@@ -43,7 +43,7 @@ from lcnn.models.HT import hough_transform
 def get_outdir(identifier):
     # load config
     name = str(datetime.datetime.now().strftime("%y%m%d-%H%M%S"))
-    name += "-%s" % identifier   # name with identifier
+    name += "-%s" % identifier   # name with "identifier"
     outdir = osp.join(osp.expanduser(C.io.logdir), name)
     if not osp.exists(outdir):
         os.makedirs(outdir)

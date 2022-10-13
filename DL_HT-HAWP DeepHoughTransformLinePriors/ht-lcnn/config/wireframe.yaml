@@ -1,5 +1,5 @@
 io:
-  vote_index: vote_index_128_128_3_1.mat
+  vote_index: vote_index_128_128_3_1.mat  # 4 params (rows, cols represent the image; h,w are the resolution of rho, theta)
   logdir: logs/
   datadir: E:/data_wireframe/wireframe
   outdir: logs/dl_output
@@ -9,34 +9,37 @@ io:
   validation_interval: 5000  # original: 20000
 
 model:
-  image:
+  image:  # input???
       mean: [109.730, 103.832, 98.681]
       stddev: [22.275, 22.124, 23.229]
 
   batch_size: 3  # original: 5
   batch_size_eval: 2
 
-  # backbone multi-task parameters
-  head_size: [[2], [1], [2]]
+  ### backbone multi-task parameters
+  # head_size: [[2], [1], [2]]
+  # loss_weight:
+  #   jmap: 8.0
+  #   lmap: 0.5
+  #   joff: 0.25
+  #   lpos: 1
+  #   lneg: 1
+  head_size: [[1]]  # output???
   loss_weight:
-    jmap: 8.0
-    lmap: 0.5
-    joff: 0.25
-    lpos: 1
-    lneg: 1
+    rmse: 1
 
-  # backbone parameters, num parameters of a HT-IHT block ~= 0.5 * # of a Hourglass module
+  ### backbone parameters, num parameters of a HT-IHT block ~= 0.5 * # of a Hourglass module
   backbone: stacked_hourglass
   depth: 4
-  num_stacks: 4
-  num_blocks: 1
+  num_stacks: 4  # used for "backbone"
+  num_blocks: 1  # used for "residual"
 
-  # sampler parameters
-  ## static sampler
+  ### sampler parameters
+  # static sampler
   n_stc_posl: 300
   n_stc_negl: 40
 
-  ## dynamic sampler
+  # dynamic sampler
   n_dyn_junc: 300
   n_dyn_posl: 300
   n_dyn_negl: 80
@@ -51,8 +54,8 @@ model:
   dim_fc: 1024
 
   # maximum junction and line outputs
-  n_out_junc: 250
-  n_out_line: 2500
+  n_out_junc: 4  # original: 250 -> I need only 4
+  n_out_line: 2  # original: 2500 -> I need only 2
 
   # additional ablation study parameters
   use_cood: 0
@@ -67,5 +70,5 @@ optim:
   lr: 4.0e-4
   amsgrad: True
   weight_decay: 1.0e-4
-  max_epoch: 8   # original: 24
+  max_epoch: 8       # original: 24
   lr_decay_epoch: 3  # original: 10

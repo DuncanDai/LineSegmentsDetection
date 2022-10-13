@@ -32,13 +32,13 @@ class MultitaskHead(nn.Module):
 class MultitaskLearner(nn.Module):
     def __init__(self, backbone):
         super(MultitaskLearner, self).__init__()
-        self.backbone = backbone
+        self.backbone = backbone  # hg(backbone:stacked_hourglass*num_stacks  + neck:residual*num_blocks)
         head_size = M.head_size
-        self.num_class = sum(sum(head_size, []))
-        self.head_off = np.cumsum([sum(h) for h in head_size])
+        self.num_class = sum(sum(head_size, []))  # [[2], [1], [2]] -> 5
+        self.head_off = np.cumsum([sum(h) for h in head_size])   # output: array([2, 3, 5], dtype=int32)
 
     def forward(self, input_dict):
-        image = input_dict["image"]
+        image = input_dict["image"]    # input_dict is dict described by yaml config
         outputs, feature = self.backbone(image)
         result = {"feature": feature}
         batch, channel, row, col = outputs[0].shape

@@ -120,7 +120,7 @@ class HourglassNet(nn.Module):
 
             res.append(self._make_residual(block, self.num_feats, num_blocks))
             fc.append(self._make_fc(ch, ch))
-            score.append(head(ch, num_classes))
+            score.append(head(ch, num_classes))  # me: if this is not multitask job?
 
             if i < num_stacks - 1:
                 fc_.append(nn.Conv2d(ch, ch, kernel_size=1))

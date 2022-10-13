@@ -16,7 +16,7 @@ FEATURE_DIM = 0
 class LineVectorizer(nn.Module):
     def __init__(self, backbone):
         super().__init__()
-        self.backbone = backbone
+        self.backbone = backbone  # MultitaskLearner(backbone + neck + head) + 
 
         lambda_ = torch.linspace(0, 1, M.n_pts0)[:, None]
         self.register_buffer("lambda_", lambda_)
