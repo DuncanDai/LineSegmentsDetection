@@ -7,7 +7,10 @@ D:/data_wireframe/wireframe
 
 
 [demo]
-python ./demo.py -d 0 config/wireframe.yaml D:/dl_pretrained/ht_lcnn/checkpoint.pth.tar U:/my_projs/LineSegmentsDetection/g_dataset/test.png
+python ./demo.py -d 0 config/wireframe.yaml D:/dl_pretrained/ht_lcnn/checkpoint.pth.tar U:/my_projs/LineSegmentsDetection/Classical_Image_Process/g_dataset/test.png
+
+### debug  去掉--wait-for-client
+python -m debugpy --listen 0.0.0.0:5678  ./demo.py -d 0 config/wireframe.yaml D:/dl_pretrained/ht_lcnn/checkpoint.pth.tar U:/my_projs/LineSegmentsDetection/Classical_Image_Process/g_dataset/test.png
 
 
 [train]

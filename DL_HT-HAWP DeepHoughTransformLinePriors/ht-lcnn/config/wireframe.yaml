@@ -17,16 +17,16 @@ model:
   batch_size_eval: 2
 
   ### backbone multi-task parameters
-  # head_size: [[2], [1], [2]]
-  # loss_weight:
-  #   jmap: 8.0
-  #   lmap: 0.5
-  #   joff: 0.25
-  #   lpos: 1
-  #   lneg: 1
-  head_size: [[1]]  # output???
+  head_size: [[2], [1], [2]]
   loss_weight:
-    rmse: 1
+    jmap: 8.0
+    lmap: 0.5
+    joff: 0.25
+    lpos: 1
+    lneg: 1
+  # head_size: [[1]]  # output???
+  # loss_weight:
+  #   rmse: 1
 
   ### backbone parameters, num parameters of a HT-IHT block ~= 0.5 * # of a Hourglass module
   backbone: stacked_hourglass
