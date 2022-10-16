@@ -77,7 +77,7 @@ def __parallel_handle(f, q_in, q_out):
 
 def parmap(f, X, nprocs=multiprocessing.cpu_count(), progress_bar=lambda x: x):
     if nprocs == 0:
-        nprocs = multiprocessing.cpu_count()
+        nprocs = multiprocessing.cpu_count()  # number is 6 (in pool-216)
     q_in = multiprocessing.Queue(1)
     q_out = multiprocessing.Queue()
 

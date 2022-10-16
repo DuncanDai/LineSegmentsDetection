@@ -34,6 +34,18 @@ try:
 except Exception:
     raise
 
+args = docopt(__doc__)
+data_root = args["<src>"]
+data_output = args["<dst>"]
+
+os.makedirs(data_output, exist_ok=True)
+# for batch in ["train", "valid"]:
+#     anno_file = os.path.join(data_root, f"{batch}.json")
+# batch = "train"
+batch = "valid"
+anno_file = os.path.join(data_root, f"{batch}.json")
+
+
 
 def inrange(v, shape):
     return 0 <= v[0] < shape[0] and 0 <= v[1] < shape[1]
@@ -85,7 +97,7 @@ def save_heatmap(prefix, image, lines):
 
     llmap = zoom(lmap, [0.5, 0.5])
     lineset = set([frozenset(l) for l in lnid])
-    for i0, i1 in combinations(range(len(junc)), 2):
+    for i0, i1 in combinations(range(len(junc)), 2):  # number of combinations: #junc * #junc
         if frozenset([i0, i1]) not in lineset:
             v0, v1 = junc[i0], junc[i1]
             vint0, vint1 = to_int(v0[:2] / 2), to_int(v1[:2] / 2)
@@ -188,43 +200,40 @@ def save_heatmap(prefix, image, lines):
     # )
     # plt.savefig("/tmp/8tdir.jpg")
 
+def handle(dataset):   # me dinggen! AttributeError: Can't pickle local object 'main.<locals>.handle'  -> https://blog.csdn.net/qq_43331089/article/details/126227288
+    # global data_root
+    # global data_output
+    # global batch
+    os.makedirs(os.path.join(data_output, batch), exist_ok=True)
+    for data in dataset:
+        im = cv2.imread(os.path.join(data_root, "images", data["filename"]))
+        prefix = data["filename"].split(".")[0]
+        lines = np.array(data["lines"]).reshape(-1, 2, 2)
+
+        lines0 = lines.copy()
+        lines1 = lines.copy()
+        lines1[:, :, 0] = im.shape[1] - lines1[:, :, 0]
+        lines2 = lines.copy()
+        lines2[:, :, 1] = im.shape[0] - lines2[:, :, 1]
+        lines3 = lines.copy()
+        lines3[:, :, 0] = im.shape[1] - lines3[:, :, 0]
+        lines3[:, :, 1] = im.shape[0] - lines3[:, :, 1]
+
+        path = os.path.join(data_output, batch, prefix)
+        save_heatmap(f"{path}_0", im[::, ::], lines0)
+        if batch != "valid":
+            save_heatmap(f"{path}_1", im[::, ::-1], lines1)
+            save_heatmap(f"{path}_2", im[::-1, ::], lines2)
+            save_heatmap(f"{path}_3", im[::-1, ::-1], lines3)
+        print("Finishing", os.path.join(data_output, batch, prefix))
+
 
 def main():
-    args = docopt(__doc__)
-    data_root = args["<src>"]
-    data_output = args["<dst>"]
+    with open(anno_file, "r") as f:
+        dataset = json.load(f)
 
-    os.makedirs(data_output, exist_ok=True)
-    for batch in ["train", "valid"]:
-        anno_file = os.path.join(data_root, f"{batch}.json")
-
-        with open(anno_file, "r") as f:
-            dataset = json.load(f)
-
-        def handle(data):   # me dinggen! AttributeError: Can't pickle local object 'main.<locals>.handle'  -> https://blog.csdn.net/qq_43331089/article/details/126227288
-            im = cv2.imread(os.path.join(data_root, "images", data["filename"]))
-            prefix = data["filename"].split(".")[0]
-            lines = np.array(data["lines"]).reshape(-1, 2, 2)
-            os.makedirs(os.path.join(data_output, batch), exist_ok=True)
-
-            lines0 = lines.copy()
-            lines1 = lines.copy()
-            lines1[:, :, 0] = im.shape[1] - lines1[:, :, 0]
-            lines2 = lines.copy()
-            lines2[:, :, 1] = im.shape[0] - lines2[:, :, 1]
-            lines3 = lines.copy()
-            lines3[:, :, 0] = im.shape[1] - lines3[:, :, 0]
-            lines3[:, :, 1] = im.shape[0] - lines3[:, :, 1]
-
-            path = os.path.join(data_output, batch, prefix)
-            save_heatmap(f"{path}_0", im[::, ::], lines0)
-            if batch != "valid":
-                save_heatmap(f"{path}_1", im[::, ::-1], lines1)
-                save_heatmap(f"{path}_2", im[::-1, ::], lines2)
-                save_heatmap(f"{path}_3", im[::-1, ::-1], lines3)
-            print("Finishing", os.path.join(data_output, batch, prefix))
-
-        parmap(handle, dataset, 0)   # me dinggen! - itiv 215 -> output of multiprocessing.cpu_count() is 6, less than 16  -> when it's 0, will be counted in utils.py in lcnn folder
+    handle(dataset)
+    # parmap(handle, dataset, 2)   # me dinggen! - itiv 215 -> output of multiprocessing.cpu_count() is 6, less than 16  -> when it's 0, will be counted in utils.py in lcnn folder
 
 
 if __name__ == "__main__":
