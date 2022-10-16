@@ -97,16 +97,16 @@ class HourglassNet(nn.Module):
         super(HourglassNet, self).__init__()
 
         self.inplanes = 64
-        self.num_feats = 128
+        self.num_feats = 128  # The feature dimension
         self.num_stacks = num_stacks
         self.ht_channels=16
-        self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3)
+        self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3)  # image size: 512 -> 256
         # self.bn1 = nn.BatchNorm2d(self.inplanes)
         self.relu = nn.ReLU(inplace=True)
         self.layer1 = self._make_residual(block, self.inplanes, 1)
         self.layer2 = self._make_residual(block, self.inplanes, 1)
         self.layer3 = self._make_residual(block, self.num_feats, 1)
-        self.maxpool = nn.MaxPool2d(2, stride=2)
+        self.maxpool = nn.MaxPool2d(2, stride=2)  # image size/2: 256 -> 128
 
         # build hourglass modules
         ch = self.num_feats * block.expansion

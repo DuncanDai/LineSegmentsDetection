@@ -26,7 +26,7 @@ class MultitaskHead(nn.Module):
         assert num_class == sum(sum(M.head_size, []))
 
     def forward(self, x):
-        return torch.cat([head(x) for head in self.heads], dim=1)
+        return torch.cat([head(x) for head in self.heads], dim=1)  # along the column: https://pytorch.org/docs/stable/generated/torch.cat.html#torch.cat
 
 
 class MultitaskLearner(nn.Module):

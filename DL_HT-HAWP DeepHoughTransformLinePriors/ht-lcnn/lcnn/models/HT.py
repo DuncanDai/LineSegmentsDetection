@@ -42,11 +42,11 @@ def hough_transform(rows, cols, theta_res, rho_res):
     h = np.size(rho)
     cos_value = np.cos(theta * np.pi / 180.0).astype(np.float32)
     sin_value = np.sin(theta * np.pi / 180.0).astype(np.float32)
-    sin_cos = np.concatenate((sin_value[None, :], cos_value[None, :]), axis=0)
+    sin_cos = np.concatenate((sin_value[None, :], cos_value[None, :]), axis=0)  # (1, 60) -> result size (2, 60)：along axis=0
 
     ###  This is much more memory-efficient by shifting the coordinate ####
-    coords_r, coords_w = np.ones((rows, cols)).nonzero()
-    coords = np.concatenate((coords_r[:,None], coords_w[:,None]), axis=1).astype(np.float32)
+    coords_r, coords_w = np.ones((rows, cols)).nonzero()  # return indices (axis=0) (axis=1)  128*128=16384
+    coords = np.concatenate((coords_r[:,None], coords_w[:,None]), axis=1).astype(np.float32) # (16384, 1) -> result size (16384, 2): along axis=1
 
     coords[:,0] = rows-coords[:,0]-rows//2
     coords[:,1] = coords[:,1] +1 - cols//2

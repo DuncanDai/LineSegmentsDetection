@@ -14,7 +14,7 @@
             "program": "${workspaceFolder}/demo.py",  // ${file}
             "console": "integratedTerminal",
             "env": {"CUDA_VISIBLE_DEVICES":"0"},
-            "args": ["-d", "0", "config/wireframe.yaml", "D:/dl_pretrained/ht_lcnn/checkpoint.pth.tar", "U:/my_projs/LineSegmentsDetection/Classical_Image_Process/g_dataset/test.png"],
+            "args": ["-d", "0", "config/wireframe.yaml", "U:/my_projs/dl_pretrained/ht_lcnn/checkpoint.pth.tar", "U:/my_projs/LineSegmentsDetection/Classical_Image_Process/g_dataset/test.png"],
         }
     ]
 }

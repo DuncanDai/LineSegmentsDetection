@@ -149,12 +149,12 @@ class LineVectorizer(nn.Module):
         with torch.no_grad():
             junc = meta["junc"]  # [N, 2]
             jtyp = meta["jtyp"]  # [N]
-            Lpos = meta["Lpos"]
-            Lneg = meta["Lneg"]
+            Lpos = meta["Lpos"]  # [2, 2]
+            Lneg = meta["Lneg"]  # [2, 2]
 
             n_type = jmap.shape[0]
-            jmap = non_maximum_suppression(jmap).reshape(n_type, -1)
-            joff = joff.reshape(n_type, 2, -1)
+            jmap = non_maximum_suppression(jmap).reshape(n_type, -1)  # [N, 16384]: 128 * 128
+            joff = joff.reshape(n_type, 2, -1)  # [N, 2, 16384]
             max_K = M.n_dyn_junc // n_type
             N = len(junc)
             if mode != "training":
@@ -190,7 +190,7 @@ class LineVectorizer(nn.Module):
             u, v = torch.meshgrid(_, _)
             u, v = u.flatten(), v.flatten()
             up, vp = match[u], match[v]
-            label = Lpos[up, vp]
+            label = Lpos[up, vp]  # K * K -> compose one line from two junctions
 
             if mode == "training":
                 c = torch.zeros_like(label, dtype=torch.bool)

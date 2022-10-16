@@ -77,7 +77,7 @@ def main():
         vote_index = sio.loadmat(C.io.vote_index)['vote_index']
     else:
         vote_index = hough_transform(rows=128, cols=128, theta_res=3, rho_res=1)
-        # sio.savemat(C.io.vote_index, {'vote_index': vote_index})  # original save the .mat data (> 1GB)
+        sio.savemat(C.io.vote_index, {'vote_index': vote_index})  # original save the .mat data (> 1GB)
     vote_index = torch.from_numpy(vote_index).float().contiguous().to(device)
     print('load vote_index', vote_index.shape)
 
@@ -124,10 +124,10 @@ def main():
             }
             H = model(input_dict)["preds"]
 
-        lines = H["lines"][0].cpu().numpy() / 128 * im.shape[:2]
+        lines = H["lines"][0].cpu().numpy() / 128 * im.shape[:2]  # resize back to the original im size
         scores = H["score"][0].cpu().numpy()
         for i in range(1, len(lines)):
-            if (lines[i] == lines[0]).all():
+            if (lines[i] == lines[0]).all():  # if find the same line at the first time: which implies duplicated lines
                 lines = lines[:i]
                 scores = scores[:i]
                 break
@@ -136,7 +136,7 @@ def main():
         diag = (im.shape[0] ** 2 + im.shape[1] ** 2) ** 0.5
         nlines, nscores = postprocess(lines, scores, diag * 0.01, 0, False)
 
-        for i, t in enumerate([0.94, 0.95, 0.96, 0.97, 0.98, 0.99]):
+        for i, t in enumerate([0.94, 0.95, 0.96, 0.97, 0.98, 0.99]):  # t is threshold for lines confidence
             plt.gca().set_axis_off()
             plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
             plt.margins(0, 0)
