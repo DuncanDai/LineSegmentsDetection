@@ -31,6 +31,7 @@ class WireframeDataset(Dataset):  # Dataset base class
         return len(self.filelist)
 
     def __getitem__(self, idx):
+        # the images have already been resized into (512, 512) in "dataset/wireframe.py"
         iname = self.filelist[idx][:-10].replace("_a0", "").replace("_a1", "") + ".png"
         image = io.imread(iname).astype(float)[:, :, :3]  # image data: 3D
         if "a1" in self.filelist[idx]:

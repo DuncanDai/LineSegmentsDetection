@@ -34,18 +34,6 @@ try:
 except Exception:
     raise
 
-args = docopt(__doc__)
-data_root = args["<src>"]
-data_output = args["<dst>"]
-
-os.makedirs(data_output, exist_ok=True)
-# for batch in ["train", "valid"]:
-#     anno_file = os.path.join(data_root, f"{batch}.json")
-# batch = "train"
-batch = "valid"
-anno_file = os.path.join(data_root, f"{batch}.json")
-
-
 
 def inrange(v, shape):
     return 0 <= v[0] < shape[0] and 0 <= v[1] < shape[1]
@@ -113,7 +101,8 @@ def save_heatmap(prefix, image, lines):
     lpos = np.array(lpos, dtype=np.float32)
     lneg = np.array([l[:2] for l in lneg[:2000]], dtype=np.float32)
 
-    image = cv2.resize(image, im_rescale)
+    # here: resize the image to (512, 512)
+    image = cv2.resize(image, im_rescale)  
 
     # plt.subplot(131), plt.imshow(lmap)
     # plt.subplot(132), plt.imshow(image)
@@ -200,21 +189,27 @@ def save_heatmap(prefix, image, lines):
     # )
     # plt.savefig("/tmp/8tdir.jpg")
 
-def handle(dataset):   # me dinggen! AttributeError: Can't pickle local object 'main.<locals>.handle'  -> https://blog.csdn.net/qq_43331089/article/details/126227288
+# def handle(dataset):   # me dinggen! AttributeError: Can't pickle local object 'main.<locals>.handle'  -> https://blog.csdn.net/qq_43331089/article/details/126227288
+def handle(dataset, data_root, data_output, batch): 
     # global data_root
     # global data_output
     # global batch
     os.makedirs(os.path.join(data_output, batch), exist_ok=True)
     for data in dataset:
+        # "im" is the original image
         im = cv2.imread(os.path.join(data_root, "images", data["filename"]))
         prefix = data["filename"].split(".")[0]
         lines = np.array(data["lines"]).reshape(-1, 2, 2)
 
+        # from line0 to line3 -> symmetric augmentation: left-right up-down
         lines0 = lines.copy()
+
         lines1 = lines.copy()
         lines1[:, :, 0] = im.shape[1] - lines1[:, :, 0]
+
         lines2 = lines.copy()
         lines2[:, :, 1] = im.shape[0] - lines2[:, :, 1]
+
         lines3 = lines.copy()
         lines3[:, :, 0] = im.shape[1] - lines3[:, :, 0]
         lines3[:, :, 1] = im.shape[0] - lines3[:, :, 1]
@@ -229,10 +224,20 @@ def handle(dataset):   # me dinggen! AttributeError: Can't pickle local object '
 
 
 def main():
-    with open(anno_file, "r") as f:
-        dataset = json.load(f)
+    args = docopt(__doc__)
+    data_root = args["<src>"]
+    data_output = args["<dst>"]
 
-    handle(dataset)
+    os.makedirs(data_output, exist_ok=True)
+    for batch in ["train", "valid"]:
+        # batch = "train"
+        # batch = "valid"
+        anno_file = os.path.join(data_root, f"{batch}.json")
+
+        with open(anno_file, "r") as f:
+            dataset = json.load(f)
+        
+        handle(dataset, data_root, data_output, batch)
     # parmap(handle, dataset, 2)   # me dinggen! - itiv 215 -> output of multiprocessing.cpu_count() is 6, less than 16  -> when it's 0, will be counted in utils.py in lcnn folder
 
 
