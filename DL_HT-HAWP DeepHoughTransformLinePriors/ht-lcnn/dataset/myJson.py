@@ -41,19 +41,23 @@ def main():
 
         img_dict = split_dict[batch]
         data = []
+        i = 0
+        j = 0
         for folder, img_list in img_dict.items():
             for img in img_list:  
                 # case 1: image of split JSON is not labeled
                 try:
                     img_label = label_dict[folder][img]
                 except:
-                    # TODO: add counter
+                    # add counter
+                    i = i + 1
                     continue
 
                 # case 2: labeled, but "image": null
                 # case 3: labeled, but ["image"]["coords"]:  [null, null]
                 if (img_label is None) or any([img_label["coords"][0] is None, img_label["coords"][1] is None]):
-                    # TODO: add counter
+                    # add counter
+                    j = j + 1
                     continue
 
                 # case 4: labeled correctly
@@ -78,6 +82,8 @@ def main():
                 }
                 data.append(single_data)
 
+        print(f"unlabled image number is {i}, null value number is {j}")
+        print(f"Total {batch} number is {len(data)}")
         JSON_FILE = os.path.join(json_output, f"{batch}.json") 
         with open(JSON_FILE, 'w') as f:
             json.dump(data, f)

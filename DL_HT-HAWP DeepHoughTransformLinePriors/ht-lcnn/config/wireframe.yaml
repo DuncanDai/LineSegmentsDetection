@@ -1,17 +1,17 @@
 io:
   vote_index: vote_index_128_128_3_1.mat  # 4 params (rows, cols represent the image; h,w are the resolution of rho, theta)
   logdir: logs/
-  datadir: E:/data_wireframe/wireframe
-  outdir: logs/dl_output
-  resume_from: 
+  datadir: D:/dl_mydataset # E:/data_wireframe/wireframe
+  outdir: D:/dl_output
+  resume_from:  
   num_workers: 4
   tensorboard_port: 0
-  validation_interval: 5000  # original: 20000
+  validation_interval: 5000  # original: 20000 -> used as a flag to validate()  (in trainer.py line 209)
 
 model:
-  image:  # input???
-      mean: [109.730, 103.832, 98.681]
-      stddev: [22.275, 22.124, 23.229]
+  image:  # input??? used in prediction (demo.py, process.py)
+      mean: [109.730, 103.832, 98.681]  # sample: [191.53, 191.11, 185.83]
+      stddev: [22.275, 22.124, 23.229]  # sample: [85.11, 85.108, 87.53]
 
   batch_size: 3  # original: 5
   batch_size_eval: 2
@@ -22,7 +22,7 @@ model:
     jmap: 8.0
     lmap: 0.5
     joff: 0.25
-    lpos: 1
+    lpos: 4 # original: 1
     lneg: 1
   # head_size: [[1]]  # output???
   # loss_weight:
@@ -34,6 +34,33 @@ model:
   num_stacks: 4  # used for "backbone"
   num_blocks: 1  # used for "residual"
 
+  ########################################################
+  ############################ sampler parameters: my
+  # ### sampler parameters
+  # # static sampler
+  # n_stc_posl: 2 # original: 300
+  # n_stc_negl: 2 # original: 40
+
+  # # dynamic sampler
+  # n_dyn_junc: 4 # original: 300
+  # n_dyn_posl: 2 # original: 300
+  # n_dyn_negl: 2 # original: 80
+  # n_dyn_othr: 4 # original: 600
+
+  # # LOIPool layer parameters
+  # n_pts0: 32
+  # n_pts1: 8
+
+  # # line verification network parameters
+  # dim_loi: 128
+  # dim_fc: 256 # original: 1024
+
+  # # maximum junction and line outputs
+  # n_out_junc: 4  # original: 250 -> I need only 4
+  # n_out_line: 2  # original: 2500 -> I need only 2
+
+  ########################################################
+  ########################### sampler parameters: original
   ### sampler parameters
   # static sampler
   n_stc_posl: 300
@@ -54,9 +81,11 @@ model:
   dim_fc: 1024
 
   # maximum junction and line outputs
-  n_out_junc: 250  # original: 250 -> I need only 4
-  n_out_line: 2500  # original: 2500 -> I need only 2
+  n_out_junc: 250  # -> I need only 4
+  n_out_line: 2500 # -> I need only 2
 
+
+  ############### others
   # additional ablation study parameters
   use_cood: 0
   use_slop: 0
@@ -70,5 +99,5 @@ optim:
   lr: 4.0e-4
   amsgrad: True
   weight_decay: 1.0e-4
-  max_epoch: 8       # original: 24
-  lr_decay_epoch: 3  # original: 10
+  max_epoch: 20       # original: 24
+  lr_decay_epoch: 8  # original: 10

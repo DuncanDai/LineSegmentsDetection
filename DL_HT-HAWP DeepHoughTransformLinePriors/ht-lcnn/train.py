@@ -4,6 +4,9 @@ Usage:
     train.py [options] <yaml-config>
     train.py (-h | --help )
 
+Examples:
+    python ./train.py  -d 0 --identifier train config/wireframe.yaml
+
 Arguments:
    <yaml-config>                   Path to the yaml hyper-parameter file
 

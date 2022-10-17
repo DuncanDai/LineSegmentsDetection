@@ -1,15 +1,16 @@
 #!/usr/bin/env python
-"""Process Huang's wireframe dataset for L-CNN network
+"""Parser JSON label data to npz label data
 Usage:
-    dataset/wireframe.py <src> <dst>
-    dataset/wireframe.py (-h | --help )
+    dataset/myNpz.py <srcJSON> <srcImg> <dst>
+    dataset/myNpz.py (-h | --help )
 
 Examples:
-    python dataset/wireframe.py /datadir/wireframe data/wireframe
+    python dataset/myNpz.py U:/my_projs/LineSegmentsDetection/g_data \\os.lsdf.kit.edu\itiv-projects\Stents4Tomorrow\Data\2022-04-28\Data\Images D:/dl_output
 
 Arguments:
-    <src>                Original data directory of Huang's wireframe dataset
-    <dst>                Directory of the output
+    <srcJSON>
+    <srcImg>                Original data directory of Huang's wireframe dataset
+    <dst>                   Directory of the output
 
 Options:
    -h --help             Show this screen.
@@ -47,19 +48,19 @@ def save_heatmap(prefix, image, lines):
     im_rescale = (512, 512)
     heatmap_scale = (128, 128)
     # image.shape[0] -> row of matrix -> y of coordinate
-    fy, fx = heatmap_scale[1] / image.shape[0], heatmap_scale[0] / image.shape[1]
+    fy, fx = heatmap_scale[1] / image.shape[0], heatmap_scale[0] / image.shape[1]  # 128/2064, 128/3088
     jmap = np.zeros((1,) + heatmap_scale, dtype=np.float32)   # (1, 128, 128)
     joff = np.zeros((1, 2) + heatmap_scale, dtype=np.float32)  # (1, 2, 128, 128)
     lmap = np.zeros(heatmap_scale, dtype=np.float32)  # (128, 128)
 
-    lines[:, :, 0] = np.clip(lines[:, :, 0] * fx, 0, heatmap_scale[0] - 1e-4)
-    lines[:, :, 1] = np.clip(lines[:, :, 1] * fy, 0, heatmap_scale[1] - 1e-4)
-    lines = lines[:, :, ::-1]
+    lines[:, :, 0] = np.clip(lines[:, :, 0] * fx, 0, heatmap_scale[0] - 1e-4) # 2064 -> 128 (683 -> 28.3 -> 28)
+    lines[:, :, 1] = np.clip(lines[:, :, 1] * fy, 0, heatmap_scale[1] - 1e-4) # only two values (1 -> 0, 2064 -> 127)
+    lines = lines[:, :, ::-1]  # (x, y) -> (y/row, x/col)
 
     junc = []
     jids = {}
 
-    def jid(jun):
+    def jid(jun): # junction index -> e.g. (0, 28) is an junction, and the index is 0; (127, 28) is another junction, index is 1
         jun = tuple(jun[:2])
         if jun in jids:
             return jids[jun]
@@ -69,7 +70,7 @@ def save_heatmap(prefix, image, lines):
 
     lnid = []
     lpos, lneg = [], []
-    for v0, v1 in lines:
+    for v0, v1 in lines: # v0(row0, col0), v1(row1, col1)
         lnid.append((jid(v0), jid(v1)))
         lpos.append([junc[jid(v0)], junc[jid(v1)]])
 
@@ -101,7 +102,7 @@ def save_heatmap(prefix, image, lines):
     lpos = np.array(lpos, dtype=np.float32)
     lneg = np.array([l[:2] for l in lneg[:2000]], dtype=np.float32)
 
-    # here: resize the image to (512, 512)
+    # !!! here: resize the image to (512, 512)
     image = cv2.resize(image, im_rescale)  
 
     # plt.subplot(131), plt.imshow(lmap)
@@ -189,16 +190,27 @@ def save_heatmap(prefix, image, lines):
     # )
     # plt.savefig("/tmp/8tdir.jpg")
 
+def _map_to_folder_and_img(filename):
+    (folder, img) = filename.split("sep")
+    return folder, img
+
 # def handle(dataset):   # me dinggen! AttributeError: Can't pickle local object 'main.<locals>.handle'  -> https://blog.csdn.net/qq_43331089/article/details/126227288
-def handle(dataset, data_root, data_output, batch): 
-    # global data_root
-    # global data_output
-    # global batch
-    os.makedirs(os.path.join(data_output, batch), exist_ok=True)
+def handle(dataset, imgs_root, all_data_output, batch): 
+    os.makedirs(os.path.join(all_data_output, batch), exist_ok=True)
+    i = 0
     for data in dataset:
+        filename = data["filename"]
+        folder, imgName = _map_to_folder_and_img(filename)
+
         # "im" is the original image
-        im = cv2.imread(os.path.join(data_root, "images", data["filename"]))
-        prefix = data["filename"].split(".")[0]
+        im = cv2.imread(os.path.join(imgs_root, folder, imgName))
+        if im is None:
+            with open("non_existed_in_imgs.txt", "a") as f:
+                i = i + 1
+                f.write(f"{i:04d}, {folder}, {imgName} \n")
+            continue
+
+        prefix = imgName.split(".")[0]
         lines = np.array(data["lines"]).reshape(-1, 2, 2)
 
         # from line0 to line3 -> symmetric augmentation: left-right up-down
@@ -214,30 +226,29 @@ def handle(dataset, data_root, data_output, batch):
         lines3[:, :, 0] = im.shape[1] - lines3[:, :, 0]
         lines3[:, :, 1] = im.shape[0] - lines3[:, :, 1]
 
-        path = os.path.join(data_output, batch, prefix)
+        path = os.path.join(all_data_output, batch, folder+'sep'+prefix)
         save_heatmap(f"{path}_0", im[::, ::], lines0)
         if batch != "valid":
             save_heatmap(f"{path}_1", im[::, ::-1], lines1)
             save_heatmap(f"{path}_2", im[::-1, ::], lines2)
             save_heatmap(f"{path}_3", im[::-1, ::-1], lines3)
-        print("Finishing", os.path.join(data_output, batch, prefix))
+        print("Finishing", os.path.join(all_data_output, batch, folder+'sep'+prefix))
 
 
 def main():
     args = docopt(__doc__)
-    data_root = args["<src>"]
-    data_output = args["<dst>"]
+    imgs_root = args["<srcImg>"]
+    label_root = args["<srcJSON>"]
+    all_data_output = args["<dst>"]
 
-    os.makedirs(data_output, exist_ok=True)
+    os.makedirs(all_data_output, exist_ok=True)
     for batch in ["train", "valid"]:
-        # batch = "train"
-        # batch = "valid"
-        anno_file = os.path.join(data_root, f"{batch}.json")
+        anno_file = os.path.join(label_root, f"{batch}.json")
 
         with open(anno_file, "r") as f:
             dataset = json.load(f)
         
-        handle(dataset, data_root, data_output, batch)
+        handle(dataset, imgs_root, all_data_output, batch)
     # parmap(handle, dataset, 2)   # me dinggen! - itiv 215 -> output of multiprocessing.cpu_count() is 6, less than 16  -> when it's 0, will be counted in utils.py in lcnn folder
 
 

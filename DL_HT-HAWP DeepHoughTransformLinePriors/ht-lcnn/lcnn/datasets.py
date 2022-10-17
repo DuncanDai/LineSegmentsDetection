@@ -11,7 +11,14 @@ from skimage import io
 from torch.utils.data import Dataset
 from torch.utils.data.dataloader import default_collate
 
-from lcnn.config import M
+try:
+    import sys
+    sys.path.append(".")
+    sys.path.append("..")
+    from lcnn.config import M
+except Exception:
+    raise
+
 
 
 class WireframeDataset(Dataset):  # Dataset base class
@@ -36,7 +43,12 @@ class WireframeDataset(Dataset):  # Dataset base class
         image = io.imread(iname).astype(float)[:, :, :3]  # image data: 3D
         if "a1" in self.filelist[idx]:
             image = image[:, ::-1, :]   # order reverse in the 2nd dimension
-        image = (image - M.image.mean) / M.image.stddev  # normalized in 3D
+        
+        mean = [np.mean(image[:,:,i]) for i in range(3)]  # [191.53355026245117, 191.11667251586914, 185.83449172973633]
+        stddev = [np.std(image[:,:,i]) for i in range(3)] # [85.1173505648392, 85.10823170806391, 87.53856729061187]
+        # image = (image - M.image.mean) / M.image.stddev  # normalized in 3D
+        image = (image - mean) / stddev
+
         image = np.rollaxis(image, 2).copy()  # 2nd axis to 0-position
 
         # npz["jmap"]: [J, H, W]    Junction heat map
@@ -55,8 +67,8 @@ class WireframeDataset(Dataset):  # Dataset base class
                 name: torch.from_numpy(npz[name]).float()
                 for name in ["jmap", "joff", "lmap"]
             }
-            lpos = np.random.permutation(npz["lpos"])[: M.n_stc_posl]
-            lneg = np.random.permutation(npz["lneg"])[: M.n_stc_negl]
+            lpos = np.random.permutation(npz["lpos"])[:M.n_stc_posl]  # M.n_stc_posl = 300  2
+            lneg = np.random.permutation(npz["lneg"])[:M.n_stc_negl]   # M.n_stc_negl = 40  4
             npos, nneg = len(lpos), len(lneg)
             lpre = np.concatenate([lpos, lneg], 0)
             for i in range(len(lpre)):
@@ -84,12 +96,12 @@ class WireframeDataset(Dataset):  # Dataset base class
 
         return torch.from_numpy(image).float(), meta, target
 
-    def adjacency_matrix(self, n, link):
+    def adjacency_matrix(self, n, link): # junc is 4 -> n=5; link (2, 2)
         mat = torch.zeros(n + 1, n + 1, dtype=torch.uint8)
         link = torch.from_numpy(link)
-        if len(link) > 0:
-            mat[link[:, 0], link[:, 1]] = 1
-            mat[link[:, 1], link[:, 0]] = 1
+        if len(link) > 0: # len(link)=2
+            mat[link[:, 0].long(), link[:, 1].long()] = 1
+            mat[link[:, 1].long(), link[:, 0].long()] = 1
         return mat
 
 
@@ -99,3 +111,13 @@ def collate(batch):
         [b[1] for b in batch],
         default_collate([b[2] for b in batch]),
     )
+
+
+### only for test
+if __name__ == "__main__":
+    rootdir = 'D:/dl_mydataset'
+    split = 'train'
+    dataset = WireframeDataset(rootdir, split)
+
+    a = dataset[0]
+    print(a)
