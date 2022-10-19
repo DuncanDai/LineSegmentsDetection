@@ -182,7 +182,7 @@ class HourglassNet(nn.Module):
                 score_ = self.score_[i](score)
                 x = x + fc_ + score_
 
-        return out[::-1], y
+        return out[::-1], y  # out[3] -> out[0]
 
 
 def hg(**kwargs):

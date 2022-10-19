@@ -55,16 +55,16 @@ class MultitaskLearner(nn.Module):
         offset = self.head_off
         loss_weight = M.loss_weight
         losses = []
-        for stack, output in enumerate(outputs):
-            output = output.transpose(0, 1).reshape([-1, batch, row, col]).contiguous()
+        for stack, output in enumerate(outputs):  # 4 stack -> 4 scores in outputs
+            output = output.transpose(0, 1).reshape([-1, batch, row, col]).contiguous() # output: (5,1,128,128)
             jmap = output[0 : offset[0]].reshape(n_jtyp, 2, batch, row, col)
             lmap = output[offset[0] : offset[1]].squeeze(0)
             joff = output[offset[1] : offset[2]].reshape(n_jtyp, 2, batch, row, col)
             if stack == 0:
                 result["preds"] = {
-                    "jmap": jmap.permute(2, 0, 1, 3, 4).softmax(2)[:, :, 1],
-                    "lmap": lmap.sigmoid(),
-                    "joff": joff.permute(2, 0, 1, 3, 4).sigmoid() - 0.5,
+                    "jmap": jmap.permute(2, 0, 1, 3, 4).softmax(2)[:, :, 1],  # from (1,2,1,128,128) -> (1,1,128,128)
+                    "lmap": lmap.sigmoid(),  # from (1,128,128) -> (1,128,128)
+                    "joff": joff.permute(2, 0, 1, 3, 4).sigmoid() - 0.5,  # from (1,2,1,128,128) -> (1,1,2,128,128)
                 }
                 if input_dict["mode"] == "testing":
                     return result
@@ -73,6 +73,7 @@ class MultitaskLearner(nn.Module):
             L["jmap"] = sum(
                 cross_entropy_loss(jmap[i], T["jmap"][i]) for i in range(n_jtyp)
             )
+            # Notice: for testing, there is no T[""] -> here just for training (valid)
             L["lmap"] = (
                 F.binary_cross_entropy_with_logits(lmap, T["lmap"], reduction="none")
                 .mean(2)
@@ -85,7 +86,7 @@ class MultitaskLearner(nn.Module):
             )
             for loss_name in L:
                 L[loss_name].mul_(loss_weight[loss_name])
-            losses.append(L)
+            losses.append(L)  # L = { weighted L['jmap'], L['lmap'], L['joff'] }, each one is a scalar
         result["losses"] = losses
         return result
 

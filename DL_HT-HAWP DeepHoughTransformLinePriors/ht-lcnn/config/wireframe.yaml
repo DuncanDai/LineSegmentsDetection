@@ -2,7 +2,7 @@ io:
   vote_index: vote_index_128_128_3_1.mat  # 4 params (rows, cols represent the image; h,w are the resolution of rho, theta)
   logdir: logs/
   datadir: D:/dl_mydataset # E:/data_wireframe/wireframe
-  outdir: D:/dl_output
+  outdir: D:/dl_save
   resume_from:  
   num_workers: 4
   tensorboard_port: 0
@@ -34,18 +34,18 @@ model:
   num_stacks: 4  # used for "backbone"
   num_blocks: 1  # used for "residual"
 
-  ########################################################
-  ############################ sampler parameters: my
-  # ### sampler parameters
+  ###########################################################################################
+  ############################ sampler parameters: my task -> extract 2 lines from 4 junctions
+  # # ## sampler parameters
   # # static sampler
   # n_stc_posl: 2 # original: 300
-  # n_stc_negl: 2 # original: 40
+  # n_stc_negl: 4 # original: 40
 
-  # # dynamic sampler
+  # # dynamic sampler -> from junctions to compose lines
   # n_dyn_junc: 4 # original: 300
   # n_dyn_posl: 2 # original: 300
-  # n_dyn_negl: 2 # original: 80
-  # n_dyn_othr: 4 # original: 600
+  # n_dyn_negl: 4 # original: 80
+  # n_dyn_othr: 6 # original: 600 
 
   # # LOIPool layer parameters
   # n_pts0: 32
@@ -53,7 +53,7 @@ model:
 
   # # line verification network parameters
   # dim_loi: 128
-  # dim_fc: 256 # original: 1024
+  # dim_fc: 1024
 
   # # maximum junction and line outputs
   # n_out_junc: 4  # original: 250 -> I need only 4
@@ -67,37 +67,38 @@ model:
   n_stc_negl: 40
 
   # dynamic sampler
-  n_dyn_junc: 300
+  n_dyn_junc: 300  # max_K = M.n_dyn_junc // n_type  -> k: number of junctions
   n_dyn_posl: 300
   n_dyn_negl: 80
   n_dyn_othr: 600
 
   # LOIPool layer parameters
-  n_pts0: 32
-  n_pts1: 8
+  n_pts0: 32  # in line_vectorizer.py __init__()
+  n_pts1: 8   # scale_factor = M.n_pts0 // M.n_pts1
 
   # line verification network parameters
-  dim_loi: 128
+  dim_loi: 128  # fc output
   dim_fc: 1024
 
   # maximum junction and line outputs
-  n_out_junc: 250  # -> I need only 4
-  n_out_line: 2500 # -> I need only 2
+  n_out_junc: 4  # -> I need only 4
+  n_out_line: 2 # -> I need only 2
 
 
-  ############### others
+  ###########################################################################################
+
   # additional ablation study parameters
   use_cood: 0
   use_slop: 0
   use_conv: 0
 
   # junction threashold for evaluation (See #5)
-  eval_junc_thres: 0.008
+  eval_junc_thres: 0.008  # decide: whether it's a valid junction in predicted jmap
 
 optim:
   name: Adam
   lr: 4.0e-4
   amsgrad: True
   weight_decay: 1.0e-4
-  max_epoch: 20       # original: 24
-  lr_decay_epoch: 8  # original: 10
+  max_epoch: 20       # original: 24  -> for mytask: 16  (10 epochs: 23:16-17:34 -> 18h)
+  lr_decay_epoch: 8  # original: 10  -> 

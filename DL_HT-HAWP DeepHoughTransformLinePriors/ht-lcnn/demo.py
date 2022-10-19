@@ -103,7 +103,11 @@ def main():
             im = np.repeat(im[:, :, None], 3, 2)
         im = im[:, :, :3]
         im_resized = skimage.transform.resize(im, (512, 512)) * 255
-        image = (im_resized - M.image.mean) / M.image.stddev
+        #  adapted normalization
+        mean = [np.mean(im_resized[:,:,i]) for i in range(3)] 
+        stddev = [np.std(im_resized[:,:,i]) for i in range(3)] 
+        # image = (im_resized - M.image.mean) / M.image.stddev
+        image = (im_resized - mean) / stddev
         image = torch.from_numpy(np.rollaxis(image, 2)[None].copy()).float()
         with torch.no_grad():
             input_dict = {
@@ -136,7 +140,7 @@ def main():
         diag = (im.shape[0] ** 2 + im.shape[1] ** 2) ** 0.5
         nlines, nscores = postprocess(lines, scores, diag * 0.01, 0, False)
 
-        for i, t in enumerate([0.94, 0.95, 0.96, 0.97, 0.98, 0.99]):  # t is threshold for lines confidence
+        for i, t in enumerate([0.97, 0.98, 0.99]):  # t is threshold for lines confidence
             plt.gca().set_axis_off()
             plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
             plt.margins(0, 0)

@@ -4,6 +4,7 @@
     "terminal.integrated.shellArgs.windows": ["/K", "C:\\tools\\Anaconda3\\Scripts\\activate.bat  & conda activate lcnn"],
     //"terminal.integrated.automationShell.windows": ["C:\\tools\\Anaconda3\\Scripts\\activate.bat  & conda activate lcnn"],
     "python.condaPath": "C:\\tools\\Anaconda3\\Scripts\\conda.exe",
+    "python.pythonPath": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
     //"python.terminal.activateEnvironment": false,
     //"python.pythonPath": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
 }

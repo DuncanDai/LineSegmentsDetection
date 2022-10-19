@@ -47,7 +47,7 @@ def get_outdir(identifier):
     # load config
     name = str(datetime.datetime.now().strftime("%y%m%d-%H%M%S"))
     name += "-%s" % identifier   # name with "identifier"
-    outdir = osp.join(osp.expanduser(C.io.logdir), name)
+    outdir = osp.join(osp.expanduser(C.io.outdir), name)
     if not osp.exists(outdir):
         os.makedirs(outdir)
     C.io.resume_from = outdir
@@ -87,7 +87,7 @@ def main():
     datadir = C.io.datadir
     kwargs = {
         "collate_fn": collate,
-        "num_workers": C.io.num_workers if os.name != "nt" else 0,  # os.name is either 'posix' or 'nt'  
+        "num_workers": C.io.num_workers if os.name != "nt" else 0,  # os.name is either 'posix'(linux) or 'nt'(windows)  
         "pin_memory": True,
     }
     train_loader = torch.utils.data.DataLoader(

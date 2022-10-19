@@ -32,13 +32,14 @@ class WireframeDataset(Dataset):  # Dataset base class
 
         print(f"number of {split}:", len(filelist))
         self.split = split
-        self.filelist = filelist  # all image name list with suffix
+        self.filelist = filelist  # .npz files
 
     def __len__(self):
         return len(self.filelist)
 
     def __getitem__(self, idx):
         # the images have already been resized into (512, 512) in "dataset/wireframe.py"
+        # 2022-04-28_13-09-34sep35424000_0_label.npz -> 2022-04-28_13-09-34sep35424000_0.png
         iname = self.filelist[idx][:-10].replace("_a0", "").replace("_a1", "") + ".png"
         image = io.imread(iname).astype(float)[:, :, :3]  # image data: 3D
         if "a1" in self.filelist[idx]:
@@ -49,7 +50,7 @@ class WireframeDataset(Dataset):  # Dataset base class
         # image = (image - M.image.mean) / M.image.stddev  # normalized in 3D
         image = (image - mean) / stddev
 
-        image = np.rollaxis(image, 2).copy()  # 2nd axis to 0-position
+        image = np.rollaxis(image, 2).copy()  # 3rd axis(channel) to 0-position
 
         # npz["jmap"]: [J, H, W]    Junction heat map
         # npz["joff"]: [J, 2, H, W] Junction offset within each pixel
@@ -61,14 +62,15 @@ class WireframeDataset(Dataset):  # Dataset base class
         # npz["lneg"]: [Nn, 2, 3]   Negative lines represented with junction coordinates
         #
         # For junc, lpos, and lneg that stores the junction coordinates, the last
-        # dimension is (y, x, t), where t represents the type of that junction.
+        # dimension is (y, x, t), where t represents the type of that junction. 
+        # DINGGEN: what I saw -> (row, col, type=0)
         with np.load(self.filelist[idx]) as npz:
             target = {
                 name: torch.from_numpy(npz[name]).float()
                 for name in ["jmap", "joff", "lmap"]
             }
-            lpos = np.random.permutation(npz["lpos"])[:M.n_stc_posl]  # M.n_stc_posl = 300  2
-            lneg = np.random.permutation(npz["lneg"])[:M.n_stc_negl]   # M.n_stc_negl = 40  4
+            lpos = np.random.permutation(npz["lpos"])[:M.n_stc_posl]  # M.n_stc_posl = 300  me: maximal 2
+            lneg = np.random.permutation(npz["lneg"])[:M.n_stc_negl]   # M.n_stc_negl = 40  me: maximal 4
             npos, nneg = len(lpos), len(lneg)
             lpre = np.concatenate([lpos, lneg], 0)
             for i in range(len(lpre)):

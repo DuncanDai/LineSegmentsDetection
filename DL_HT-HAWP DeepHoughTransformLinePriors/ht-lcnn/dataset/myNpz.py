@@ -36,7 +36,7 @@ except Exception:
     raise
 
 
-def inrange(v, shape):
+def inrange(v, shape): # make sure: point v is in the resized image range
     return 0 <= v[0] < shape[0] and 0 <= v[1] < shape[1]
 
 
@@ -55,53 +55,57 @@ def save_heatmap(prefix, image, lines):
 
     lines[:, :, 0] = np.clip(lines[:, :, 0] * fx, 0, heatmap_scale[0] - 1e-4) # 2064 -> 128 (683 -> 28.3 -> 28)
     lines[:, :, 1] = np.clip(lines[:, :, 1] * fy, 0, heatmap_scale[1] - 1e-4) # only two values (1 -> 0, 2064 -> 127)
-    lines = lines[:, :, ::-1]  # (x, y) -> (y/row, x/col)
+    lines = lines[:, :, ::-1]  # from (x, y) -> to (y or row, x or col)
 
     junc = []
-    jids = {}
+    jids = {}  # dict{ (junc_y, jun_x): index, ... }
 
     def jid(jun): # junction index -> e.g. (0, 28) is an junction, and the index is 0; (127, 28) is another junction, index is 1
-        jun = tuple(jun[:2])
+        jun = tuple(jun[:2])  # jun[:2]: (y, x)
         if jun in jids:
             return jids[jun]
-        jids[jun] = len(junc)
-        junc.append(np.array(jun + (0,)))
-        return len(junc) - 1
+        jids[jun] = len(junc)  # add the index number with the len of "junc" list
+        junc.append(np.array(jun + (0,)))  # 0 represents the type of that junction
+        return len(junc) - 1  # 0-based
 
-    lnid = []
+    lnid = []  # line index  [(junction index of v0, junction index of v1)]
     lpos, lneg = [], []
-    for v0, v1 in lines: # v0(row0, col0), v1(row1, col1)
+    for v0, v1 in lines: # v0(row0, col0), v1(row1, col1) -> iterate all the junctions(pairs for each line) from the label data
         lnid.append((jid(v0), jid(v1)))
-        lpos.append([junc[jid(v0)], junc[jid(v1)]])
+        lpos.append([junc[jid(v0)], junc[jid(v1)]])  # !!!here: how lpos to be calculated
 
-        vint0, vint1 = to_int(v0), to_int(v1)
+        vint0, vint1 = to_int(v0), to_int(v1)  # junction coords to be used as index: must be int
+        # jamp is [1, 128, 128] -> choose jamp[0] -> element:[128, 128]
+        # !!!here: how jamp, lmap to be calculated
         jmap[0][vint0] = 1
         jmap[0][vint1] = 1
-        rr, cc, value = skimage.draw.line_aa(*to_int(v0), *to_int(v1))
-        lmap[rr, cc] = np.maximum(lmap[rr, cc], value)
+        rr, cc, value = skimage.draw.line_aa(*to_int(v0), *to_int(v1))  # Generate anti-aliased line pixel coordinates
+        lmap[rr, cc] = np.maximum(lmap[rr, cc], value) # ref from the doc: rr, cc is all related pixels of the line
 
     for v in junc:
         vint = to_int(v[:2])
-        joff[0, :, vint[0], vint[1]] = v[:2] - vint - 0.5
+        joff[0, :, vint[0], vint[1]] = v[:2] - vint - 0.5  # !!!here: how joff to be calculated
 
     llmap = zoom(lmap, [0.5, 0.5])
-    lineset = set([frozenset(l) for l in lnid])
+    lineset = set([frozenset(l) for l in lnid])  # junction pairs for each labeled line
     for i0, i1 in combinations(range(len(junc)), 2):  # number of combinations: #junc * #junc
         if frozenset([i0, i1]) not in lineset:
             v0, v1 = junc[i0], junc[i1]
-            vint0, vint1 = to_int(v0[:2] / 2), to_int(v1[:2] / 2)
+            vint0, vint1 = to_int(v0[:2] / 2), to_int(v1[:2] / 2)  # Note - above: already zoomed in.
             rr, cc, value = skimage.draw.line_aa(*vint0, *vint1)
-            lneg.append([v0, v1, i0, i1, np.average(np.minimum(value, llmap[rr, cc]))])
+            # v0 v1 are junction coords, i0 i1 are junction index
+            # value for one lneg: get the smallest one from all related pixels(rr, cc), and calculate the average
+            lneg.append([v0, v1, i0, i1, np.average(np.minimum(value, llmap[rr, cc]))]) # !!!here: how lneg to be calculated
 
     assert len(lneg) != 0
-    lneg.sort(key=lambda l: -l[-1])
+    lneg.sort(key=lambda l: -l[-1])  # based on the value, in a descending order -> choose most likely negtive line
 
     junc = np.array(junc, dtype=np.float32)
     Lpos = np.array(lnid, dtype=np.int)
-    Lneg = np.array([l[2:4] for l in lneg][:4000], dtype=np.int)
+    Lneg = np.array([l[2:4] for l in lneg][:4000], dtype=np.int)  # index (i0, i1), maximal: 4000 ([2:4] is [2, 3])-> attention the tiny difference between Lneg & lneg
     lpos = np.array(lpos, dtype=np.float32)
-    lneg = np.array([l[:2] for l in lneg[:2000]], dtype=np.float32)
-
+    lneg = np.array([l[:2] for l in lneg[:2000]], dtype=np.float32) # coords (v0, v1), maximal: 2000 ([:2] is [0, 1])
+ 
     # !!! here: resize the image to (512, 512)
     image = cv2.resize(image, im_rescale)  
 
@@ -121,7 +125,7 @@ def save_heatmap(prefix, image, lines):
     # the wireframe dataset, t is always zero.
     np.savez_compressed(
         f"{prefix}_label.npz",
-        aspect_ratio=image.shape[1] / image.shape[0],
+        aspect_ratio=image.shape[1] / image.shape[0],  # 3088/2064
         jmap=jmap,  # [J, H, W]    Junction heat map
         joff=joff,  # [J, 2, H, W] Junction offset within each pixel
         lmap=lmap,  # [H, W]       Line heat map with anti-aliasing
