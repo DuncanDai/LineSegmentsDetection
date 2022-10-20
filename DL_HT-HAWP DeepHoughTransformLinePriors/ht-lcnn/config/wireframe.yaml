@@ -1,7 +1,8 @@
 io:
   vote_index: vote_index_128_128_3_1.mat  # 4 params (rows, cols represent the image; h,w are the resolution of rho, theta)
   logdir: logs/
-  datadir: D:/dl_mydataset # E:/data_wireframe/wireframe
+  datadir: D:/dl_mydataset 
+  imgs_root: D:/dataset_test
   outdir: D:/dl_save
   resume_from:  
   num_workers: 4
@@ -9,9 +10,9 @@ io:
   validation_interval: 5000  # original: 20000 -> used as a flag to validate()  (in trainer.py line 209)
 
 model:
-  image:  # input??? used in prediction (demo.py, process.py)
-      mean: [109.730, 103.832, 98.681]  # sample: [191.53, 191.11, 185.83]
-      stddev: [22.275, 22.124, 23.229]  # sample: [85.11, 85.108, 87.53]
+  # image:  # changed in lcnn/datasets.py (use the data from the image self)
+  #     mean: [109.730, 103.832, 98.681]  # sample: [191.53, 191.11, 185.83]
+  #     stddev: [22.275, 22.124, 23.229]  # sample: [85.11, 85.108, 87.53]
 
   batch_size: 3  # original: 5
   batch_size_eval: 2
@@ -24,7 +25,7 @@ model:
     joff: 0.25
     lpos: 4 # original: 1
     lneg: 1
-  # head_size: [[1]]  # output???
+  # head_size: [[1]]  
   # loss_weight:
   #   rmse: 1
 

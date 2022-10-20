@@ -128,6 +128,18 @@ def main():
             }
             H = model(input_dict)["preds"]
 
+        ### !!! lines (2, 2, 2) 
+        # lines[0][0]: [y00, x00]
+        # lines[0][1]: [y01, x01]
+        # lines[1][0]: [y10, x10]
+        # lines[1][1]: [y11, x11]
+        '''lines (2 lines)
+        array([[[1.41094317e+01, 2.70200000e+03],
+                [2.06198438e+03, 2.70200000e+03]],
+
+                [[2.04900879e+03, 2.17125069e+02],
+                [1.13395390e+00, 2.17125253e+02]]])
+        '''
         lines = H["lines"][0].cpu().numpy() / 128 * im.shape[:2]  # resize back to the original im size
         scores = H["score"][0].cpu().numpy()
         for i in range(1, len(lines)):

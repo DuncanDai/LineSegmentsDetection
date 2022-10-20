@@ -35,12 +35,19 @@ import torch
 import yaml
 from docopt import docopt
 import scipy.io as sio
-import lcnn
-from lcnn.config import C, M
-from lcnn.datasets import WireframeDataset, collate
-from lcnn.models.line_vectorizer import LineVectorizer
-from lcnn.models.multitask_learner import MultitaskHead, MultitaskLearner
-from lcnn.models.HT import hough_transform
+
+try:
+    sys.path.append(".")
+    sys.path.append("..")
+    import lcnn
+    from lcnn.config import C, M
+    from lcnn.datasets import WireframeDataset, collate
+    from lcnn.models.line_vectorizer import LineVectorizer
+    from lcnn.models.multitask_learner import MultitaskHead, MultitaskLearner
+    from lcnn.models.HT import hough_transform
+except Exception:
+    raise
+
 
 
 def get_outdir(identifier):

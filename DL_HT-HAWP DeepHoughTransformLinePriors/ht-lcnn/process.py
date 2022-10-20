@@ -4,6 +4,9 @@ Usage:
     process.py [options] <yaml-config> <checkpoint>
     process.py (-h | --help )
 
+Examples:
+    python ./process.py  -d 0 config/wireframe.yaml logs/221017-231614-train/checkpoint_best.pth
+
 Arguments:
    <yaml-config>                 Path to the yaml hyper-parameter file
    <checkpoint>                  Path to the checkpoint
@@ -123,7 +126,7 @@ def main():
                     continue
                 im = image[i].cpu().numpy().transpose(1, 2, 0)
                 im = im * M.image.stddev + M.image.mean
-                lines = H["lines"][i].cpu().numpy() * 4
+                lines = H["lines"][i].cpu().numpy() * 4  # resize * 4
                 scores = H["score"][i].cpu().numpy()
                 if len(lines) > 0 and not (lines[0] == 0).all():
                     for i, ((a, b), s) in enumerate(zip(lines, scores)):

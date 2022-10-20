@@ -60,6 +60,17 @@
         },
 
         {
+            "name": "myTest.py",
+            "type": "python",
+            //"python": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
+            "request": "launch",
+            "program": "${workspaceFolder}/myAPP/myTest.py",  // ${file}
+            "console": "integratedTerminal",
+            "env": {"CUDA_VISIBLE_DEVICES":"0"},
+            "args": ["-d", "0", "config/wireframe.yaml", "logs/221017-231614-train/checkpoint_best.pth", "U:/my_projs/LineSegmentsDetection/g_data/test.json"],
+        },
+
+        {
             "name": "Python: current file",
             "type": "python",
             //"python": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
