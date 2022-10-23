@@ -52,7 +52,7 @@ prior_excluded_middle_percent = output.prior_excluded_middle_percent;   prior_ex
 
 %% test all folders
 % TODO: imgInputPath (imgOutputPath is determained according to the platform: Pool or PC)
-imgInputPath = 'D:/dataset_test'; % portable HDD or network driver
+imgInputPath = 'D:/dataset_train'; % portable HDD or network driver
 
 load chirp
 sound(y,Fs)

@@ -129,7 +129,7 @@ class Trainer(object):
 
                 total_loss += self._loss(result)
 
-                H = result["preds"]
+                H = result["preds"]  # jmap, lmap, joff; lines, score, juncs
                 for i in range(H["jmap"].shape[0]):
                     index = batch_idx * M.batch_size_eval + i
                     np.savez(

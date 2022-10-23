@@ -101,7 +101,13 @@ if __name__ == "__main__":
     df_sub_40_50 =  df[(df.RMSE >= 40) & (df.RMSE < 50)] # totalnumber: 17
     df_sub_over_50 =  df[(df.RMSE >50)] # total number: 0
 
-    for record_tuple in df_sub_30_40.itertuples():
+    count = 0
+    for record_tuple in df_sub_20_30.itertuples():
+        count = count + 1
+        if count % 10 != 0:
+            continue
+
+
         # records_tuple = tuple(records.tolist())
         _, _, folder, img, l_label, ljunc0, ljunc1, r_label, rjunc0, rjunc1, rmse, time = record_tuple
         img_file = os.path.join(img_path, folder, img)
@@ -118,7 +124,8 @@ if __name__ == "__main__":
             continue
 
         do_plot = Plot(im, l_label, ljunc0, ljunc1, r_label, rjunc0, rjunc1, rmse)        
-        do_plot.draw_all(is_show=False, is_save=True, save_png=save_pth)
+        do_plot.draw_all(is_show=True, is_save=True, save_png=save_pth)
+
 
 
         

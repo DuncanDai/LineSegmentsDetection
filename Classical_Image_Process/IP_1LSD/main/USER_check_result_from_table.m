@@ -14,7 +14,7 @@ FLAG_VALID = 0;
 % sub_test_result_200_500 = select_data_through_RMSE(output_data, 200, 500);
 % sub_test_result_500_2000 = select_data_through_RMSE(output_data, 500, 2000);
 % sub_test_result_over_2000 = select_data_through_RMSE(output_data, 2000, 3000);
-output_buffer = sub_test_result_over_2000; % output_data1 works like a buffer
+output_buffer = sub_test_result_0_20; % output_data1 works like a buffer
 output = output_buffer;  
 
 
@@ -32,7 +32,7 @@ date_folder = ['check_result_', ...
 % imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
 
 %%% in pool-206 test
-imgInputPath = 'D:/dataset_test';  imgOutputPath = 'D:/g_output';
+imgInputPath = 'D:/dataset_valid';  imgOutputPath = 'D:/g_output';
 imgOutputPath = [imgOutputPath, filesep, date_folder];     mkdir(imgOutputPath);
 
 %% Method 1: use the hyper-parameters in table
@@ -71,7 +71,8 @@ clear t row;
 %% Method 2: use the single optimized hyper-parameters (in config_path.m)
 %%% change the "row" you want to check
 sz = size(output, 1);
-for row = 29
+% for row = 29
+for row = 1:100:sz
     folderName = output.folderName(row);  folderName = char(folderName);
     imgName = output.imgName(row);  imgName = char(imgName);
     if exist([imgOutputPath, filesep, folderName, 'sep', imgName],'file')
@@ -80,7 +81,15 @@ for row = 29
     else
 %         angle_tolerance = 3;  % special case
 %         windowWidth = 14;
-        img_rgb = imread([imgInputPath, filesep, folderName, filesep, imgName]);
+        try
+            img_rgb = imread(['D:/dataset_train', filesep, folderName, filesep, imgName]);
+        catch
+            try
+                img_rgb = imread(['D:/dataset_test', filesep, folderName, filesep, imgName]);
+            catch
+                img_rgb = imread(['D:/dataset_valid', filesep, folderName, filesep, imgName]);
+            end
+        end
 %         resizeImageHeight = size(img_rgb, 1) / scale;  resizeImageWidth = size(img_rgb, 2) / scale;
         % Use default hyperparameter.
         % If you want to check it in the hyperparameter set in output_data -> parser the table like above

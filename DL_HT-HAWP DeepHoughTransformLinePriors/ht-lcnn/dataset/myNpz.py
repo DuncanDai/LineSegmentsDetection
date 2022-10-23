@@ -5,7 +5,7 @@ Usage:
     dataset/myNpz.py (-h | --help )
 
 Examples:
-    python dataset/myNpz.py U:/my_projs/LineSegmentsDetection/g_data \\os.lsdf.kit.edu\itiv-projects\Stents4Tomorrow\Data\2022-04-28\Data\Images D:/dl_output
+    python dataset/myNpz.py U:/my_projs/LineSegmentsDetection/g_data/LSD_best \\os.lsdf.kit.edu\itiv-projects\Stents4Tomorrow\Data\2022-04-28\Data\Images D:/dl_mydataset_2_junctions
 
 Arguments:
     <srcJSON>

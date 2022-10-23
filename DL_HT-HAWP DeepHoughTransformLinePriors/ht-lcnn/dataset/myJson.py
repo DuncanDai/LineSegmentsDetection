@@ -69,10 +69,10 @@ def main():
                 x_right = img_label["coords"][1]
 
                 x_left_1 = x_left_2 = x_left
-                y_left_1, y_left_2 = 1, height
+                y_left_1, y_left_2 = 0, height - 1
 
                 x_right_1 = x_right_2 = x_right
-                y_right_1, y_right_2 = 1, height
+                y_right_1, y_right_2 = 0, height - 1
 
                 single_data = {
                     "filename": filename,

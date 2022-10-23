@@ -1,8 +1,8 @@
 io:
   vote_index: vote_index_128_128_3_1.mat  # 4 params (rows, cols represent the image; h,w are the resolution of rho, theta)
-  logdir: logs/
-  datadir: D:/dl_mydataset 
-  imgs_root: D:/dataset_test
+  logdir: D:/dl_save # logs/
+  datadir: D:/dl_mydataset_2_junctions    # for train (vliad included)
+  imgs_root: D:/dataset_test  # only for test
   outdir: D:/dl_save
   resume_from:  
   num_workers: 4
@@ -21,9 +21,9 @@ model:
   head_size: [[2], [1], [2]]
   loss_weight:
     jmap: 8.0
-    lmap: 0.5
+    lmap: 0.5 # original: 0.5
     joff: 0.25
-    lpos: 4 # original: 1
+    lpos: 1 # original: 1
     lneg: 1
   # head_size: [[1]]  
   # loss_weight:
