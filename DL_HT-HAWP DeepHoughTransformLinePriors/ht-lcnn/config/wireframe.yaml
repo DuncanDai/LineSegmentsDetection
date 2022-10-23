@@ -4,7 +4,7 @@ io:
   datadir: D:/dl_mydataset_2_junctions    # for train (vliad included)
   imgs_root: D:/dataset_test  # only for test
   outdir: D:/dl_save
-  resume_from:  
+  resume_from: D:/dl_save/221022-211125-train
   num_workers: 4
   tensorboard_port: 0
   validation_interval: 5000  # original: 20000 -> used as a flag to validate()  (in trainer.py line 209)

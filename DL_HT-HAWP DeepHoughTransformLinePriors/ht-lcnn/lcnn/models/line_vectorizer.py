@@ -46,11 +46,11 @@ class LineVectorizer(nn.Module):
     def forward(self, input_dict):
         result = self.backbone(input_dict)
         h = result["preds"]
-        x = self.fc1(result["feature"])
+        x = self.fc1(result["feature"])  # change the channel number from 256 to M.dim_loi 128 (line of interest)
         n_batch, n_channel, row, col = x.shape
 
         xs, ys, ps, idx, jcs = [], [], [], [0], []
-        for i, meta in enumerate(input_dict["meta"]):  # i represent batch
+        for i, meta in enumerate(input_dict["meta"]):  # i represent one batch/one image
             p, label, jc = self.sample_lines(  # -> (line, label.float(), junctions)
                 meta, h["jmap"][i], h["joff"][i], input_dict["mode"]
             )
@@ -64,7 +64,7 @@ class LineVectorizer(nn.Module):
                 ps.append(p)
 
             p = p[:, 0:1, :] * self.lambda_ + p[:, 1:2, :] * (1 - self.lambda_) - 0.5
-            p = p.reshape(-1, 2)  # [N_LINE x N_POINT, 2_XY]  (192,2)
+            p = p.reshape(-1, 2)  # [N_LINE x N_POINT, 2_XY]  (192,2)   n_pts0: 32 
             px, py = p[:, 0].contiguous(), p[:, 1].contiguous()
             px0 = px.floor().clamp(min=0, max=127) # the range of resized image is (0, 127)
             py0 = py.floor().clamp(min=0, max=127)
@@ -73,6 +73,7 @@ class LineVectorizer(nn.Module):
             px0l, py0l, px1l, py1l = px0.long(), py0.long(), px1.long(), py1.long() # .long() can be used as index in pytorch
 
             # xp: [N_LINE, N_CHANNEL, N_POINT]
+            # !!!DINGGEN: here related to the 'pred'(output of sample_lines()) -> the number of line was determined by sample_lines(): p
             xp = (
                 (
                     x[i, :, px0l, py0l] * (px1 - px) * (py1 - py)
@@ -84,12 +85,12 @@ class LineVectorizer(nn.Module):
                 .permute(1, 0, 2)
             )
             xp = self.pooling(xp)  # (6, 128, 32)  -> (6, 128, 8) 
-            xs.append(xp)
+            xs.append(xp)  
             idx.append(idx[-1] + xp.shape[0])
 
         x, y = torch.cat(xs), torch.cat(ys)  # x(6,128,8), y(6)
         x = x.reshape(-1, M.n_pts1 * M.dim_loi) # x(6,1024)
-        x = self.fc2(x).flatten()  # x(6)
+        x = self.fc2(x).flatten()  # x(6): after self.fc2 -> result shape is the number of lines of interest
 
         if input_dict["mode"] != "training":
             p = torch.cat(ps)  # (6,2,2) -> (6,2,2)
