@@ -1,17 +1,17 @@
 io:
   logdir: D:/dl_save
-  datadir: D:/data_wireframe/wireframe # /home/dxl/Data/wireframe1_datarota_3w  # /home/dxl/Data/wireframe     wireframe1_datarota_3w
-  num_workers: 4
+  datadir: D:/df_fclip_dataset # D:/data_wireframe/wireframe # /home/dxl/Data/wireframe1_datarota_3w  
+  num_workers: 0  # if 4: FClip.box.BoxKeyError: 
   tensorboard_port: 0
-  validation_interval: 60000
+  validation_interval: 40000  # original: 60000 num_data=5000 (my data: 3479)
   visual_num: 2
 
 model:
   image:
-      mean: [109.730, 103.832, 98.681]
-      stddev: [22.275, 22.124, 23.229]
+      mean: [171.7741, 171.6866, 166.6935] # [109.730, 103.832, 98.681]
+      stddev: [88.4894, 88.2510, 90.5996] # [22.275, 22.124, 23.229]
 
-  batch_size: 6
+  batch_size: 4 # original: 6
   eval_batch_size: 2
 
   # backbone multi-task parameters
@@ -45,7 +45,7 @@ model:
 
   stage1: fclip
   delta: 0.8
-  nlines: 1000
+  nlines: 2 # original 1000
   s_nms: 0
 
 
@@ -55,5 +55,5 @@ optim:
   lr: 4.0e-4
   amsgrad: True
   weight_decay: 1.0e-4
-  max_epoch: 40 # original 300
-  lr_decay_epoch: [30, 36] # original  [240,280]
+  max_epoch: 30 # 30 # original 300
+  lr_decay_epoch: [20, 26] # [20, 26] # original  [240,280] should be list

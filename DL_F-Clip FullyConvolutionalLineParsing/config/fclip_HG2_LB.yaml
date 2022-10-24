@@ -1,5 +1,5 @@
 io:
-  dataname: shanghaiTech  # york, shanghaiTech
+  dataname: myCustomized  # york, shanghaiTech, myCustomized
   resume_from:  # ckpt path when the program was stopped by accident
   model_initialize_file:
 
@@ -16,4 +16,5 @@ model:
   line:
     mode: [v, h]
   merge: 'maxpool'  # 'cat', 'maxpool'
+
 

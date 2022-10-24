@@ -7,7 +7,7 @@ from skimage import io
 from torch.utils.data import Dataset
 from torch.utils.data.dataloader import default_collate
 
-from FClip.config import M, C
+from FClip.config import C, M
 from dataset.input_parsing import WireframeHuangKun
 from dataset.crop import CropAugmentation
 from dataset.resolution import ResizeResolution
@@ -22,10 +22,10 @@ def collate(batch):
 
 
 class LineDataset(Dataset):
-    def __init__(self, rootdir, split, dataset="shanghaiTech"):
+    def __init__(self, rootdir, split, dataset="myCustomized"):
         print("dataset:", dataset)
         self.rootdir = rootdir
-        if dataset in ["shanghaiTech", "york"]:
+        if dataset in ["shanghaiTech", "york", "myCustomized"]:
             filelist = glob.glob(f"{rootdir}/{split}/*_label.npz")
             filelist.sort()
         else:
@@ -40,7 +40,7 @@ class LineDataset(Dataset):
         return len(self.filelist)
 
     def _get_im_name(self, idx):
-        if self.dataset in ["shanghaiTech", "york"]:
+        if self.dataset in ["shanghaiTech", "york", "myCustomized"]:
             iname = self.filelist[idx][:-10] + ".png"
         else:
             raise ValueError("no such name!")
@@ -52,7 +52,6 @@ class LineDataset(Dataset):
 
         target = {}
         if M.stage1 == "fclip":
-
             # step 1 load npz
             lcmap, lcoff, lleng, angle = WireframeHuangKun.fclip_parsing(
                 self.filelist[idx].replace("label", "line"),
@@ -88,8 +87,12 @@ class LineDataset(Dataset):
 
         else:
             raise NotImplementedError
+        
+        image = (image_ - M.image.mean) / M.image.stddev  # normalized in 3D
+        # mean = [np.mean(image[:,:,i]) for i in range(3)]  # [171.77413177490234, 171.68663024902344, 166.69351196289062]
+        # stddev = [np.std(image[:,:,i]) for i in range(3)] # [88.48940770490175, 88.25108490839942, 90.59969860652338]
+        # image = (image - mean) / stddev
 
-        image = (image_ - M.image.mean) / M.image.stddev
         image = np.rollaxis(image, 2).copy()
 
         return torch.from_numpy(image).float(), meta, target

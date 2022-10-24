@@ -88,9 +88,12 @@ def parser_str_to_tuple(tuple_in_str):
 
 ### only for test
 if __name__ == "__main__":
-    data_path = 'D:/dl_save/221022-211125-train/test_10-24.csv'
+    data_path = 'D:/dl_save/221022-211125-train/test_10-24_for_original_test_dataset(bad_result).csv'
     imgs_root = 'D:/'
-    out_path = 'U:/my_projs/g_output_DL/10-24 LSD result'
+    out_path = 'U:/my_projs/g_output_DL/10-24_LSD_result_for_original_test_dataset'
+    skip_step = 10
+    is_show=False
+    is_save=True
 
     df = pd.read_csv(data_path)
 
@@ -103,10 +106,10 @@ if __name__ == "__main__":
     df_sub_over_50 =  df[(df.RMSE >50)] 
 
     count = 0
-    for record_tuple in df_sub_0_20.itertuples():
+    for record_tuple in df_sub_40_50.itertuples():
         count = count + 1
         # !!! only for number > 150
-        if count % 10 != 0:  
+        if count % skip_step != 0:  
             continue
 
 
@@ -133,7 +136,7 @@ if __name__ == "__main__":
             #     continue
 
         do_plot = Plot(im, l_label, ljunc0, ljunc1, r_label, rjunc0, rjunc1, rmse)        
-        do_plot.draw_all(is_show=False, is_save=True, save_png=save_pth)
+        do_plot.draw_all(is_show, is_save, save_png=save_pth)
 
 
 

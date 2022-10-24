@@ -52,7 +52,7 @@ except Exception:
 
 def get_outdir(identifier):
     # load config
-    name = str(datetime.datetime.now().strftime("%y%m%d-%H%M%S"))
+    name = str(datetime.datetime.now().strftime("%y%m%d_%H%M%S"))
     name += "-%s" % identifier   # name with "identifier"
     outdir = osp.join(osp.expanduser(C.io.outdir), name)
     if not osp.exists(outdir):

@@ -1,11 +1,22 @@
 #!/usr/bin/env python3
 """Train L-CNN
 Usage:
-    train.py [options] <yaml-config>
+    train.py [options] <MODEL-yaml-config>
     train.py (-h | --help )
 
+Example:
+    python train.py -d 0 -i HG1_D2 config/fclip_HG1_D2.yaml
+
+    python train.py -d 0 -i HG1_D3 config/fclip_HG1_D3.yaml
+    python train.py -d 0 -i HG1 config/fclip_HG1.yaml
+    python train.py -d 0 -i HG2 config/fclip_HG2.yaml
+
+    python train.py -d 0 -i HG2_LB config/fclip_HG2_LB.yaml
+
+    python train.py -d 0 -i HR config/fclip_HR.yaml
+
 Arguments:
-   <yaml-config>                   Path to the yaml hyper-parameter file
+   <MODEL-yaml-config>                   Path to the yaml hyper-parameter file of one model
 
 Options:
    -h --help                       Show this screen.
@@ -28,7 +39,7 @@ from docopt import docopt
 import FClip
 from FClip.config import C, M
 from FClip.datasets import collate
-from FClip.datasets import LineDataset as WireframeDataset
+from FClip.datasets import LineDataset as WireframeDataset  # Notice: the name
 
 from FClip.models.stage_1 import FClip
 from FClip.models import MultitaskHead, hg, hgl, hr
@@ -90,9 +101,9 @@ def build_model():
 
 def main():
     args = docopt(__doc__)
-    config_file = args["<yaml-config>"]
+    config_file = args["<MODEL-yaml-config>"]
     C.update(C.from_yaml(filename="config/base.yaml"))
-    C.update(C.from_yaml(filename=config_file))
+    C.update(C.from_yaml(filename=config_file))  
     M.update(C.model)
     pprint.pprint(C, indent=4)
     resume_from = C.io.resume_from

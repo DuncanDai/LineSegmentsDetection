@@ -124,8 +124,9 @@ def main():
                 )
                 if not args["--plot"]:
                     continue
-                im = image[i].cpu().numpy().transpose(1, 2, 0)
-                im = im * M.image.stddev + M.image.mean
+                ### DINGGEN: 22.10.24  21:12
+                # im = image[i].cpu().numpy().transpose(1, 2, 0)
+                # im = im * M.image.stddev + M.image.mean
                 lines = H["lines"][i].cpu().numpy() * 4  # resize * 4
                 scores = H["score"][i].cpu().numpy()
                 if len(lines) > 0 and not (lines[0] == 0).all():

@@ -173,7 +173,7 @@ class ModelPrinter():
             print(",     ".join(["progress"] + loss_labels), file=fout)
 
     def train_log(self, epoch, iteration, batch_size, time, avg_metrics):
-        self.tprint(
+        self.pprint(  # tprint
             f"{epoch:03}/{iteration * batch_size // 1000:04}k| "
             + "| ".join(map("{:.5f}".format, avg_metrics[0]))
             + f"| {4 * batch_size / (timer() - time):04.1f} "

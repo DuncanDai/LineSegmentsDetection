@@ -65,6 +65,7 @@ import matplotlib.pyplot as plt
 matplotlib.use('agg')    # print(matplotlib.get_backend()) 
 # import seaborn as sns
 import skimage.io
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
 
 threshold = 0.4
 
@@ -282,7 +283,7 @@ if __name__ == '__main__':
 
     # Create a window to display the demo.
     if opt.display:
-        fig = plt.figure(figsize=(16,9), dpi=120)
+        # fig = plt.figure(figsize=(16,9), dpi=120)
         win = 'Line Tracker'
         cv.namedWindow(win)
 

@@ -19,6 +19,7 @@ Options:
 """
 
 import os
+from os.path import exists
 import sys
 import json
 from itertools import combinations
@@ -127,16 +128,17 @@ def save_heatmap(prefix, image, lines):
     #     n1 = center - d * length
     #     plt.plot([n0[1] * 4, n1[1] * 4], [n0[0] * 4, n1[0] * 4])
     # plt.savefig(f"{prefix}_line.png", dpi=100), plt.close()
-
-    np.savez_compressed(
-        f"{prefix}_line.npz",
-        # aspect_ratio=image.shape[1] / image.shape[0],
-        lcmap=lcmap,
-        lcoff=lcoff,
-        lleng=lleng,
-        angle=angle,
-    )
-    cv2.imwrite(f"{prefix}.png", image)
+    if not exists(f"{prefix}_line.npz"):
+        np.savez_compressed(
+            f"{prefix}_line.npz",
+            # aspect_ratio=image.shape[1] / image.shape[0],
+            lcmap=lcmap,
+            lcoff=lcoff,
+            lleng=lleng,
+            angle=angle,
+        )
+    if not exists(f"{prefix}.png"):
+        cv2.imwrite(f"{prefix}.png", image)
 
 
 def coor_rot90(coordinates, center, k):
