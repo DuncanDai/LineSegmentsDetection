@@ -5,7 +5,7 @@ Usage:
     demo.py (-h | --help )
 
 Examples: (based on 'ht-lcnn/')
-    python ./myAPP/myTest.py -d 0 config/wireframe.yaml D:/dl_save/221022-211125-train/checkpoint_best.pth  U:/my_projs/LineSegmentsDetection/g_data/LSD_best/test.json
+    python ./myAPP/myTest.py -d 0 config/wireframe.yaml D:/dl_save/221022-211125-train/checkpoint_best.pth  U:/my_projs/LineSegmentsDetection/g_data/original_vertical/test.json
 
 Arguments:
    <yaml-config>                 Path to the yaml hyper-parameter file
@@ -171,7 +171,13 @@ def main():
             try:
                 im = skimage.io.imread(img_path_valid)
             except (ValueError, IOError):
-                im = skimage.io.imread(img_path_test)
+                try:
+                    im = skimage.io.imread(img_path_test)
+                except (ValueError, IOError):
+                    with open("Image_read_failed.txt", "a") as f:
+                        f.write(f"{count:04d}, {folder}, {img_png} \n")
+                    continue
+
             # finally:
             #     with open("Image_read_failed.txt", "a") as f:
             #         f.write(f"{count:04d}, {folder}, {img_png} \n")

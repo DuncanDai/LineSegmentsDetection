@@ -1,6 +1,6 @@
 io:
-  logdir: logs/
-  datadir: /home/dxl/Data/wireframe1_datarota_3w  # /home/dxl/Data/wireframe     wireframe1_datarota_3w
+  logdir: D:/dl_save
+  datadir: D:/data_wireframe/wireframe # /home/dxl/Data/wireframe1_datarota_3w  # /home/dxl/Data/wireframe     wireframe1_datarota_3w
   num_workers: 4
   tensorboard_port: 0
   validation_interval: 60000
@@ -55,5 +55,5 @@ optim:
   lr: 4.0e-4
   amsgrad: True
   weight_decay: 1.0e-4
-  max_epoch: 300
-  lr_decay_epoch: [240,280]
+  max_epoch: 40 # original 300
+  lr_decay_epoch: [30, 36] # original  [240,280]

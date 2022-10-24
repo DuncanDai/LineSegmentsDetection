@@ -1,0 +1,106 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: demo.py",
+            "type": "python",
+            //"python": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
+            "request": "launch",
+            "program": "${workspaceFolder}/demo.py",  // ${file}
+            "console": "integratedTerminal",
+            "env": {"CUDA_VISIBLE_DEVICES":"0"},
+            "args": ["-d", "0", "config/wireframe.yaml", "U:/my_projs/LineSegmentsDetection/DL_HT-HAWP DeepHoughTransformLinePriors/ht-lcnn/logs/221017-231614-train/checkpoint_best.pth", "U:/my_projs/LineSegmentsDetection/Classical_Image_Process/g_dataset/test.png"],  // pre-trained U:/my_projs/dl_pretrained/ht_lcnn/checkpoint.pth.tar
+        },
+
+        {
+            "name": "Python: train.py",
+            "type": "python",
+            //"python": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
+            "request": "launch",
+            "program": "${workspaceFolder}/train.py",  // ${file}
+            "console": "integratedTerminal",
+            "env": {"CUDA_VISIBLE_DEVICES":"0"},
+            "args": ["-d", "0", "--identifier", "baseline", "config/wireframe.yaml"],
+        },
+
+        {
+            "name": "Python: wireframeData.py",
+            "type": "python",
+            //"python": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
+            "request": "launch",
+            "program": "${workspaceFolder}/dataset/wireframe.py",  // ${file}
+            "console": "integratedTerminal",
+            "env": {"CUDA_VISIBLE_DEVICES":"0"},
+            "args": ["D:/data_wireframe/wireframe_raw", "D:/data_wireframe_test"],
+        },
+
+        {
+            "name": "Python: myJSON.py",
+            "type": "python",
+            //"python": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
+            "request": "launch",
+            "program": "${file}", //"${workspaceFolder}/dataset/myJSON.py",  ${file}
+            "console": "integratedTerminal",
+            "env": {"CUDA_VISIBLE_DEVICES":"0"},
+            "args": ["U:/my_projs/LineSegmentsDetection/Classical_Image_Process/g_dataset", "U:/my_projs/LineSegmentsDetection/g_data"],  //\\\\os.lsdf.kit.edu\\itiv-projects\\Stents4Tomorrow\\Data\\2022-04-28\\Data\\Labels\\mandrel_borders
+        },
+
+        {
+            "name": "Python: myNpz.py",
+            "type": "python",
+            //"python": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
+            "request": "launch",
+            "program": "${workspaceFolder}/dataset/myNpz.py",  // ${file}
+            "console": "integratedTerminal",
+            "env": {"CUDA_VISIBLE_DEVICES":"0"},
+            "args": ["U:/my_projs/LineSegmentsDetection/g_data", "\\\\os.lsdf.kit.edu\\itiv-projects\\Stents4Tomorrow\\Data\\2022-04-28\\Data\\Images", "D:/dl_output"],
+        },
+
+        {
+            "name": "myTest.py",
+            "type": "python",
+            //"python": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
+            "request": "launch",
+            "program": "${workspaceFolder}/myAPP/myTest.py",  // ${file}
+            "console": "integratedTerminal",
+            "env": {"CUDA_VISIBLE_DEVICES":"0"},
+            "args": ["-d", "0", "config/wireframe.yaml", "logs/221017-231614-train/checkpoint_best.pth", "U:/my_projs/LineSegmentsDetection/g_data/test.json"],
+        },
+
+        {
+            "name": "Python: current file",
+            "type": "python",
+            //"python": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
+            "request": "launch",
+            "program": "${file}",  // 
+            "console": "integratedTerminal",
+            "env": {"CUDA_VISIBLE_DEVICES":"0"},
+            //"args": ["U:/my_projs/LineSegmentsDetection/g_data", "\\\\os.lsdf.kit.edu\\itiv-projects\\Stents4Tomorrow\\Data\\2022-04-28\\Data\\Images", "D:/dl_output"],
+        },
+
+                
+
+        {
+            "name": "F-clip: demo",
+            "type": "python",
+            //"python": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
+            "request": "launch",
+            "program": "${file}",  // 
+            "console": "integratedTerminal",
+            "env": {"CUDA_VISIBLE_DEVICES":"0"},
+            "args": [
+                "U:/my_projs/LineSegmentsDetection/Classical_Image_Process/g_dataset", 
+                "--model", "HR",
+                "--output_dir", "D:/dl_save",
+                "--ckpt", "D:/dl_pretrained/ckpt/HR/checkpoint.pth.tar",
+                "--display", "True",
+            ],
+        },
+
+    ]
+}
+
+  

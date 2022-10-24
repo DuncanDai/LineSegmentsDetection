@@ -44,13 +44,27 @@
 # --------------------------------------------------------------------*/
 # %BANNER_END%
 
+### --------- Usage -------------
+''' <path-to-image-or-video>: path, not image file
+CUDA_VISIBLE_DEVICES=0 python demo.py <path-to-image-or-video> --model HR --output_dir logs/demo_result --ckpt <path-to-pretrained-pth> --display True
+
+CUDA_VISIBLE_DEVICES=0 
+python demo.py U:/my_projs/LineSegmentsDetection/Classical_Image_Process/g_dataset/test.png --model HR --output_dir D:/dl_save --ckpt D:/dl_pretrained/ckpt/HR/checkpoint.pth.tar --display True
+'''
+
 import argparse
-import glob
-import numpy as np
 import os
 import time
+
+import glob
+import numpy as np
 import cv2 as cv
 import torch
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use('agg')    # print(matplotlib.get_backend()) 
+# import seaborn as sns
+import skimage.io
 
 threshold = 0.4
 
@@ -268,6 +282,7 @@ if __name__ == '__main__':
 
     # Create a window to display the demo.
     if opt.display:
+        fig = plt.figure(figsize=(16,9), dpi=120)
         win = 'Line Tracker'
         cv.namedWindow(win)
 
@@ -289,18 +304,21 @@ if __name__ == '__main__':
         end1 = time.time()
 
         out = oriimg
+        # plt.imshow(oriimg)
         for i in range(lines.shape[0]):
             # print(lines[i])
             start_coor = (int(lines[i][0][1]), int(lines[i][0][0]))
             end_coor = (int(lines[i][1][1]), int(lines[i][1][0]))
-            cv.line(out, start_coor, end_coor, (0, 0, 255), 2, lineType=16)  # red
-            # cv.line(out, lines[i, 0, ::-1], lines[i, 1, ::-1], (110, 215, 245), 2, lineType=16)
+            # plt.plot([start_coor[0], end_coor[0]], [start_coor[1], end_coor[1]], 'r-', linewidth=1)
+            cv.line(out, start_coor, end_coor, (0, 0, 255), 2, lineType=16)  # red  # cv.line(out, lines[i, 0, ::-1], lines[i, 1, ::-1], (110, 215, 245), 2, lineType=16)
 
         cv.imwrite(f"{opt.output_dir}/{vs.i:04}.png", out)
+        # plt.savefig(f"{opt.output_dir}/{vs.i:04}.png")
 
         # Display visualization image to screen.
         if opt.display:
-            cv.imshow(win, out)
+            cv.imshow('win', out)
+            # plt.show()
             key = cv.waitKey(opt.waitkey) & 0xFF
             if key == ord('q'):
                 print('Quitting, \'q\' pressed.')
@@ -315,6 +333,7 @@ if __name__ == '__main__':
     if opt.display:
         # Close any remaining windows.
         cv.destroyAllWindows()
+        # plt.close()
     t_end = time.time()
     print("Total time spent:%f" % (t_end - t_begin))
     print("Average frame rate:%f" % (frame / (t_end - t_begin)))
