@@ -4,8 +4,8 @@ Usage:
     demo.py [options] <yaml-config> <checkpoint> <test-json>...
     demo.py (-h | --help )
 
-Examples: (based on 'lcnn/')
-    python ./myAPP/myTest.py -d 0 config/wireframe.yaml logs/221017-231614-train/checkpoint_best.pth  U:/my_projs/LineSegmentsDetection/g_data/test.json
+Examples: (based on 'ht-lcnn/')
+    python ./myAPP/myTest.py -d 0 config/wireframe.yaml D:/dl_save/221022-211125-train/checkpoint_best.pth  U:/my_projs/LineSegmentsDetection/g_data/LSD_best/test.json
 
 Arguments:
    <yaml-config>                 Path to the yaml hyper-parameter file
@@ -136,6 +136,7 @@ def main():
     test_json = args["<test-json>"][0]
     with open(test_json, "r") as f:
             test_imgs = json.load(f)
+    num_test_imgs = len(test_imgs)
 
     data = []
     count = 0
@@ -147,15 +148,34 @@ def main():
         filename = img["filename"]
         folder, img_png = _map_to_folder_and_img(filename)
 
-        print(f"Processing {folder}, {img_png}. Now is {count}/1694")
-        img_path = os.path.join(imgs_root, folder, img_png)
+        print(f"Processing {folder}, {img_png}. Now is {count}/{num_test_imgs}")
+        img_path_train = os.path.join(imgs_root, 'dataset_train', folder, img_png)
+        img_path_valid = os.path.join(imgs_root, 'dataset_valid', folder, img_png)
+        img_path_test = os.path.join(imgs_root, 'dataset_test', folder, img_png)
 
+
+        '''
+        try
+            img_rgb = imread(['D:/dataset_train', filesep, folderName, filesep, imgName]);
+        catch
+            try
+                img_rgb = imread(['D:/dataset_test', filesep, folderName, filesep, imgName]);
+            catch
+                img_rgb = imread(['D:/dataset_valid', filesep, folderName, filesep, imgName]);
+            end
+        end
+        '''
         try:
-            im = skimage.io.imread(img_path)
+            im = skimage.io.imread(img_path_train)
         except (ValueError, IOError):
-            with open("Image_read_failed.txt", "a") as f:
-                f.write(f"{count:04d}, {folder}, {img_png} \n")
-            continue
+            try:
+                im = skimage.io.imread(img_path_valid)
+            except (ValueError, IOError):
+                im = skimage.io.imread(img_path_test)
+            # finally:
+            #     with open("Image_read_failed.txt", "a") as f:
+            #         f.write(f"{count:04d}, {folder}, {img_png} \n")
+            #     continue
         if im.ndim == 2:
             im = np.repeat(im[:, :, None], 3, 2)
         im = im[:, :, :3]
@@ -233,7 +253,7 @@ def main():
         print(f"\n RMSE: {rmse} pixels, {run_time} s, succeeded!")
     
     df = pd.DataFrame.from_records(data)
-    df.to_csv(os.path.join(outdir, f"{datetime.datetime.now().month}-{datetime.datetime.now().day}_test.csv"))
+    df.to_csv(os.path.join(outdir, f"test_{datetime.datetime.now().month}-{datetime.datetime.now().day}.csv"))
 
 
         # # postprocess lines to remove overlapped lines

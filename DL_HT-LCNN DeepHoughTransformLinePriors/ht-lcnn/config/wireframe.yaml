@@ -2,9 +2,9 @@ io:
   vote_index: vote_index_128_128_3_1.mat  # 4 params (rows, cols represent the image; h,w are the resolution of rho, theta)
   logdir: D:/dl_save # logs/
   datadir: D:/dl_mydataset_2_junctions    # for train (vliad included)
-  imgs_root: D:/dataset_test  # only for test
+  imgs_root: D:/  # only for test
   outdir: D:/dl_save
-  resume_from: D:/dl_save/221022-211125-train
+  resume_from: # D:/dl_save/221022-211125-train
   num_workers: 4
   tensorboard_port: 0
   validation_interval: 5000  # original: 20000 -> used as a flag to validate()  (in trainer.py line 209)

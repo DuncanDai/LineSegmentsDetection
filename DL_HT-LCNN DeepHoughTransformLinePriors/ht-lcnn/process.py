@@ -5,7 +5,7 @@ Usage:
     process.py (-h | --help )
 
 Examples:
-    python ./process.py  -d 0 config/wireframe.yaml logs/221017-231614-train/checkpoint_best.pth
+    python ./process.py  -d 0 config/wireframe.yaml logs/221022-211125-train/checkpoint_best.pth # logs/221017-231614-train/checkpoint_best.pth  
 
 Arguments:
    <yaml-config>                 Path to the yaml hyper-parameter file

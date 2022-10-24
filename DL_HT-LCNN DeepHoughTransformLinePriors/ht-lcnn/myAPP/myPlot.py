@@ -88,43 +88,52 @@ def parser_str_to_tuple(tuple_in_str):
 
 ### only for test
 if __name__ == "__main__":
-    data_path = 'U:/my_projs/LineSegmentsDetection/DL_HT-HAWP DeepHoughTransformLinePriors/ht-lcnn/logs/10-19_test.csv'
-    img_path = 'D:/dataset_test'
-    out_path = 'U:/my_projs/g_output_DL/HT-HAWP'
+    data_path = 'D:/dl_save/221022-211125-train/test_10-24.csv'
+    imgs_root = 'D:/'
+    out_path = 'U:/my_projs/g_output_DL/10-24 LSD result'
 
     df = pd.read_csv(data_path)
 
     # select the result according to the RMSE value
-    df_sub_0_20 = df[df.RMSE < 20]  # total number: 785
-    df_sub_20_30 =  df[(df.RMSE >= 20) & (df.RMSE < 30)] # totalnumber: 568
-    df_sub_30_40 =  df[(df.RMSE >= 30) & (df.RMSE < 40)] # totalnumber: 138
-    df_sub_40_50 =  df[(df.RMSE >= 40) & (df.RMSE < 50)] # totalnumber: 17
-    df_sub_over_50 =  df[(df.RMSE >50)] # total number: 0
+    # (in test result.ipynb)total number: 350, 373, 125, 12, 6
+    df_sub_0_20 = df[df.RMSE < 20]  
+    df_sub_20_30 =  df[(df.RMSE >= 20) & (df.RMSE < 30)] 
+    df_sub_30_40 =  df[(df.RMSE >= 30) & (df.RMSE < 40)] 
+    df_sub_40_50 =  df[(df.RMSE >= 40) & (df.RMSE < 50)] 
+    df_sub_over_50 =  df[(df.RMSE >50)] 
 
     count = 0
-    for record_tuple in df_sub_20_30.itertuples():
+    for record_tuple in df_sub_0_20.itertuples():
         count = count + 1
-        if count % 10 != 0:
+        # !!! only for number > 150
+        if count % 10 != 0:  
             continue
 
 
         # records_tuple = tuple(records.tolist())
-        _, _, folder, img, l_label, ljunc0, ljunc1, r_label, rjunc0, rjunc1, rmse, time = record_tuple
-        img_file = os.path.join(img_path, folder, img)
-        save_pth = os.path.join(out_path, f"{folder}-{img}")
+        _, _, folder, img_png, l_label, ljunc0, ljunc1, r_label, rjunc0, rjunc1, rmse, time = record_tuple
+        img_path_train = os.path.join(imgs_root, 'dataset_train', folder, img_png)
+        img_path_valid = os.path.join(imgs_root, 'dataset_valid', folder, img_png)
+        img_path_test = os.path.join(imgs_root, 'dataset_test', folder, img_png)
 
+        save_pth = os.path.join(out_path, f"{folder}-{img_png}")
 
         ljunc0, ljunc1, rjunc0, rjunc1 = map(parser_str_to_tuple, (ljunc0, ljunc1, rjunc0, rjunc1))
 
         try:
-            im = skimage.io.imread(img_file)
+            im = skimage.io.imread(img_path_train)
         except (ValueError, IOError):
-            with open("Image_plot_failed.txt", "a") as f:
-                f.write(f"{folder}, {img_png} \n")
-            continue
+            try:
+                im = skimage.io.imread(img_path_valid)
+            except (ValueError, IOError):
+                im = skimage.io.imread(img_path_test)
+            # finally:
+            #     with open("Image_read_failed.txt", "a") as f:
+            #         f.write(f"{count:04d}, {folder}, {img_png} \n")
+            #     continue
 
         do_plot = Plot(im, l_label, ljunc0, ljunc1, r_label, rjunc0, rjunc1, rmse)        
-        do_plot.draw_all(is_show=True, is_save=True, save_png=save_pth)
+        do_plot.draw_all(is_show=False, is_save=True, save_png=save_pth)
 
 
 
