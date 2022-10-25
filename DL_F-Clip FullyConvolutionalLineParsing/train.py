@@ -5,7 +5,7 @@ Usage:
     train.py (-h | --help )
 
 Example: 
-    Note: change the config in base.yaml
+    Note: change the config in base.yaml   ->  after output: confirm the config.yaml again
     python train.py -d 0 -i HG1_D2 config/fclip_HG1_D2.yaml
 
     python train.py -d 0 -i HG1_D3 config/fclip_HG1_D3.yaml

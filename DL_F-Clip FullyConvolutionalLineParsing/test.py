@@ -39,7 +39,7 @@ from FClip.models import MultitaskHead, hg, hgl, hr
 from FClip.models.stage_1 import FClip
 
 
-_PLOT_nlines = 100
+_PLOT_nlines = 2 # original 100
 _PLOT = False
 _NPZ = True
 PLTOPTS = {"color": "#33FFFF", "s": 1.2, "edgecolors": "none", "zorder": 5}
@@ -180,7 +180,7 @@ def main():
                 "image": image.cuda(),
             }
             eval_t = time.time()
-            result = model(input_dict, isTest=True)
+            result = model(input_dict, isTest=True)  # (in stage_1.py) test_forward(input_dict) return is a dict
             eval_time_ += time.time() - eval_t
 
             H = result["heatmaps"]

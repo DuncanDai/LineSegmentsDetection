@@ -11,7 +11,7 @@ model:
       mean: [171.7741, 171.6866, 166.6935] # [109.730, 103.832, 98.681]
       stddev: [88.4894, 88.2510, 90.5996] # [22.275, 22.124, 23.229]
 
-  batch_size: 4 # original: 6
+  batch_size: 4 # original: 6  -> for HG1-D2 could set bigger -> 6
   eval_batch_size: 2
 
   # backbone multi-task parameters
@@ -45,7 +45,7 @@ model:
 
   stage1: fclip
   delta: 0.8
-  nlines: 2 # original 1000  (in visualize.py draw_fclip()  nlines=2)
+  nlines: 2 # original 1000  (in visualize.py draw_fclip()  nlines=2) -> not for training/test, just for plotting: useless
   s_nms: 0
 
 

@@ -96,7 +96,7 @@ class VisualizeResults(object):
 
             lines, scores = OneStageLineParsing.fclip_torch(
                 lcmap, lcoff, lleng, angle,
-                delta=C.model.delta, nlines=18, ang_type=C.model.ang_type, resolution=C.model.resolution
+                delta=C.model.delta, nlines=2, ang_type=C.model.ang_type, resolution=C.model.resolution
             )  # DINGGEN: I need only the best 2  (original: 300)
 
         scale = 1.0 / scores[0]

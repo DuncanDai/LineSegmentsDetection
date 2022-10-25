@@ -188,7 +188,7 @@ class FClip(nn.Module):
 
         extra_info['time_backbone'] = time.time()
         image = input_dict["image"]
-        outputs, feature, backbone_time = self.backbone(image)
+        outputs, feature, backbone_time = self.backbone(image)  # !!! DINGGEN: key for test
         extra_info['time_front'] = backbone_time['time_front']
         extra_info['time_stack0'] = backbone_time['time_stack0']
         extra_info['time_stack1'] = backbone_time['time_stack1']
@@ -221,15 +221,15 @@ class FClip(nn.Module):
 
             heatmap["lines"] = torch.cat(lines)
             heatmap["score"] = torch.cat(scores)
-        return {'heatmaps': heatmap, 'extra_info': extra_info}
+        return {'heatmaps': heatmap, 'extra_info': extra_info}  # return is a dict
 
     def trainval_forward(self, input_dict):
 
         image = input_dict["image"]
-        outputs, feature, backbone_time = self.backbone(image)
+        outputs, feature, backbone_time = self.backbone(image)  # output: related with head_size
         result = {"feature": feature}
         batch, channel, row, col = outputs[0].shape
-        T = input_dict["target"].copy()
+        T = input_dict["target"].copy()  # T: represent 'target'
         n_jtyp = 1
 
         T["lcoff"] = T["lcoff"].permute(1, 0, 2, 3)
@@ -239,9 +239,10 @@ class FClip(nn.Module):
         for stack, output in enumerate(outputs):
             output = output.transpose(0, 1).reshape([-1, batch, row, col]).contiguous()
 
-            L = OrderedDict()
+            L = OrderedDict()  # L: represent 'loss'
             Acc = OrderedDict()
             heatmap = {}
+            # xxx_head: return prediction and related loss
             lcmap, L["lcmap"] = self.lcmap_head(output, T["lcmap"])
             lcoff, L["lcoff"] = self.lcoff_head(output, T["lcoff"], mask=T["lcmap"])
             heatmap["lcmap"] = lcmap
