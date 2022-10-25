@@ -3,8 +3,8 @@ io:
   datadir: D:/df_fclip_dataset # D:/data_wireframe/wireframe # /home/dxl/Data/wireframe1_datarota_3w  
   num_workers: 0  # if 4: FClip.box.BoxKeyError: 
   tensorboard_port: 0
-  validation_interval: 40000  # original: 60000 num_data=5000 (my data: 3479)
-  visual_num: 2
+  validation_interval: 30000  # original: 60000 num_data=5000 (my data: 3479)  !!! in HT-LCNN use epoch, here just use the iterations
+  visual_num: 20  # plot how many images in validation # original is 2
 
 model:
   image:
@@ -24,7 +24,7 @@ model:
       head_size: 2
       loss: Focal_loss  # Focal_loss  CE
       focal_alpha: 5.0
-      loss_weight: 1.
+      loss_weight: 1.25 # 1. DINGGEN: for my task, Junction is more important than the central point
     lcoff:
       head_size: 2
       loss: sigmoid_L1
@@ -32,11 +32,11 @@ model:
     lleng:
       head_size: 1
       loss: sigmoid_L1  # sigmoid_L1, L1, lt
-      loss_weight: 3.
+      loss_weight: 3 # 3.
     angle:
       head_size: 1
       loss: sigmoid_L1
-      loss_weight: 1.
+      loss_weight: 1.25 # 1.
 
   # data augment: expand
   crop: True
@@ -45,7 +45,7 @@ model:
 
   stage1: fclip
   delta: 0.8
-  nlines: 2 # original 1000
+  nlines: 2 # original 1000  (in visualize.py draw_fclip()  nlines=2)
   s_nms: 0
 
 
@@ -55,5 +55,8 @@ optim:
   lr: 4.0e-4
   amsgrad: True
   weight_decay: 1.0e-4
-  max_epoch: 30 # 30 # original 300
-  lr_decay_epoch: [20, 26] # [20, 26] # original  [240,280] should be list
+  max_epoch: 30  # for HG2_LB  # original 300
+  lr_decay_epoch: [20, 26]  # for HG2_LB  # original  [240,280] should be list
+  # max_epoch: 60 # for HG1_D2  # original 300
+  # lr_decay_epoch: [48, 54] # for HG1_D2  # original  [240,280] should be list
+

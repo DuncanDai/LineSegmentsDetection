@@ -4,7 +4,8 @@ Usage:
     train.py [options] <MODEL-yaml-config>
     train.py (-h | --help )
 
-Example:
+Example: 
+    Note: change the config in base.yaml
     python train.py -d 0 -i HG1_D2 config/fclip_HG1_D2.yaml
 
     python train.py -d 0 -i HG1_D3 config/fclip_HG1_D3.yaml

@@ -10,7 +10,7 @@ class PointParsing():
     def jheatmap_torch(jmap, joff, delta=0.8, K=1000, kernel=3, joff_type="raw", resolution=128):
         h, w = jmap.shape
         lcmap = non_maximum_suppression(jmap[None, ...], delta, kernel).reshape(-1)
-        score, index = torch.topk(lcmap, k=int(K))
+        score, index = torch.topk(lcmap, k=int(K))  # default: largest=True, sorted=True
 
         if joff is not None:
             lcoff = joff.reshape(2, -1)

@@ -127,7 +127,7 @@ class Trainer(object):
 
                     if index >= C.io.visual_num:
                         continue
-                    if isviz:
+                    if isviz:  # plot the viz in validation
                         fn = self.val_loader.dataset._get_im_name(index)
                         self.visual.plot_samples(fn, i, H, target, meta, f"{viz}/{index:06}")
                 self.printer.tprint(f"Validation [{batch_idx:5d}/{len(self.val_loader):5d}]", " " * 25)
@@ -200,7 +200,7 @@ class Trainer(object):
 
                 time = timer()
             num_images = self.batch_size * self.iteration
-            if num_images % self.validation_interval == 0 or num_images == 60:
+            if num_images % self.validation_interval == 0 or num_images == 60:  # at the begining: check -> iteration = 15 (batch_size is 4) 
                 # record training loss
                 if num_images > 0:
                     self.printer.valid_log(1, self.epoch, self.iteration, self.batch_size, self.avg_metrics[0],

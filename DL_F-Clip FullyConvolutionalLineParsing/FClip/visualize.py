@@ -81,7 +81,7 @@ class VisualizeResults(object):
         """
         img = io.imread(fn)
 
-        self.imshow(img), plt.savefig(f"{prefix}_img.jpg"), plt.close()
+        # self.imshow(img), plt.savefig(f"{prefix}_img.jpg"), plt.close()
 
         self.draw_fclip(i, result, img, meta, prefix)
 
@@ -96,8 +96,8 @@ class VisualizeResults(object):
 
             lines, scores = OneStageLineParsing.fclip_torch(
                 lcmap, lcoff, lleng, angle,
-                delta=C.model.delta, nlines=300, ang_type=C.model.ang_type, resolution=C.model.resolution
-            )
+                delta=C.model.delta, nlines=18, ang_type=C.model.ang_type, resolution=C.model.resolution
+            )  # DINGGEN: I need only the best 2  (original: 300)
 
         scale = 1.0 / scores[0]
         scores = scores * scale
@@ -111,13 +111,14 @@ class VisualizeResults(object):
 
         plt.subplot(121)
         plt.imshow(image)
-        self.plot_wireframe(lines, scores)
+        self.plot_wireframe(lines, scores)  # predict data
 
         plt.subplot(122)
         plt.imshow(image)
-        self.plot_wireframe(lpos, np.ones(lpos.shape[0]))
+        self.plot_wireframe(lpos, np.ones(lpos.shape[0]))  # label data
 
-        plt.savefig(f"{prefix}.jpg", dpi=200), plt.close()
+        plt.savefig(f"{prefix}.jpg", dpi=200), 
+        plt.close()
 
     def plot_wireframe(self, lines, scores, isline=True, isjunc=True, alpha=None):
         for (v0, v1), s in zip(lines, scores):
