@@ -102,8 +102,8 @@ def build_model():
 
 def main():
     args = docopt(__doc__)
-    config_file = args["<MODEL-yaml-config>"]
     C.update(C.from_yaml(filename="config/base.yaml"))
+    config_file = args["<MODEL-yaml-config>"]
     C.update(C.from_yaml(filename=config_file))  
     M.update(C.model)
     pprint.pprint(C, indent=4)

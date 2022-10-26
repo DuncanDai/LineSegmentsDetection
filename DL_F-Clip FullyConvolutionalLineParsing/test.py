@@ -184,7 +184,7 @@ def main():
             eval_time_ += time.time() - eval_t
 
             H = result["heatmaps"]
-            for i in range(image.shape[0]):
+            for i in range(image.shape[0]):  # i is the index of bacth
                 index = batch_idx * bs + i
 
                 npz_dict = {}

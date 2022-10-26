@@ -1,6 +1,7 @@
 io:
-  logdir: D:/dl_save
-  datadir: D:/df_fclip_dataset # D:/data_wireframe/wireframe # /home/dxl/Data/wireframe1_datarota_3w  
+  logdir: E:/dl_save
+  datadir: E:/df_fclip_dataset # D:/data_wireframe/wireframe # /home/dxl/Data/wireframe1_datarota_3w  
+  imgs_root: \\os.lsdf.kit.edu\itiv-projects\Stents4Tomorrow\Data\2022-04-28\Data\Images
   num_workers: 0  # if 4: FClip.box.BoxKeyError: 
   tensorboard_port: 0
   validation_interval: 30000  # original: 60000 num_data=5000 (my data: 3479)  !!! in HT-LCNN use epoch, here just use the iterations

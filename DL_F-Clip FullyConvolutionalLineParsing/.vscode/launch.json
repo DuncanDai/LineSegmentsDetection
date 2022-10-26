@@ -115,6 +115,23 @@
             ],
         },
 
+        {
+            "name": "F-clip: test",
+            "type": "python",
+            //"python": "C:\\tools\\Anaconda3\\envs\\lcnn\\python.exe",
+            "request": "launch",
+            "program": "${file}",  // 
+            "console": "integratedTerminal",
+            "env": {"CUDA_VISIBLE_DEVICES":"0"},
+            "args": [
+                "-d", "0",
+                "-i", "HG2_LB_test",
+                "U:/my_projs/LineSegmentsDetection/DL_F-Clip FullyConvolutionalLineParsing/config/fclip_HG1_D2.yaml", 
+                "E:/dl_save/221025-105752-HG1_D2/checkpoint_best.pth.tar",
+                "U:/my_projs/LineSegmentsDetection/g_data/original_vertical/test.json",
+            ],
+        },
+
     ]
 }
 
