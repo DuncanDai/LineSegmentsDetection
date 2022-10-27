@@ -5,7 +5,8 @@ Usage:
     test.py (-h | --help )
 
 Examples: (path based on 'ht-lcnn/')
-    python ./myAPP/myTest.py -d 0 -i HG2_LB_test config/fclip_HG1_D2.yaml E:/dl_save/221025-105752-HG1_D2/checkpoint_best.pth.tar  U:/my_projs/LineSegmentsDetection/g_data/original_vertical/test.json
+    python ./myAPP/myTest.py -d 0 -i fclip_HG1_D2_test config/fclip_HG1_D2.yaml E:/dl_save/221025-105752-HG1_D2/checkpoint_best.pth.tar  U:/my_projs/LineSegmentsDetection/g_data/original_vertical/test.json
+    python ./myAPP/myTest.py -d 0 -i fclip_HG2_LB_test config/fclip_HG2_LB.yaml D:/dl_save/221025-110322-HG2_LB/checkpoint_best.pth.tar  U:/my_projs/LineSegmentsDetection/g_data/original_vertical/test.json
 
 Arguments:
    <MODEL-yaml-config>             Path to the yaml hyper-parameter file
@@ -291,10 +292,6 @@ def main():
 
     df = pd.DataFrame.from_records(data)
     df.to_csv(os.path.join(outdir, f"test_{datetime.datetime.now().month}-{datetime.datetime.now().day}.csv"))
-
-
-
-
 
 
 

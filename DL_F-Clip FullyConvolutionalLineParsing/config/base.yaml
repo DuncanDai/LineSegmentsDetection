@@ -1,6 +1,6 @@
 io:
-  logdir: E:/dl_save
-  datadir: E:/df_fclip_dataset # D:/data_wireframe/wireframe # /home/dxl/Data/wireframe1_datarota_3w  
+  logdir:  D:/dl_save # E:/dl_save
+  datadir: D:/df_fclip_dataset # E:/df_fclip_dataset # D:/data_wireframe/wireframe 
   imgs_root: \\os.lsdf.kit.edu\itiv-projects\Stents4Tomorrow\Data\2022-04-28\Data\Images
   num_workers: 0  # if 4: FClip.box.BoxKeyError: 
   tensorboard_port: 0

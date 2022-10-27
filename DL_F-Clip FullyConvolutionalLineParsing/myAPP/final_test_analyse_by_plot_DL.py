@@ -88,10 +88,14 @@ def parser_str_to_tuple(tuple_in_str):
 
 ### only for test
 if __name__ == "__main__":
-    data_path = 'D:/dl_save/221022-211125-train/test_10-24_for_original_test_dataset(bad_result).csv'
-    imgs_root = 'D:/'
-    out_path = 'U:/my_projs/g_output_DL/10-24_LSD_result_for_original_test_dataset'
-    skip_step = 10
+    # data_path = 'E:/dl_save/HG2_LB_test/test_10-26.csv'  # for HG1-DB2
+    data_path = 'U:/my_projs/g_output_DL/_test_result_csv/test_10-26_FClip_HG1_D2.csv'  # for HG2-LB
+
+    imgs_root = '\\\\os.lsdf.kit.edu\\itiv-projects\\Stents4Tomorrow\\Data\\2022-04-28\\Data\\Images'
+    out_path = 'U:/my_projs/g_output_DL'
+    os.makedirs(out_path, exist_ok=True)
+
+    
     is_show=False
     is_save=True
 
@@ -105,8 +109,11 @@ if __name__ == "__main__":
     df_sub_40_50 =  df[(df.RMSE >= 40) & (df.RMSE < 50)] 
     df_sub_over_50 =  df[(df.RMSE >50)] 
 
+    df_to_plot = df_sub_0_20
+    skip_step = np.ceil(df_to_plot.shape[0] / float(26))  # 1 , 5, 10  -> output number: maxmial 40 
+
     count = 0
-    for record_tuple in df_sub_40_50.itertuples():
+    for record_tuple in df_to_plot.itertuples():
         count = count + 1
         # !!! only for number > 150
         if count % skip_step != 0:  
@@ -115,25 +122,33 @@ if __name__ == "__main__":
 
         # records_tuple = tuple(records.tolist())
         _, _, folder, img_png, l_label, ljunc0, ljunc1, r_label, rjunc0, rjunc1, rmse, time = record_tuple
-        img_path_train = os.path.join(imgs_root, 'dataset_train', folder, img_png)
-        img_path_valid = os.path.join(imgs_root, 'dataset_valid', folder, img_png)
-        img_path_test = os.path.join(imgs_root, 'dataset_test', folder, img_png)
+        # img_path_train = os.path.join(imgs_root, 'dataset_train', folder, img_png)
+        # img_path_valid = os.path.join(imgs_root, 'dataset_valid', folder, img_png)
+        # img_path_test = os.path.join(imgs_root, 'dataset_test', folder, img_png)
+        img_path = os.path.join(imgs_root, folder, img_png)
 
         save_pth = os.path.join(out_path, f"{folder}-{img_png}")
 
         ljunc0, ljunc1, rjunc0, rjunc1 = map(parser_str_to_tuple, (ljunc0, ljunc1, rjunc0, rjunc1))
 
-        try:
-            im = skimage.io.imread(img_path_train)
-        except (ValueError, IOError):
-            try:
-                im = skimage.io.imread(img_path_valid)
-            except (ValueError, IOError):
-                im = skimage.io.imread(img_path_test)
+        # try:
+        #     im = skimage.io.imread(img_path_train)
+        # except (ValueError, IOError):
+        #     try:
+        #         im = skimage.io.imread(img_path_valid)
+        #     except (ValueError, IOError):
+        #         im = skimage.io.imread(img_path_test)
             # finally:
             #     with open("Image_read_failed.txt", "a") as f:
             #         f.write(f"{count:04d}, {folder}, {img_png} \n")
             #     continue
+        
+        try:
+            im = skimage.io.imread(img_path)
+        except (ValueError, IOError):
+            with open("Image_read_failed.txt", "a") as f:
+                f.write(f"{count:04d}, {folder}, {img_png} \n")
+            continue
 
         do_plot = Plot(im, l_label, ljunc0, ljunc1, r_label, rjunc0, rjunc1, rmse)        
         do_plot.draw_all(is_show, is_save, save_png=save_pth)
