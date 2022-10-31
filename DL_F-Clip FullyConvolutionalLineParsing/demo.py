@@ -46,10 +46,9 @@
 
 ### --------- Usage -------------
 ''' <path-to-image-or-video>: path, not image file
-CUDA_VISIBLE_DEVICES=0 python demo.py <path-to-image-or-video> --model HR --output_dir logs/demo_result --ckpt <path-to-pretrained-pth> --display True
+(CUDA_VISIBLE_DEVICES=0) python demo.py <path-to-image-or-video> --model HR --output_dir logs/demo_result --ckpt <path-to-pretrained-pth> --display True
 
-CUDA_VISIBLE_DEVICES=0 
-python demo.py U:/my_projs/LineSegmentsDetection/Classical_Image_Process/g_dataset/test.png --model HR --output_dir D:/dl_save --ckpt D:/dl_pretrained/ckpt/HR/checkpoint.pth.tar --display True
+python demo.py U:/my_projs/LineSegmentsDetection/g_dataset/path --model HG2_LB --output_dir D:/dl_save --ckpt D:/dl_save/221025-110322-HG2_LB/checkpoint_best.pth.tar --display True
 '''
 
 import argparse
@@ -311,7 +310,8 @@ if __name__ == '__main__':
             start_coor = (int(lines[i][0][1]), int(lines[i][0][0]))
             end_coor = (int(lines[i][1][1]), int(lines[i][1][0]))
             # plt.plot([start_coor[0], end_coor[0]], [start_coor[1], end_coor[1]], 'r-', linewidth=1)
-            cv.line(out, start_coor, end_coor, (0, 0, 255), 2, lineType=16)  # red  # cv.line(out, lines[i, 0, ::-1], lines[i, 1, ::-1], (110, 215, 245), 2, lineType=16)
+            # BGR: (0, 0, 255) -> red 
+            cv.line(out, start_coor, end_coor, (255, 191, 0), 14, lineType=16)  # red  # cv.line(out, lines[i, 0, ::-1], lines[i, 1, ::-1], (110, 215, 245), 2, lineType=16)
 
         cv.imwrite(f"{opt.output_dir}/{vs.i:04}.png", out)
         # plt.savefig(f"{opt.output_dir}/{vs.i:04}.png")

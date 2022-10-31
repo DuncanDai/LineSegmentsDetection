@@ -8,10 +8,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import skimage.io
 
-
+mpl.rcParams['font.size'] = 30
 
 class Plot(object):
-    def __init__(self, img, llabel, ljunc0, ljunc1, rlabel, rjunc0, rjunc1, rmse, **kwargs):
+    def __init__(self, img, llabel, ljunc0, ljunc1, rlabel, rjunc0, rjunc1, rmse, linewidth, **kwargs):
+        self.linewidth = linewidth
+
         self.img = img
         self.height = img.shape[0]
         self.width = img.shape[1]
@@ -27,6 +29,7 @@ class Plot(object):
 
     def draw_all(self, is_show=False, is_save=False, save_png=None):
         mpl.style.use('seaborn-paper')  # mpl.style.available (total: 28)
+        
 
         # fig = plt.figure(figsize=(8,4))
         fig = plt.figure(figsize=(16,9), dpi=120)  # width 3088 pixel_width = w * dpi  # figsize=(w,h)
@@ -36,7 +39,7 @@ class Plot(object):
         l_left, l_right = self.draw_lines_label()
         p_left, p_right = self.draw_lines_pred()
 
-        plt.title(f'RMSE: {self.rmse:.04f} pixels')
+        plt.title(f'RSE: {self.rmse:.04f} pixels', fontsize=24)
         plt.legend(loc='lower right', framealpha=0.4)
 
         if is_save:
@@ -47,18 +50,18 @@ class Plot(object):
         
 
     def draw_center_line(self):
-        p = plt.plot([self.width // 2, self.width // 2], [0, self.height-1], 'k--', linewidth=1, label='center of x-axis')
+        p = plt.plot([self.width // 2, self.width // 2], [0, self.height-1], 'k--', linewidth=self.linewidth, label='center of x-axis')
         return p
         
     def draw_lines_label(self):
-        p1 = plt.plot([self.llabel, self.llabel], [0, self.height-1], 'r-', linewidth=1, label='border labels')
-        p2 = plt.plot([self.rlabel, self.rlabel], [0, self.height-1], 'r-', linewidth=1)
+        p1 = plt.plot([self.llabel, self.llabel], [0, self.height-1], 'r-', linewidth=self.linewidth, label='border labels')
+        p2 = plt.plot([self.rlabel, self.rlabel], [0, self.height-1], 'r-', linewidth=self.linewidth)
         return p1, p2
 
     def draw_lines_pred(self):
         '''plot(x, y, color='green', marker='o', linestyle='dashed', linewidth=2, markersize=12)'''
-        p1 = plt.plot([self.ljunc0[0], self.ljunc1[0]], [self.ljunc0[1], self.ljunc1[1]], color='#00FF00', marker='.', linestyle='--', linewidth=1, label='border predictions')
-        p2 = plt.plot([self.rjunc0[0], self.rjunc1[0]], [self.rjunc0[1], self.rjunc1[1]], color='#00FF00', marker='.', linestyle='--', linewidth=1)
+        p1 = plt.plot([self.ljunc0[0], self.ljunc1[0]], [self.ljunc0[1], self.ljunc1[1]], color='#00FF00', marker='.', linestyle='--', linewidth=self.linewidth, label='border predictions')
+        p2 = plt.plot([self.rjunc0[0], self.rjunc1[0]], [self.rjunc0[1], self.rjunc1[1]], color='#00FF00', marker='.', linestyle='--', linewidth=self.linewidth)
         return p1, p2
 
 
@@ -89,7 +92,8 @@ def parser_str_to_tuple(tuple_in_str):
 ### only for test
 if __name__ == "__main__":
     # data_path = 'E:/dl_save/HG2_LB_test/test_10-26.csv'  # for HG1-DB2
-    data_path = 'U:/my_projs/g_output_DL/_test_result_csv/test_10-26_FClip_HG1_D2.csv'  # for HG2-LB
+    # data_path = 'U:/my_projs/g_output_DL/_test_result_csv/test_10-26_FClip_HG1_D2.csv'  # for HG2-LB
+    data_path = 'U:/my_projs/g_output_DL/_test_result_csv/test_10-19_HTLCNN.csv'  # for HG2-LB
 
     imgs_root = '\\\\os.lsdf.kit.edu\\itiv-projects\\Stents4Tomorrow\\Data\\2022-04-28\\Data\\Images'
     out_path = 'U:/my_projs/g_output_DL'
@@ -109,7 +113,7 @@ if __name__ == "__main__":
     df_sub_40_50 =  df[(df.RMSE >= 40) & (df.RMSE < 50)] 
     df_sub_over_50 =  df[(df.RMSE >50)] 
 
-    df_to_plot = df_sub_0_20
+    df_to_plot = df_sub_40_50
     skip_step = np.ceil(df_to_plot.shape[0] / float(26))  # 1 , 5, 10  -> output number: maxmial 40 
 
     count = 0
@@ -150,7 +154,7 @@ if __name__ == "__main__":
                 f.write(f"{count:04d}, {folder}, {img_png} \n")
             continue
 
-        do_plot = Plot(im, l_label, ljunc0, ljunc1, r_label, rjunc0, rjunc1, rmse)        
+        do_plot = Plot(im, l_label, ljunc0, ljunc1, r_label, rjunc0, rjunc1, rmse, 4)        
         do_plot.draw_all(is_show, is_save, save_png=save_pth)
 
 
