@@ -9,10 +9,10 @@ addpath(genpath('Toolkit/edges-master/'));
 addpath('Toolkit/mcmlsdV2/');
 
 %%
-MIN_LINE_NUMBER = 15;
+MIN_LINE_NUMBER = 70;
 
 %%% dinggen test
-img_path = '../g_dataset/test.png';
+img_path = '../../g_dataset/test.png';
 img_origin = imread(img_path);
 
 % 1/16 size to the original image
@@ -32,8 +32,12 @@ ticId = tic;
 display('Total time');
 toc(ticId)
 
-fig = figure;
-imshow(img_rgb);
+h1 = figure;
+h1.WindowState = 'minimized'; % don't show in the front  
+imshow(img_origin, 'border', 'tight', 'initialmagnification', 100);   % img_gray is uint8 grayscale
+ax = gca;
+ax.Toolbar.Visible = 'off';
+
 hold on
 %Order lines by probability
 lines = sortrows(lines, -5);
@@ -42,16 +46,25 @@ linesNum = size(lines,1);
 plotLineNum = min(MIN_LINE_NUMBER, linesNum);
 for i = 1:plotLineNum
     %plot the lines with high confidence
-    line([lines(i,1) lines(i,3)], [lines(i,2) lines(i,4)],'Color','g', 'LineWidth', 1.5);  
+    line([lines(i,1).*4 lines(i,3).*4], [lines(i,2).*4 lines(i,4).*4],'Color','g', 'LineWidth', 2);  
 end
 
+save_img_path = 'U:/my_projs/g_output_PPT/MCMLSD_HT.png';
+f = getframe(gcf);
+imwrite(f.cdata, save_img_path);
+close;
 
 %please use code in Evaluation code.zip to evaluate the performance of the line segmentation algorithm
 % The lines2 is arranged as [x1 y1 x2 y2 probability score], see mcmlsd2Algo() to know what score is
 [lines2] = mcmlsd2Algo(lines,img_rgb);
-fig = figure;
-imshow(img_rgb);
-hold all
+
+h2 = figure;
+h2.WindowState = 'minimized'; % don't show in the front  
+imshow(img_origin, 'border', 'tight', 'initialmagnification', 100);   % img_gray is uint8 grayscale
+ax = gca;
+ax.Toolbar.Visible = 'off';
+
+hold on
 %Order lines by probability
 lines2 = sortrows(lines2, -6);
 
@@ -59,5 +72,10 @@ linesNum = size(lines2,1);
 plotLineNum = min(MIN_LINE_NUMBER, linesNum);
 for i = 1:plotLineNum
     %plot the lines with high confidence
-    line([lines2(i,1) lines2(i,3)], [lines2(i,2) lines2(i,4)],'Color', 'g', 'LineWidth', 1.5);
+    line([lines2(i,1).*4 lines2(i,3).*4], [lines2(i,2).*4 lines2(i,4).*4],'Color', 'g', 'LineWidth', 2);
 end
+
+save_img_path = 'U:/my_projs/g_output_PPT/MCMLSD_MCM.png';
+f = getframe(gcf);
+imwrite(f.cdata, save_img_path);
+close;

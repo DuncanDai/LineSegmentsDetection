@@ -157,11 +157,7 @@ if is_plot
     %% Plot
     h = figure;
     h.WindowState = 'minimized'; % don't show in the front  
-%     h.Visible = 'off';  % nothing
-%     set(groot, 'CurrentFigure', []);
 
-
-    
     imshow(img_gray, 'border', 'tight', 'initialmagnification', 100);   % img_gray is uint8 grayscale
     ax = gca;
     ax.Toolbar.Visible = 'off';

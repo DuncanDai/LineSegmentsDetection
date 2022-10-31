@@ -18,7 +18,7 @@ addpath('../../helper2_calcRMSE');
 addpath('../../helper3_postAnalyse');
 addpath('../../helperPlots');
 
-label_file = '../../g_dataset/mandrel_border_labels_manually.json';  % absolut path of label.json file
+label_file = '../../../g_dataset/mandrel_border_labels_manually.json';  % absolut path of label.json file
 
 % Script: parser JSON to get the parameters.
 % parser_JSON_hyperParams;  % '/myApp' need to be current workspace
@@ -64,14 +64,13 @@ output_data = table('Size',sz, 'VariableTypes',varTypes, 'VariableNames',varName
 clear label_file  OUTPUT_ELEMENTS  sz  varTypes  varNames;
 
 %% configure: different paths
-
-%%% general path in PC
+%%% general path in PC: my Thinkpad
 imgInputPath = 'D:/My_Data/me_Projs/Proj_MA/images';  folderName = '2022-04-28_14-09-13'; imgName = '0.png';
 imgOutputPath = 'D:/My_Data/me_Projs/Proj_MA/g_output';
 
 
 %%% path in portable HDD of pool 
-% Notice: DHH in disk D:\
+% Notice: HDD in disk D:\
 imgInputPath = 'D:/dataset_valid'; folderName = '2022-04-28_13-30-38';  imgName = '21750336000.png';
 imgName = '2727648000.png';  % corner_case
 imgOutputPath = 'D:/g_output';
