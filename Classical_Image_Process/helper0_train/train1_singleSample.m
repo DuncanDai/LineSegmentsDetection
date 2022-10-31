@@ -155,6 +155,8 @@ global is_plot is_save;
 
 if is_plot
     %% Plot
+    lineWidth = 4;
+    
     h = figure;
     h.WindowState = 'minimized'; % don't show in the front  
 
@@ -165,15 +167,15 @@ if is_plot
     hold on
     % issue: When there is no edgeLines after the angle fitering, the function
     % will raise an error
-    plt1 = draw_two_borders(left_border_label, left_border_label, right_border_label, right_border_label, imageHeight, 'r', '-', 1, 'o');
+    plt1 = draw_two_borders(left_border_label, left_border_label, right_border_label, right_border_label, imageHeight, 'r', '-', lineWidth, 'o');
     full_edges_filter_by_angle(:, 1:4) = full_edges_filter_by_angle(:, 1:4)./scale;
-    plt2 = draw_edgeLines(full_edges_filter_by_angle); 
-    plt3 = draw_two_borders(left_pos1, left_pos2, right_pos1, right_pos2, imageHeight, 'c', '--', 1.5, 'none');  
+    plt2 = draw_edgeLines(full_edges_filter_by_angle, lineWidth-2); 
+    plt3 = draw_two_borders(left_pos1, left_pos2, right_pos1, right_pos2, imageHeight, 'c', '--', lineWidth, 'none');  
 
     % draw the line in the center of image in x-axis.
-    plt4 = line([imageWidth/2 imageWidth/2], [1 imageHeight],'Color','k', 'LineStyle', ':', 'LineWidth', 1);
+    plt4 = line([imageWidth/2 imageWidth/2], [1 imageHeight],'Color','k', 'LineStyle', ':', 'LineWidth', lineWidth);
     % set prior_mandrel_percent = 5/16 of middle part (initial in main0_header.m)
-    plt5 = draw_two_borders(imageWidth .* (1/2 - 1/8 - 1/32), imageWidth .* (1/2 - 1/8 - 1/32), imageWidth .* (1/2 + 1/8 + 1/32), imageWidth .* (1/2 + 1/8 + 1/32), imageHeight, 'k', '-', 1, 'none');
+    plt5 = draw_two_borders(imageWidth .* (1/2 - 1/8 - 1/32), imageWidth .* (1/2 - 1/8 - 1/32), imageWidth .* (1/2 + 1/8 + 1/32), imageWidth .* (1/2 + 1/8 + 1/32), imageHeight, 'k', '-', lineWidth, 'none');
     
     % first legend
     legend(plt1, 'border labels', 'Location', 'northwest');

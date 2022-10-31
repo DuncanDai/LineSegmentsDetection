@@ -27,7 +27,7 @@ hold on
 n = edgeChains(:,1);
 m = edgeChains(:,2);
 % plot(n,m, 'g')
-scatter(n,m,2, 'filled','MarkerEdgeColor','g','MarkerFaceColor','g','LineWidth',0.01)
+scatter(n,m,2, 'filled','MarkerEdgeColor','g','MarkerFaceColor','g','LineWidth',0.01)  % linewidth = 2
 
 
 % plot(edgeChains(:,1), edgeChains(:, 2), 'g') -> plot is useless

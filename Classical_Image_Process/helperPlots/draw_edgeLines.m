@@ -1,4 +1,4 @@
-function plt = draw_edgeLines(edgeLines)
+function plt = draw_edgeLines(edgeLines, lineWidth)
 %Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -8,7 +8,7 @@ for i = 1:num_lines
     y1 = edgeLines(i, 2);
     x2 = edgeLines(i, 3);
     y2 = edgeLines(i, 4);
-    plt = line([x1 x2], [y1 y2],'Color','g', 'LineWidth', 4);   % only call the last line as `plt`  -> width is 2
+    plt = line([x1 x2], [y1 y2],'Color','g', 'LineWidth', lineWidth);   % only call the last line as `plt`  -> width is 2
 end
 end
 

@@ -14,7 +14,7 @@ ax = gca;
 ax.Toolbar.Visible = 'off';
 
 hold on
-draw_edgeLines(edgeLines);
+draw_edgeLines(edgeLines, 4);  % linewidth = 4
 
 save_img_path = 'U:/my_projs/g_output_PPT/lsd1.png';
 f = getframe(gcf);
