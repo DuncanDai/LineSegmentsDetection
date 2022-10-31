@@ -296,7 +296,6 @@ def main():
 
 
 
-
 def tprint(*args):
     """Temporarily prints things on the screen"""
     print("\r", end="")
