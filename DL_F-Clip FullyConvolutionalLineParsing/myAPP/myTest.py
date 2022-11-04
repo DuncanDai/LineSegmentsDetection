@@ -240,8 +240,8 @@ def main():
                 f.write(f"{count:04d}, {folder}, {img_png} \n")
             continue
         
-        if im.ndim == 2:
-            im = np.repeat(im[:, :, None], 3, 2)
+        # if im.ndim == 2:
+        #     im = np.repeat(im[:, :, None], 3, 2)
         im = im[:, :, :3]
         im_resized = skimage.transform.resize(im, (512, 512)) * 255
 
