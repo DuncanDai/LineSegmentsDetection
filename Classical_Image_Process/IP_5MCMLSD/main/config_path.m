@@ -23,7 +23,7 @@ addpath('../../helperPlots');
 
 
 
-label_file = '../../g_dataset/mandrel_border_labels_manually.json';  % absolut path of label.json file
+label_file = '../../../g_dataset/mandrel_border_labels_manually.json';  % absolut path of label.json file
 
 % Script: parser JSON to get the parameters.
 % parser_JSON_hyperParams;  % '/myApp' need to be current workspace
@@ -36,13 +36,13 @@ label_file = '../../g_dataset/mandrel_border_labels_manually.json';  % absolut p
 global scale; scale = 0.5; % scale is not used in CannyPF -> keep it to 1 by hyperparameter tuning. 
 fprintf("Please set the scale to get the kernel infos!!! scale is '%f' \n", scale);
 global angle_expect;  angle_expect = 90;
-global angle_tolerance;  angle_tolerance = 25;
+global angle_tolerance;  angle_tolerance = 8;
 
 global resizeImageHeight; 
 global resizeImageWidth; 
-global windowWidth;  windowWidth = 34;
+global windowWidth;  windowWidth = 26;
 global windowStepSize;  windowStepSize = 1;
-global decision_criter;   decision_criter = 'len*num'; % global only for single variable -> once declare: decision_criterion = 0 (decision_criterion is string cell array); 
+global decision_criter;   decision_criter = 'len'; % 'len*num'; % global only for single variable -> once declare: decision_criterion = 0 (decision_criterion is string cell array); 
 global prior_excluded_middle_percent;  prior_excluded_middle_percent = 5/16; % the middle prior_mandrel_percent part is not into consideration
 
 global FLAG_VALID; FLAG_VALID = 0;
@@ -50,7 +50,7 @@ global label_data;  label_data = load_label(label_file);
 global is_labeled;  % whether the image is labeled or not, or even not exists in the label.json file
 
 global kernels kernels_flip kernel_params;
-img = imread('../../g_dataset/test.png');
+img = imread('../../../g_dataset/test.png');
 img = imresize(img, [round(size(img,1) * scale), round(size(img,2) * scale)]);
 %compute the kernel for the image size
 %you only need to compute the kernal once for one type of image size

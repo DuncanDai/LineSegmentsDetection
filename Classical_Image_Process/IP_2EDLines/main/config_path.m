@@ -18,7 +18,7 @@ addpath('../../helper2_calcRMSE');
 addpath('../../helper3_postAnalyse');
 addpath('../../helperPlots');
 
-label_file = '../../g_dataset/mandrel_border_labels_manually.json';  % absolut path of label.json file
+label_file = '../../../g_dataset/mandrel_border_labels_manually.json';  % absolut path of label.json file
 
 % Script: parser JSON to get the parameters.
 % parser_JSON_hyperParams;  % '/myApp' need to be current workspace
@@ -29,7 +29,7 @@ label_file = '../../g_dataset/mandrel_border_labels_manually.json';  % absolut p
 %   - helperFuncs/check_result.m
 global scale; scale = 1.0; % scale is not used in CannyPF -> keep it to 1 by hyperparameter tuning. 
 global angle_expect;  angle_expect = 90;
-global angle_tolerance;  angle_tolerance = 25;
+global angle_tolerance;  angle_tolerance = 28;
 
 global resizeImageHeight; 
 global resizeImageWidth; 
